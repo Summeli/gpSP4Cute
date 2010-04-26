@@ -1,4 +1,4 @@
-/* AntSnes
+/* gpsp4cute
  *
  * Copyright (C) 2010 Summeli <summeli@summeli.fi>
  *
