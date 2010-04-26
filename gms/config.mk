@@ -1,5 +1,5 @@
-PROJECT_NAME = gpSP4Symbian
-TARGET_TYPE = EXE
+PROJECT_NAME = gpsp4symbian
+TARGET_TYPE = LIB
 UID2 = 0
 UID3 = E0D278F3
 SECUREID = E0D278F3
@@ -7,15 +7,14 @@ EPOCSTACKSIZE = 80000
 EPOCHEAPSIZE = 5000000,67108864
 CAPABILITY = LocalServices
 SYSINCLUDE = $(EPOCROOT2)/include $(EPOCROOT2)/include/esdl $(EPOCROOT2)/include/libc
-USERINCLUDE = ../inc
+USERINCLUDE = ../inc ../../gpsp4cute
 CXXSRCS = \
-		gpsp4symbian_sdl.cpp \
-		debug.cpp \
 		symbian_memory_handler.cpp \
 		sound_symbian.cpp \
+		relocator.cpp \
          $(NULL)
 CSRCS = \
-		    main.c \
+		    gpspmain.c \
 			cpu.c \
 			video.c \
 			sound.c \
@@ -31,13 +30,7 @@ CSRCS = \
 ASRCS = \
 	    arm_stub.S \
 	    video_blend.S \
+	    relocator_glue.S \
         $(NULL)
-RSS_TARGETS = $(DIST_PATH)/$(PROJECT_NAME).rsc $(DIST_PATH)/$(PROJECT_NAME)_reg.rsc
-LANG_MACRO = SC
-SYSLIBRARY = euser.lib avkon.lib eikcore.lib eiksrv.lib apparc.lib estlib.lib efsrv.lib cone.lib hal.lib \
-			fbscli.lib ws32.lib  apgrfx.lib gdi.lib bitgdi.lib  mediaclientaudiostream.lib bafl.lib estor.lib \
-			commonengine.lib hlplch.lib ezlib.lib libc.lib flogger.lib form.lib tagma.lib\
-             $(NULL)
-STATICLIBRARY = ESDL.lib
 CERT = /c/cert/gpsp4symbian.cert
 KEY = /c/cert/gpsp4symbian.key

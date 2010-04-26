@@ -22,6 +22,12 @@
 
 #define GPSP_CONFIG_FILENAME "gpsp.cfg"
 
+//export some functions to be called from the c++ side  
+#ifdef __SYMBIAN32__
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 s32 load_file(u8 **wildcards, u8 *result);
 u32 adjust_frameskip(u32 button_id);
 s32 load_game_config_file();
@@ -29,6 +35,11 @@ s32 load_config_file();
 s32 save_game_config_file();
 s32 save_config_file();
 u32 menu(u16 *original_screen);
+
+#ifdef __cplusplus
+};
+#endif
+#endif
 
 extern u32 savestate_slot;
 

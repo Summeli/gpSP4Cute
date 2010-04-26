@@ -36,49 +36,51 @@ check:
 	@echo 'SYMBIAN_SDK_PATH is' $(SYMBIAN_SDK_PATH)
 	@echo 'ACTIVE_PERL is ' $(ACTIVE_PERL)
 	@echo 'CC_INSTALL_PATH is ' $(CC_INSTALL_PATH)
-	@echo 'PATH is ' $(PATH)
-	@echo '==============================================================='
+#	@echo 'PATH is ' $(PATH)
+#	@echo '==============================================================='
 
 preGCCE:
   CC = arm-none-symbianelf-gcc
   CXX = arm-none-symbianelf-g++
   LD = arm-none-symbianelf-ld
   AS = arm-none-symbianelf-as.exe
+  AR = arm-none-symbianelf-ar
   RAL = $(EPOCROOT2)/RELEASE/ARMV5/LIB
   DIST_PATH = $(DIST_BASE)/gcce
   OBJ_PATH = $(OBJ_BASE)/gcce
   TARGET_MACRO = $(GCCE_MACRO) $(GCCE_WARNING_FLAGS)
 
-preDEBUG:
-   RAU = $(EPOCROOT2)/RELEASE/ARMV5/UDEB
-  COMPFLAGS = -march=armv5t -O0 -mapcs -pipe -nostdinc -c -msoft-float -g \
-	-MD $(DEB_MACRO) -include $(EPOCROOT2)/include/gcce/gcce.h
-  LD_EXE_FLAGS = -L$(CC_INSTALL_PATH)/arm-none-symbianelf/lib \
-  -L$(EPOCROOT2)/RELEASE/ARMV5/UDEB  \
-	-L$(CC_INSTALL_PATH)/lib/gcc/arm-none-symbianelf/3.4.3 --target1-abs \
-	--no-undefined -nostdlib -shared -Ttext 0x8000 -Tdata 0x400000 \
-	--default-symver -soname $(PROJECT_NAME){000a0000}[$(UID3)].exe \
-	--entry _E32Startup -u _E32Startup \
-	$(EPOCROOT2)/RELEASE/ARMV5/UDEB/EEXE.LIB \
-	-o $(OBJ_PATH)/$(PROJECT_NAME).exe \
-	-Map $(BIN_TARGET).map $^ \
-	$(patsubst %.lib,$(RAL)/%.dso,$(SYSLIBRARY)) \
-	$(RAU)/usrt2_2.lib $(RAL)/dfpaeabi.dso $(RAL)/dfprvct2_2.dso \
-	$(RAL)/drtaeabi.dso $(RAL)/scppnwdl.dso $(RAL)/drtrvct2_2.dso \
-	$(patsubst %.lib,$(RAU)/%.lib,$(STATICLIBRARY)) \
-	-lsupc++ -lgcc
-	COPYSYMBOLS = cp $(OBJ_PATH)/$(PROJECT_NAME).$(TARGET_TYPE) $(DIST_PATH)/$(PROJECT_NAME).sym
-  COPYEXEC = cp $(DIST_PATH)/$(PROJECT_NAME).$(TARGET_TYPE) $(EPOCROOT2)/release/GCCE/UDEB/$(PROJECT_NAME).$(TARGET_TYPE)
-  COPYSYMB = cp $(DIST_PATH)/$(PROJECT_NAME).sym $(EPOCROOT2)/release/GCCE/UDEB/$(PROJECT_NAME).sym
-  COPYMAP = cp $(DIST_PATH)/$(PROJECT_NAME).$(TARGET_TYPE).map $(EPOCROOT2)/release/GCCE/UDEB/$(PROJECT_NAME).$(TARGET_TYPE).map
-	
+#preDEBUG:
+#   RAU = $(EPOCROOT2)/RELEASE/ARMV5/UDEB
+#  COMPFLAGS = -march=armv5t -O0 -mapcs -pipe -nostdinc -c -msoft-float -g \
+#	-MD $(DEB_MACRO) -include $(EPOCROOT2)/include/gcce/gcce.h
+#  LD_EXE_FLAGS = -L$(CC_INSTALL_PATH)/arm-none-symbianelf/lib \
+#  -L$(EPOCROOT2)/RELEASE/ARMV5/UDEB  \
+#	-L$(CC_INSTALL_PATH)/lib/gcc/arm-none-symbianelf/3.4.3 --target1-abs \
+#	--no-undefined -nostdlib -shared -Ttext 0x8000 -Tdata 0x400000 \
+#	--default-symver -soname $(PROJECT_NAME){000a0000}[$(UID3)].exe \
+#	--entry _E32Startup -u _E32Startup \
+#	$(EPOCROOT2)/RELEASE/ARMV5/UDEB/EEXE.LIB \
+#	-o $(OBJ_PATH)/$(PROJECT_NAME).exe \
+#	-Map $(BIN_TARGET).map $^ \
+#	$(patsubst %.lib,$(RAL)/%.dso,$(SYSLIBRARY)) \
+#	$(RAU)/usrt2_2.lib $(RAL)/dfpaeabi.dso $(RAL)/dfprvct2_2.dso \
+#	$(RAL)/drtaeabi.dso $(RAL)/scppnwdl.dso $(RAL)/drtrvct2_2.dso \
+#	$(patsubst %.lib,$(RAU)/%.lib,$(STATICLIBRARY)) \
+#	-lsupc++ -lgcc
+#	COPYSYMBOLS = cp $(OBJ_PATH)/$(PROJECT_NAME).$(TARGET_TYPE) $(DIST_PATH)/$(PROJECT_NAME).sym
+#   COPYEXEC = cp $(DIST_PATH)/$(PROJECT_NAME).$(TARGET_TYPE) $(EPOCROOT2)/release/GCCE/UDEB/$(PROJECT_NAME).$(TARGET_TYPE)
+#   COPYSYMB = cp $(DIST_PATH)/$(PROJECT_NAME).sym $(EPOCROOT2)/release/GCCE/UDEB/$(PROJECT_NAME).sym
+#   COPYMAP = cp $(DIST_PATH)/$(PROJECT_NAME).$(TARGET_TYPE).map $(EPOCROOT2)/release/GCCE/UDEB/$(PROJECT_NAME).$(TARGET_TYPE).map
+#   COPYLIB = cp $(DIST_PATH)/$(PROJECT_NAME).$(TARGET_TYPE) $(EPOCROOT2)/release/ARMV5/UDEB/$(PROJECT_NAME).lib
+
 preREL:
    RAU = $(EPOCROOT2)/RELEASE/ARMV5/UREL
    COMPFLAGS = -march=armv5t -O2 -mapcs -pipe -nostdinc -c -msoft-float \
-	-MD $(REL_MACRO) -include $(EPOCROOT2)/include/gcce/gcce.h
-  LD_EXE_FLAGS = -L$(CC_INSTALL_PATH)/arm-none-symbianelf/lib \
-  -L$(EPOCROOT2)/RELEASE/ARMV5/UREL  \
-	-L$(CC_INSTALL_PATH)/lib/gcc/arm-none-symbianelf/3.4.3 --target1-abs \
+   -MD $(REL_MACRO) -include $(EPOCROOT2)/include/gcce/gcce.h
+   LD_EXE_FLAGS = -L$(CC_INSTALL_PATH)/arm-none-symbianelf/lib \
+   -L$(EPOCROOT2)/RELEASE/ARMV5/UREL  \
+   -L$(CC_INSTALL_PATH)/lib/gcc/arm-none-symbianelf/3.4.3 --target1-abs \
 	--no-undefined -nostdlib -shared -Ttext 0x8000 -Tdata 0x400000 \
 	--default-symver -soname $(PROJECT_NAME){000a0000}[$(UID3)].exe \
 	--entry _E32Startup -u _E32Startup \
@@ -91,10 +93,11 @@ preREL:
 	$(patsubst %.lib,$(RAU)/%.lib,$(STATICLIBRARY)) \
 	-lsupc++ -lgcc
 	COPYSYMBOLS = cp $(OBJ_PATH)/$(PROJECT_NAME).$(TARGET_TYPE) $(DIST_PATH)/$(PROJECT_NAME).sym
-  COPYEXEC = cp $(DIST_PATH)/$(PROJECT_NAME).$(TARGET_TYPE) $(EPOCROOT2)/release/GCCE/UREL/$(PROJECT_NAME).$(TARGET_TYPE)
-  COPYSYMB = cp $(DIST_PATH)/$(PROJECT_NAME).sym $(EPOCROOT2)/release/GCCE/UREL/$(PROJECT_NAME).sym
-  COPYMAP = cp $(DIST_PATH)/$(PROJECT_NAME).$(TARGET_TYPE).map $(EPOCROOT2)/release/GCCE/UREL/$(PROJECT_NAME).$(TARGET_TYPE).map
-	
+   COPYEXEC = cp $(DIST_PATH)/$(PROJECT_NAME).$(TARGET_TYPE) $(EPOCROOT2)/release/GCCE/UREL/$(PROJECT_NAME).$(TARGET_TYPE)
+    COPYSYMB = cp $(DIST_PATH)/$(PROJECT_NAME).sym $(EPOCROOT2)/release/GCCE/UREL/$(PROJECT_NAME).sym
+    COPYMAP = cp $(DIST_PATH)/$(PROJECT_NAME).$(TARGET_TYPE).map $(EPOCROOT2)/release/GCCE/UREL/$(PROJECT_NAME).$(TARGET_TYPE).map
+    COPYLIB = cp $(DIST_PATH)/$(PROJECT_NAME).$(TARGET_TYPE) $(EPOCROOT2)/release/ARMV5/UREL/$(PROJECT_NAME).$(TARGET_TYPE)	
+
 preALL:
   CFLAGS += $(COMPFLAGS) $(UNICODE_MACRO) $(TARGET_MACRO) $(SYMBIAN_MACRO) $(S60_MACRO) \
 	$(EXE_MACRO) $(addprefix -D ,$(PRJ_MACRO)) \
@@ -128,6 +131,10 @@ $(A_OBJS): $(OBJ_PATH)/%.o : $(SRC_PATH)/%.S
 	$(CC) -c -o $@ $^
 	  	
 $(BIN_TARGET): $(C_OBJS) $(CXX_OBJS) $(A_OBJS)
+ifeq ($(TARGET_TYPE),LIB)
+	$(AR) rsc $(BIN_TARGET) $(C_OBJS) $(CXX_OBJS) $(A_OBJS)
+	$(COPYLIB)
+else
 	$(LD) $(LD_EXE_FLAGS)
 	$(COPYSYMBOLS)
 	$(EPOCROOT2)/tools/elf2e32 --sid=0x$(SECUREID) --stack=$(EPOCSTACKSIZE) --heap=$(EPOCHEAPSIZE) \
@@ -140,7 +147,7 @@ $(BIN_TARGET): $(C_OBJS) $(CXX_OBJS) $(A_OBJS)
 	 $(COPYEXEC)
 	 $(COPYSYMB)
 	 $(COPYMAP)
-	  
+endif	  
 pack: buildg $(PKG_PATH).pkg
 	$(EPOCROOT2)/tools/makesis.exe -v $(PKG_PATH).pkg $(PKG_PATH).sis
 	$(EPOCROOT2)/tools/signsis.exe -v $(PKG_PATH).sis $(PKG_PATH).sisx \

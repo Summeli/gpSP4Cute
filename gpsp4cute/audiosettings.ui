@@ -1,0 +1,154 @@
+<ui version="4.0" >
+ <class>AudioSettingsClass</class>
+ <widget class="QWidget" name="AudioSettingsClass" >
+  <property name="enabled" >
+   <bool>true</bool>
+  </property>
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>150</height>
+   </rect>
+  </property>
+  <property name="contextMenuPolicy" >
+   <enum>Qt::DefaultContextMenu</enum>
+  </property>
+  <property name="windowTitle" >
+   <string>AudioSettings</string>
+  </property>
+  <property name="styleSheet" >
+   <string notr="true" />
+  </property>
+  <widget class="QLabel" name="Audiolabel" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>150</height>
+    </rect>
+   </property>
+   <property name="styleSheet" >
+    <string notr="true" />
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="sampleRateBox" >
+   <property name="geometry" >
+    <rect>
+     <x>170</x>
+     <y>10</y>
+     <width>141</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>8000Hz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text" >
+     <string>11025Hz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text" >
+     <string>16000Hz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text" >
+     <string>22050Hz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text" >
+     <string>44100Hz</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="stereoBox" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>70</y>
+     <width>141</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>Mono</string>
+    </property>
+   </item>
+   <item>
+    <property name="text" >
+     <string>Stereo</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="AudioOnOffBox" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>141</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>Audio Off</string>
+    </property>
+   </item>
+   <item>
+    <property name="text" >
+     <string>Audio On</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QGroupBox" name="volume" >
+   <property name="geometry" >
+    <rect>
+     <x>370</x>
+     <y>10</y>
+     <width>241</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="title" >
+    <string>Volume</string>
+   </property>
+   <widget class="QSlider" name="volumeSlider" >
+    <property name="geometry" >
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>201</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="maximum" >
+     <number>10</number>
+    </property>
+    <property name="value" >
+     <number>4</number>
+    </property>
+    <property name="sliderPosition" >
+     <number>4</number>
+    </property>
+    <property name="orientation" >
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <resources/>
+ <connections/>
+</ui>

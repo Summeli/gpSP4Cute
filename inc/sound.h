@@ -117,8 +117,10 @@ extern u32 global_enable_audio;
 extern u32 enable_low_pass_filter;
 extern u32 audio_buffer_size_number;
 
+#ifndef __SYMBIAN32__
 extern SDL_mutex *sound_mutex;
 extern SDL_cond *sound_cv;
+#endif
 
 void sound_timer_queue8(u32 channel, u8 value);
 void sound_timer_queue16(u32 channel, u16 value);

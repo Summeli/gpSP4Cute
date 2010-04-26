@@ -66,6 +66,8 @@ u32 button_repeat = 0;
 gui_action_type cursor_repeat = CURSOR_NONE;
 
 #if defined(__SYMBIAN32__)
+//#include "symbian_input.h"
+#include "debug.h"
 
 u32 menu_is_on = 0;
 
@@ -89,268 +91,56 @@ u32 gamepad_config_map[16] =
   BUTTON_ID_RIGHT               // Analog right
 };
 
-u32 key_map(SDLKey key_sym)
-{
-switch(key_sym)
-{
-  case SDLK_4:
-    return BUTTON_L;
-
-  case SDLK_7:
-    return BUTTON_R;
-
-  case SDLK_DOWN:
-    return BUTTON_DOWN;
-
-  case SDLK_UP:
-    return BUTTON_UP;
-
-  case SDLK_LEFT:
-    return BUTTON_LEFT;
-
-  case SDLK_RIGHT:
-    return BUTTON_RIGHT;
-
-  case SDLK_6:
-    return BUTTON_START;
-
-  case SDLK_9:
-    return BUTTON_SELECT;
-
-  case SDLK_5:
-    return BUTTON_A;
-
-  case SDLK_8:
-    return BUTTON_B;
-
-  default:
-    return BUTTON_NONE;
-    /*
-  switch(key_sym)
-  {
-    case SDLK_LSHIFT:
-      return BUTTON_L;
-
-    case SDLK_x:
-      return BUTTON_R;
-
-    case SDLK_DOWN:
-      return BUTTON_DOWN;
-
-    case SDLK_UP:
-      return BUTTON_UP;
-
-    case SDLK_LEFT:
-      return BUTTON_LEFT;
-
-    case SDLK_RIGHT:
-      return BUTTON_RIGHT;
-
-    case SDLK_RETURN:
-      return BUTTON_START;
-
-    case SDLK_RSHIFT:
-      return BUTTON_SELECT;
-
-    case SDLK_LCTRL:
-      return BUTTON_B;
-
-    case SDLK_LALT:
-      return BUTTON_A;
-
-    default:
-      return BUTTON_NONE;*/
-  }
-}
-u32 joy_map(u32 button)
-{
-  switch(button)
-  {
-    case 4:
-      return BUTTON_L;
-
-    case 5:
-      return BUTTON_R;
-
-    case 9:
-      return BUTTON_START;
-
-    case 8:
-      return BUTTON_SELECT;
-
-    case 0:
-      return BUTTON_B;
-
-    case 1:
-      return BUTTON_A;
-
-    default:
-      return BUTTON_NONE;
-  }
-}
 gui_action_type get_gui_input()
 {
-
-   gui_action_type gui_action = CURSOR_NONE;
-   SDL_Event event;
-   while(SDL_PollEvent(&event))
-     {
-       switch(event.type)
-       {
-         case SDL_QUIT:
-           quit();
-
-         case SDL_KEYDOWN:
-         {
-           switch(event.key.keysym.sym)
-           {
-             case SDLK_RETURN:
-               gui_action = CURSOR_EXIT;
-               break;
-
-             case SDLK_DOWN:
-               gui_action = CURSOR_DOWN;
-               break;
-
-             case SDLK_UP:
-               gui_action = CURSOR_UP;
-               break;
-
-             case SDLK_LEFT:
-               gui_action = CURSOR_LEFT;
-               break;
-
-             case SDLK_RIGHT:
-               gui_action = CURSOR_RIGHT;
-               break;
-
-             case SDLK_PERIOD:
-               gui_action = CURSOR_SELECT;
-               break;
-
-             case SDLK_SPACE:
-               gui_action = CURSOR_BACK;
-               break;
-             default:
-            	 break;
-           }
-           break;
-         }
-       }
-     }
-  return gui_action;
+   return CURSOR_NONE;
 }
 
 void init_input()
 {
- //map buttons
-   u32 joystick_count = SDL_NumJoysticks();
 
-  if(joystick_count > 0)
-  {
-    SDL_JoystickOpen(0);
-    SDL_JoystickEventState(SDL_ENABLE);
-  }
 }
 
 u32 update_input()
 {
-SDL_Event event;
-
- while(SDL_PollEvent(&event))
- {
-   switch(event.type)
-   {
-     case SDL_QUIT:
-       quit();
-        
-     case SDL_KEYDOWN:
-     {
-       if(event.key.keysym.sym == SDLK_ESCAPE)
-       {
-         quit();
-       }
-       if(event.key.keysym.sym == SDLK_RETURN )
-		{
-		  if( menu_is_on )
-			  return;
-		  u16 *screen_copy = copy_screen();
-		  menu_is_on = 1;
-		  u32 ret_val = menu(screen_copy);
-		  free(screen_copy);
-		  menu_is_on = 0;
-		  return ret_val;
-			}
-       if(event.key.keysym.sym == SDLK_BACKSPACE)
-       {
-         u16 *screen_copy = copy_screen();
-         u32 ret_val = menu(screen_copy);
-         free(screen_copy);
-
-         return ret_val;
-       }
-       else
-
-
-       if(event.key.keysym.sym == SDLK_HASH)
-       {
-         u8 current_savestate_filename[512];
-         u16 *current_screen = copy_screen();
-         get_savestate_filename_noshot(savestate_slot,
-          current_savestate_filename);
-         save_state(current_savestate_filename, current_screen);
-         free(current_screen);
-       }
-       else
-
-       if(event.key.keysym.sym == SDLK_ASTERISK)
-       {
-         u8 current_savestate_filename[512];
-         get_savestate_filename_noshot(savestate_slot,
-          current_savestate_filename);
-         load_state(current_savestate_filename);
-         return 1;
-       }
-       else
-
-       if(event.key.keysym.sym == SDLK_BACKQUOTE)
-       {
-         synchronize_flag ^= 1;
-       }
-       else
-       {
-         key |= key_map(event.key.keysym.sym);
-         trigger_key(key);
-       }
-
-       break;
-     }
-
-     case SDL_KEYUP:
-     {
-       key &= ~(key_map(event.key.keysym.sym));
-       break;
-     }
-
-     case SDL_JOYBUTTONDOWN:
-     {
-       key |= joy_map(event.jbutton.button);
-       trigger_key(key);
-       break;
-     }
-
-     case SDL_JOYBUTTONUP:
-     {
-       key &= ~(joy_map(event.jbutton.button));
-       break;
-     }
-   }
- }
-
+  u32 new_key = updateSymbianInput();
+  
+  if((new_key | key) != key)
+	  {
+	  DEBUG1("new key is triggered key=", key );
+	  trigger_key(new_key);
+	  }
+  
+ key = new_key;
+	  
  io_registers[REG_P1] = (~key) & 0x3FF;
 
  return 0;
 }
+void saveState( u32 slot )
+	{
+    u8 current_savestate_filename[512];
+    u16 *current_screen = copy_screen();
+    get_savestate_filename_noshot(slot,
+     current_savestate_filename);
+    save_state(current_savestate_filename, current_screen);
+    free(current_screen);
+	}
+
+void loadState( u32 slot )
+	{
+    u8 current_savestate_filename[512];
+    get_savestate_filename_noshot(slot,
+     current_savestate_filename);
+    load_state(current_savestate_filename);
+	}
+
+
+void doExitgpsp()
+	{
+	quit();
+	}
+
 #endif
 
 #ifdef PSP_BUILD

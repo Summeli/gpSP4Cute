@@ -1,0 +1,69 @@
+/*
+============================================================================
+ Name		: gpS60P.mmp
+ Author	  : 
+ Copyright   : Your copyright notice
+ Description : This is the project specification file for gpS60P.
+============================================================================
+*/
+
+//This file is just used for editing the source, it won't actually build
+
+TARGET			gpSP4Symbian.exe
+TARGETTYPE		exe
+UID		  0x100039CE 0xE0D278F3
+
+SOURCEPATH		..\src
+SOURCE		    gpsp4Symbian_sdl.cpp
+SOURCE			debug.cpp
+SOURCE			cpu.c 
+SOURCE		    video.c 
+SOURCE			sound.c 
+SOURCE			input.c 
+SOURCE			cpu_threaded.c 
+SOURCE			gui.c 
+SOURCE			zip.c 
+SOURCE			cheats.c 
+SOURCE			memory.c 
+SOURCEPATH		..\data
+
+START RESOURCE	gpSP4Symbian.rss
+HEADER
+TARGET gpSP4Symbian
+TARGETPATH resource\apps
+END //RESOURCE
+
+START RESOURCE	gpSP4Symbian_reg.rss
+TARGET gpSP4Symbian_reg
+TARGETPATH 	  \private\10003a3f\apps
+END //RESOURCE
+
+
+
+USERINCLUDE	   ..\inc
+USERINCLUDE    ..\help
+
+SYSTEMINCLUDE	 \epoc32\include
+SYSTEMINCLUDE	\epoc32\include\stdapis
+SYSTEMINCLUDE	\epoc32\include\esdl
+SYSTEMINCLUDE    \epoc32\include\libc
+
+LIBRARY			euser.lib avkon.lib eikcore.lib eiksrv.lib apparc.lib estlib.lib efsrv.lib 
+LIBRARY			cone.lib hal.lib fbscli.lib ws32.lib  apgrfx.lib gdi.lib bitgdi.lib  mediaclientaudiostream.lib 
+LIBRARY			bafl.lib estor.lib commonengine.lib hlplch.lib ezlib.lib libc.lib flogger.lib
+STATICLIBRARY   arm_stub.o
+
+LANG SC
+
+VENDORID	  	  0
+SECUREID		  0xE0D278F3
+CAPABILITY	  	  ReadUserData
+
+#ifdef ENABLE_ABIV2_MODE
+DEBUGGABLE_UDEBONLY
+#endif
+// End of File
+SOURCEPATH ..\src
+SOURCE gpspmain.c
+SOURCEPATH ..\gpsp4cute
+SOURCE moc_AntAudio.cpp

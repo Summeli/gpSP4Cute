@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>style/summelistyle.qss</file>
+    </qresource>
+    <qresource prefix="/graphics" >
+        <file>gfx/downarrow.png</file>
+        <file>gfx/dpad.png</file>
+        <file>gfx/gpsplogo.png</file>
+    </qresource>
+</RCC>

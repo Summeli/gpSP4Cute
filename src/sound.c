@@ -19,8 +19,8 @@
 
 
 #include "common.h"
-#include <SDL.h>
-#include <sdl_mutex.h>
+//#include <SDL.h>
+//#include <sdl_mutex.h>
 
 u32 global_enable_audio = 0;
 u32 audio_on = 0;
@@ -38,9 +38,9 @@ u32 sound_frequency = 44100;
 #include "sound_symbian.h"
 #endif
 
-SDL_AudioSpec sound_settings;
-SDL_mutex *sound_mutex;
-SDL_cond *sound_cv;
+//SDL_AudioSpec sound_settings;
+//SDL_mutex *sound_mutex;
+//SDL_cond *sound_cv;
 
 #ifndef PSP_BUILD
 u32 audio_buffer_size_number = 7;
@@ -441,11 +441,11 @@ u32 gbc_sound_master_volume;
 
 void synchronize_sound()
 {
-  SDL_LockMutex(sound_mutex);
+ // SDL_LockMutex(sound_mutex);
 
   gbc_sound_synchronize();
 
-  SDL_UnlockMutex(sound_mutex);
+  //SDL_UnlockMutex(sound_mutex);
 }
 
 void update_gbc_sound(u32 cpu_ticks)
@@ -627,7 +627,7 @@ void update_gbc_sound(u32 cpu_ticks)
 #ifndef __SYMBIAN32__
 void sound_callback(void *userdata, Uint8 *stream, int length)
 #else
-int sound_callback(void *userdata, Uint8 *stream, int length)
+int sound_callback(void *userdata, u8 *stream, int length)
 #endif
 {
   u32 sample_length = length / 2;

@@ -1,0 +1,29 @@
+; Language
+&EN
+
+; SIS header: name, uid, version
+#{"gpsp4cute"},(0xE0D278F3),1,0,0
+
+; Localised Vendor name
+%{"Vendor"}
+
+; Unique Vendor name
+:"Vendor"
+
+; Manual PKG pre-rules from PRO files
+; Default HW/platform dependencies
+[0x101F7961],0,0,0,{"S60ProductID"}
+[0x102032BE],0,0,0,{"S60ProductID"}
+[0x102752AE],0,0,0,{"S60ProductID"}
+[0x1028315F],0,0,0,{"S60ProductID"}
+ 
+; Default dependency to Qt libraries
+(0x2001E61C), 4, 6, 0, {"Qt"}
+
+; Executable and default resource files
+"\epoc32\release\gcce\urel\gpsp4cute.exe"    - "!:\sys\bin\gpsp4cute.exe"
+"\epoc32\data\z\resource\apps\gpsp4cute.rsc"    - "!:\resource\apps\gpsp4cute.rsc"
+"\epoc32\data\z\private\10003a3f\import\apps\gpsp4cute_reg.rsc"    - "!:\private\10003a3f\import\apps\gpsp4cute_reg.rsc"
+"\epoc32\data\z\resource\apps\gpsp4cute.mif"    - "!:\resource\apps\gpsp4cute.mif"
+
+; Manual PKG post-rules from PRO files

@@ -1,0 +1,1 @@
+call createsis create -cert sis\gpsp.cer -key sis\gpsp.key gpsp4cute_gcce.pkg

@@ -92,6 +92,14 @@ extern u32 update_backup_flag;
 extern u32 clock_speed;
 
 extern u32 gp2x_fps_debug;
+
+
+//export some functions to be called from the c++ side  
+#ifdef __SYMBIAN32__
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 u32 update_gba();
 void reset_gba();
 void synchronize();
@@ -101,6 +109,11 @@ void get_ticks_us(u64 *tick_return);
 void game_name_ext(u8 *src, u8 *buffer, u8 *extension);
 void main_write_mem_savestate(file_tag_type savestate_file);
 void main_read_savestate(file_tag_type savestate_file);
+
+#ifdef __cplusplus
+};
+#endif
+#endif
 
 
 #ifdef PSP_BUILD
@@ -116,7 +129,6 @@ extern u32 num_skipped_frames;
 
 
 #ifdef __SYMBIAN32__
-
 extern u64 frame_count_initial_timestamp;
 extern u32 real_frame_count;
 extern u32 virtual_frame_count;

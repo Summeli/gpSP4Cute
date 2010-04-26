@@ -36,25 +36,65 @@ extern u8* rom_translation_ptr;
 extern u8* ram_translation_ptr;
 extern u8* bios_translation_ptr;
 
-#define FUNCTION_STUBS_SIZE (20 * 1024 )
-extern u8* function_stubs_base_ptr;
-extern u8* function_stubs_ptr;
+#define KDistanceFromCodeSection 0x2000000
+
 //in Symbian we have to tell to the OS that these memoryblocks contains codes,
 //so we can invalidate and execute the codeblock in the future.
 typedef unsigned char byte; 
 
 TInt user_counter =0;
 
+TInt CreateChunkAt(TUint32 addr,TInt minsize, TInt maxsize )
+{
+  TInt err = g_code_chunk->CreateLocalCode( minsize, maxsize );
+  if( err )
+	  return err;
+  if ((TUint32)g_code_chunk->Base() != addr)
+      {
+      TUint offset = (TInt)g_code_chunk->Base();
+      offset = addr-offset;
+      g_code_chunk->Close();
+      RChunk temp;
+      if( offset > 0x7FFFFFFF )
+    	  {
+    	  //shit, offset too big :(
+    	  return KErrNoMemory;
+    	  }
+      TInt chunkoffset = (TInt) offset;
+      err = temp.CreateLocal(0,chunkoffset);
+      if( err )
+    	  {
+    	  temp.Close();
+    	  return err;
+    	  }
+      err = g_code_chunk->CreateLocalCode(minsize,maxsize);        
+      temp.Close();
+      }
+  return err;
+}
+
 int create_all_translation_caches()
 	{
-	TInt minsize = ROM_TRANSLATION_CACHE_SIZE + RAM_TRANSLATION_CACHE_SIZE + BIOS_TRANSLATION_CACHE_SIZE + FUNCTION_STUBS_SIZE;
-	TInt maxsize = ROM_TRANSLATION_CACHE_SIZE + RAM_TRANSLATION_CACHE_SIZE + BIOS_TRANSLATION_CACHE_SIZE + FUNCTION_STUBS_SIZE + 3 * 4096;
+	TInt minsize = ROM_TRANSLATION_CACHE_SIZE + RAM_TRANSLATION_CACHE_SIZE + BIOS_TRANSLATION_CACHE_SIZE;
+	TInt maxsize = ROM_TRANSLATION_CACHE_SIZE + RAM_TRANSLATION_CACHE_SIZE + BIOS_TRANSLATION_CACHE_SIZE + 3 * 4096;
+	
+	RProcess process;
+	TModuleMemoryInfo  info;
+	
+	TInt error = process.GetMemoryInfo( info );
+	if( error )
+		return error;
+	
+	TUint32 programAddr = 0x10000000;//(TUint32) info.iCodeBase;
+	programAddr += info.iCodeSize;
+	
+	TUint32 destAddr = programAddr - KDistanceFromCodeSection;
 	
 	g_code_chunk = new RChunk();
+
+	TInt err = CreateChunkAt(destAddr,minsize, maxsize );
 	
-	int err = g_code_chunk->CreateLocalCode(minsize, maxsize );
-	if( err )
-		return err;
+	TUint32 dynamiaddr = (TUint32) g_code_chunk->Base();
 	
     DEBUG("CREATING HEAPS");
 	g_code_heap = UserHeap::ChunkHeap(*g_code_chunk, minsize, 1, maxsize );
@@ -64,7 +104,6 @@ int create_all_translation_caches()
 	    rom_translation_cache = (u8*) g_code_heap->Alloc( ROM_TRANSLATION_CACHE_SIZE );
 	    ram_translation_cache = (u8*) g_code_heap->Alloc( RAM_TRANSLATION_CACHE_SIZE );
 	    bios_translation_cache = (u8*) g_code_heap->Alloc( BIOS_TRANSLATION_CACHE_SIZE );
-	    function_stubs_base_ptr = (u8*) g_code_heap->Alloc( FUNCTION_STUBS_SIZE );
 	    if( rom_translation_cache == NULL)
 	        DEBUG("ROM ALLOC FAIL!");
 	    if( ram_translation_cache == NULL)
@@ -78,7 +117,7 @@ int create_all_translation_caches()
 	rom_translation_ptr = rom_translation_cache;
 	ram_translation_ptr = ram_translation_cache;
     bios_translation_ptr = bios_translation_cache;
-    function_stubs_ptr = function_stubs_base_ptr;
+    
     return 0;
 	}
 
@@ -104,7 +143,6 @@ void close_all_caches()
     g_code_heap->Free( rom_translation_cache );
     g_code_heap->Free( ram_translation_cache );
     g_code_heap->Free( bios_translation_cache );
-    g_code_heap->Free( function_stubs_base_ptr );
     
     g_code_heap->Close();
  
@@ -114,12 +152,7 @@ void close_all_caches()
 
 void keepBacklightOn()
 	{
-	user_counter++;
-	if( user_counter == 200)
-		{
-		User::ResetInactivityTime();
-		user_counter = 0;
-		}
+	User::ResetInactivityTime();
 	}
 
 void symb_usleep(int aValue)
@@ -148,4 +181,11 @@ void symb_create_interpolate_table()
 		interptable_h[i] = real_temp;
 		}
 	}
+
+void symbian_blit( const u8* screen )
+	{
+	
+	}
+
+
 #endif

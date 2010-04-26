@@ -19,6 +19,10 @@
 
 #include "common.h"
 
+#ifdef __SYMBIAN32__
+#include "symb_adaptation.h"
+#include "debug.h"
+#endif
 u32 load_file_zip(u8 *filename);
 
 // This table is configured for sequential access on system defaults
@@ -2013,16 +2017,17 @@ s32 load_game_config(u8 *gamepak_title, u8 *gamepak_code, u8 *gamepak_maker)
   translation_gate_targets = 0;
   flash_device_id = FLASH_DEVICE_MACRONIX_64KB;
 
-#if (defined(PSP_BUILD) || defined(ARM_ARCH)) && !defined(_WIN32_WCE)
-  sprintf(config_path, "%s/%s", main_path, CONFIG_FILENAME);
+#ifdef __SYMBIAN32__
+  gameconfigFilePath( config_path  );
 #else
-  sprintf(config_path, "%s\\%s", "E:\\GBA\\", CONFIG_FILENAME);
+  sprintf(config_path, "%s/%s", main_path, CONFIG_FILENAME);  
 #endif
 
   config_file = fopen(config_path, "rb");
 
   if(config_file)
   {
+	DEBUG("config file found");
     while(fgets(current_line, 256, config_file))
     {
       if(parse_config_line(current_line, current_variable, current_value)
@@ -2054,6 +2059,7 @@ s32 load_game_config(u8 *gamepak_title, u8 *gamepak_code, u8 *gamepak_maker)
             if(!strcmp(current_variable, "game_name"))
             {
               fclose(config_file);
+              DEBUG("config succesfully loaded!");
               return 0;
             }
 
@@ -2097,13 +2103,14 @@ s32 load_game_config(u8 *gamepak_title, u8 *gamepak_code, u8 *gamepak_maker)
         }
 
         fclose(config_file);
+        DEBUG("config succesfully loaded!");
         return 0;
       }
     }
 
     fclose(config_file);
   }
-
+  DEBUG("didn find the config for this game from game_config.txt");
   return -1;
 }
 

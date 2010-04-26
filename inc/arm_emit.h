@@ -47,39 +47,40 @@ void function_cc execute_store_u32_safe(u32 address, u32 source);
 
 void step_debug_arm(u32 pc);
 
+
 /* Summeli: I practically broke this whole emit.h file, by creating these stubs
  * there is no going back ;-)
  * */
 #ifdef __SYMBIAN32__
-u32 arm_update_gba_stub_arm;
-u32 arm_update_gba_stub_thumb;
-u32 arm_update_gba_idle_stub_arm;
-u32 arm_update_gba_idle_stub_thumb;
-u32 execute_spsr_stub_restore;
-u32 execute_read_stub_spsr;  
-u32 execute_load_stub_u32;
-u32 execute_load_stub_s8;
-u32 execute_load_stub_u8;
-u32 execute_load_stub_u16;
-u32 execute_load_stub_s16;
+u32 arm_update_gba_symb_arm;
+u32 arm_update_gba_symb_thumb;
+u32 arm_update_gba_idle_symb_arm;
+u32 arm_update_gba_idle_symb_thumb;
+u32 execute_spsr_symb_restore;
+u32 execute_read_symb_spsr;  
+u32 execute_load_symb_u32;
+u32 execute_load_symb_s8;
+u32 execute_load_symb_u8;
+u32 execute_load_symb_u16;
+u32 execute_load_symb_s16;
 
-u32 execute_store_stub_u32_safe;
-u32 execute_store_stub_u32;  
-u32 execute_store_stub_u16;
-u32 execute_store_stub_u8;
-u32 execute_store_stub_cpsr;          
-u32 execute_store_stub_spsr;
+u32 execute_store_symb_u32_safe;
+u32 execute_store_symb_u32;  
+u32 execute_store_symb_u16;
+u32 execute_store_symb_u8;
+u32 execute_store_symb_cpsr;          
+u32 execute_store_symb_spsr;
 
-u32 execute_swi_stub_arm;
-u32 execute_swi_stub_thumb;
-u32 execute_swi_hle_stub_div_arm;
-u32 execute_swi_hle_stub_div_thumb;
-u32 step_debug_stub_arm;
+u32 execute_swi_symb_arm;
+u32 execute_swi_symb_thumb;
+u32 execute_swi_hle_symb_div_arm;
+u32 execute_swi_hle_symb_div_thumb;
+u32 step_debug_symb_arm;
 
-u32 arm_indirect_branch_stub_arm;
-u32 arm_indirect_branch_stub_thumb;
-u32 arm_indirect_branch_stub_dual_arm;
-u32 arm_indirect_branch_stub_dual_thumb;
+u32 arm_indirect_branch_symb_arm;
+u32 arm_indirect_branch_symb_thumb;
+u32 arm_indirect_branch_symb_dual_arm;
+u32 arm_indirect_branch_symb_dual_thumb;
 #endif
 
 #define write32(value)                                                        \
@@ -471,7 +472,7 @@ u32 arm_disect_imm_32bit(u32 imm, u32 *stores, u32 *rotations)
 // the CPU into halt mode too, however.
 
 #define generate_branch_idle_eliminate(writeback_location, new_pc, mode)      \
-  generate_function_call(arm_update_gba_idle_stub_##mode);                    \
+  generate_function_call(arm_update_gba_idle_symb_##mode);                    \
   write32(new_pc);                                                            \
   generate_branch_filler(ARMCOND_AL, writeback_location)                      \
 
@@ -479,7 +480,7 @@ u32 arm_disect_imm_32bit(u32 imm, u32 *stores, u32 *rotations)
   ARM_MOV_REG_IMMSHIFT(0, reg_a0, reg_cycles, ARMSHIFT_LSR, 31);              \
   ARM_ADD_REG_IMMSHIFT(0, ARMREG_PC, ARMREG_PC, reg_a0, ARMSHIFT_LSL, 2);     \
   write32(new_pc);                                                            \
-  generate_function_call(arm_update_gba_stub_##mode);                         \
+  generate_function_call(arm_update_gba_symb_##mode);                         \
   generate_branch_filler(ARMCOND_AL, writeback_location)                      \
 
 
@@ -500,7 +501,7 @@ u32 arm_disect_imm_32bit(u32 imm, u32 *stores, u32 *rotations)
 // a0 holds the destination
 
 #define generate_indirect_branch_no_cycle_update(type)                        \
-  ARM_B(0, arm_relative_offset(translation_ptr, arm_indirect_branch_stub_##type))  \
+  ARM_B(0, arm_relative_offset(translation_ptr, arm_indirect_branch_symb_##type))  \
 
 #define generate_indirect_branch_cycle_update(type)                           \
   generate_cycle_update();                                                    \
@@ -588,7 +589,7 @@ u32 arm_disect_imm_32bit(u32 imm, u32 *stores, u32 *rotations)
       {                                                                       \
         generate_cycle_update();                                              \
       }                                                                       \
-      generate_function_call(execute_spsr_stub_restore);                      \
+      generate_function_call(execute_spsr_symb_restore);                      \
     }                                                                         \
     else                                                                      \
     {                                                                         \
@@ -754,7 +755,7 @@ u32 function_cc execute_spsr_restore_body(u32 pc)
     {                                                                         \
       generate_cycle_update();                                                \
     }                                                                         \
-    generate_function_call(execute_spsr_stub_restore);                        \
+    generate_function_call(execute_spsr_symb_restore);                        \
   }                                                                           \
 
 
@@ -1262,7 +1263,7 @@ u32 function_cc execute_spsr_restore_body(u32 pc)
   complete_store_reg(_rd, rd)                                                 \
 
 #define arm_psr_read_spsr()                                                   \
-  generate_function_call(execute_read_stub_spsr);                             \
+  generate_function_call(execute_read_symb_spsr);                             \
   generate_store_reg(reg_a0, rd)                                              \
 
 #define arm_psr_read(op_type, psr_reg)                                        \
@@ -1299,11 +1300,11 @@ u32 execute_store_cpsr_body(u32 _cpsr, u32 store_mask, u32 address)
 
 #define arm_psr_store_cpsr()                                                  \
   arm_load_imm_32bit(reg_a1, psr_masks[psr_field]);                           \
-  generate_function_call(execute_store_stub_cpsr);                            \
+  generate_function_call(execute_store_symb_cpsr);                            \
   write32(pc)                                                                 \
 
 #define arm_psr_store_spsr()                                                  \
-  generate_function_call(execute_store_stub_spsr)                             \
+  generate_function_call(execute_store_symb_spsr)                             \
 
 #define arm_psr_store(op_type, psr_reg)                                       \
   arm_psr_load_new_##op_type();                                               \
@@ -1322,14 +1323,14 @@ u32 execute_store_cpsr_body(u32 _cpsr, u32 store_mask, u32 address)
 
 #define arm_access_memory_load(mem_type)                                      \
   cycle_count += 2;                                                           \
-  generate_function_call(execute_load_stub_##mem_type);                       \
+  generate_function_call(execute_load_symb_##mem_type);                       \
   write32((pc + 8));                                                          \
   generate_store_reg_pc_no_flags(reg_rv, rd)                                  \
 
 #define arm_access_memory_store(mem_type)                                     \
   cycle_count++;                                                              \
   generate_load_reg_pc(reg_a1, rd, 12);                                       \
-  generate_function_call(execute_store_stub_##mem_type);                      \
+  generate_function_call(execute_store_symb_##mem_type);                      \
   write32((pc + 4))                                                           \
 
 // Calculate the address into a0 from _rn, _rm
@@ -1433,20 +1434,20 @@ u32 execute_store_cpsr_body(u32 _cpsr, u32 store_mask, u32 address)
 // TODO: Make these use cached registers. Implement iwram_stack_optimize.
 
 #define arm_block_memory_load()                                               \
-  generate_function_call(execute_load_stub_u32);                              \
+  generate_function_call(execute_load_symb_u32);                              \
   write32((pc + 8));                                                          \
   generate_store_reg(reg_rv, i)                                               \
 
 #define arm_block_memory_store()                                              \
   generate_load_reg_pc(reg_a1, i, 8);                                         \
-  generate_function_call(execute_store_stub_u32_safe)                         \
+  generate_function_call(execute_store_symb_u32_safe)                         \
 
 #define arm_block_memory_final_load()                                         \
   arm_block_memory_load()                                                     \
 
 #define arm_block_memory_final_store()                                        \
   generate_load_reg_pc(reg_a1, i, 12);                                        \
-  generate_function_call(execute_store_stub_u32);                             \
+  generate_function_call(execute_store_symb_u32);                             \
   write32((pc + 4))                                                           \
 
 #define arm_block_memory_adjust_pc_store()                                    \
@@ -1530,12 +1531,12 @@ u32 execute_store_cpsr_body(u32 _cpsr, u32 store_mask, u32 address)
   arm_decode_swap();                                                          \
   cycle_count += 3;                                                           \
   generate_load_reg(reg_a0, rn);                                              \
-  generate_function_call(execute_load_stub_##type);                           \
+  generate_function_call(execute_load_symb_##type);                           \
   write32((pc + 8));                                                          \
   generate_mov(reg_s0, reg_rv);                                               \
   generate_load_reg(reg_a0, rn);                                              \
   generate_load_reg(reg_a1, rm);                                              \
-  generate_function_call(execute_store_stub_##type);                          \
+  generate_function_call(execute_store_symb_##type);                          \
   write32((pc + 4));                                                          \
   generate_store_reg(reg_s0, rd);                                             \
 }                                                                             \
@@ -1695,14 +1696,14 @@ u32 execute_store_cpsr_body(u32 _cpsr, u32 store_mask, u32 address)
 
 #define thumb_access_memory_load(mem_type, _rd)                               \
   cycle_count += 2;                                                           \
-  generate_function_call(execute_load_stub_##mem_type);                       \
+  generate_function_call(execute_load_symb_##mem_type);                       \
   write32((pc + 4));                                                          \
   generate_store_reg(reg_rv, _rd)                                             \
 
 #define thumb_access_memory_store(mem_type, _rd)                              \
   cycle_count++;                                                              \
   generate_load_reg(reg_a1, _rd);                                             \
-  generate_function_call(execute_store_stub_##mem_type);                      \
+  generate_function_call(execute_store_symb_##mem_type);                      \
   write32((pc + 2))                                                           \
 
 #define thumb_access_memory_generate_address_pc_relative(offset, _rb, _ro)    \
@@ -1770,7 +1771,7 @@ u32 execute_store_cpsr_body(u32 _cpsr, u32 store_mask, u32 address)
 
 #define thumb_block_memory_extra_pop_pc()                                     \
   generate_add_reg_reg_imm(reg_a0, reg_s0, (bit_count[reg_list] * 4), 0);     \
-  generate_function_call(execute_load_stub_u32);                              \
+  generate_function_call(execute_load_symb_u32);                              \
   write32((pc + 4));                                                          \
   generate_mov(reg_a0, reg_rv);                                               \
   generate_indirect_branch_cycle_update(thumb)                                \
@@ -1778,23 +1779,23 @@ u32 execute_store_cpsr_body(u32 _cpsr, u32 store_mask, u32 address)
 #define thumb_block_memory_extra_push_lr(base_reg)                            \
   generate_add_reg_reg_imm(reg_a0, reg_s0, (bit_count[reg_list] * 4), 0);     \
   generate_load_reg(reg_a1, REG_LR);                                          \
-  generate_function_call(execute_store_stub_u32_safe)                         \
+  generate_function_call(execute_store_symb_u32_safe)                         \
 
 #define thumb_block_memory_load()                                             \
-  generate_function_call(execute_load_stub_u32);                              \
+  generate_function_call(execute_load_symb_u32);                              \
   write32((pc + 4));                                                          \
   generate_store_reg(reg_rv, i)                                               \
 
 #define thumb_block_memory_store()                                            \
   generate_load_reg(reg_a1, i);                                               \
-  generate_function_call(execute_store_stub_u32_safe)                         \
+  generate_function_call(execute_store_symb_u32_safe)                         \
 
 #define thumb_block_memory_final_load()                                       \
   thumb_block_memory_load()                                                   \
 
 #define thumb_block_memory_final_store()                                      \
   generate_load_reg(reg_a1, i);                                               \
-  generate_function_call(execute_store_stub_u32);                             \
+  generate_function_call(execute_store_symb_u32);                             \
   write32((pc + 2))                                                           \
 
 #define thumb_block_memory_final_no(access_type)                              \
@@ -1880,7 +1881,7 @@ u32 execute_store_cpsr_body(u32 _cpsr, u32 store_mask, u32 address)
 
 #define arm_swi()                                                             \
   generate_swi_hle_handler((opcode >> 16) & 0xFF, arm);                       \
-  generate_function_call(execute_swi_stub_arm);                               \
+  generate_function_call(execute_swi_symb_arm);                               \
   write32((pc + 4));                                                          \
   generate_branch(arm)                                                        \
 
@@ -1912,7 +1913,7 @@ u32 execute_store_cpsr_body(u32 _cpsr, u32 store_mask, u32 address)
 
 #define thumb_swi()                                                           \
   generate_swi_hle_handler(opcode & 0xFF, thumb);                             \
-  generate_function_call(execute_swi_stub_thumb);                             \
+  generate_function_call(execute_swi_symb_thumb);                             \
   write32((pc + 2));                                                          \
   /* We're in ARM mode now */                                                 \
   generate_branch(arm)                                                        \
@@ -1984,7 +1985,7 @@ void execute_swi_hle_div_c()
     /* Div */                                                                 \
     if(swi_number == 0x06)                                                    \
     {                                                                         \
-      generate_function_call(execute_swi_hle_stub_div_##mode);                \
+      generate_function_call(execute_swi_hle_symb_div_##mode);                \
     }                                                                         \
     break;                                                                    \
   }                                                                           \
@@ -1995,7 +1996,7 @@ void execute_swi_hle_div_c()
   generate_indirect_branch_no_cycle_update(type)                              \
 
 #define generate_step_debug()                                                 \
-  generate_function_call(step_debug_stub_arm);                                \
+  generate_function_call(step_debug_symb_arm);                                \
   write32(pc)                                                                 \
 
 #endif

@@ -3531,103 +3531,112 @@ void dump_translation_cache()
   file_close(bios_cache);
 }
 
-
-void myTest();
-
-u8* function_stubs_base_ptr;
-u8* function_stubs_ptr;
-
-void myTest()
+int modify_function_pointers_symbian( int offset )
     {
-    //if we get into there, then it's working!
-    int test = 1;
-    }
-int create_functioncall_stubs_symbian()
-    {
-    //set translation ptr to the start of the memory block
-    u8 *translation_ptr; 
-    translation_ptr = function_stubs_ptr;
     
-    //generate the stubs into the memory
-    arm_update_gba_stub_arm = translation_ptr; 
-    generate_symbian_stub_function_call( arm_update_gba_arm );
+    //generate the symbs into the memory
+    u32 addr = &arm_update_gba_arm;
+    addr+=offset;
+    arm_update_gba_symb_arm =  addr; 
     
-    arm_update_gba_stub_thumb = translation_ptr; 
-    generate_symbian_stub_function_call( arm_update_gba_thumb );
+    addr = &arm_update_gba_thumb;
+    addr+=offset;
+    arm_update_gba_symb_thumb = addr; 
     
-    arm_update_gba_idle_stub_arm = translation_ptr; 
-    generate_symbian_stub_function_call( arm_update_gba_idle_arm );  
+    addr = &arm_update_gba_idle_arm;
+    addr+=offset;
+    arm_update_gba_idle_symb_arm = addr;  
     
-    arm_update_gba_idle_stub_thumb = translation_ptr; 
-    generate_symbian_stub_function_call( arm_update_gba_idle_thumb );  
+    addr = &arm_update_gba_idle_thumb;
+    addr+=offset;
+    arm_update_gba_idle_symb_thumb = addr; 
     
-    execute_spsr_stub_restore = translation_ptr; 
-    generate_symbian_stub_function_call( execute_spsr_restore );  
+    addr = &execute_spsr_restore;
+    addr+=offset;
+    execute_spsr_symb_restore = addr; 
     
-    execute_read_stub_spsr = translation_ptr; 
-    generate_symbian_stub_function_call( execute_read_spsr );  
+    addr = &execute_read_spsr;
+    addr+=offset;
+    execute_read_symb_spsr = addr; 
     
-    execute_load_stub_u32 = translation_ptr; 
-    generate_symbian_stub_function_call( execute_load_u32 );  
+    addr = &execute_load_u32;
+    addr+=offset;
+    execute_load_symb_u32 = addr; 
     
-    execute_load_stub_s8 = translation_ptr; 
-    generate_symbian_stub_function_call( execute_load_s8 ); 
+    addr = &execute_load_s8;
+    addr+=offset;
+    execute_load_symb_s8 = addr; 
     
-    execute_load_stub_u8 = translation_ptr; 
-    generate_symbian_stub_function_call( execute_load_u8 ); 
+    addr = &execute_load_u8;
+    addr+=offset;
+    execute_load_symb_u8 = addr; 
     
-    execute_load_stub_u16 = translation_ptr; 
-    generate_symbian_stub_function_call( execute_load_u16 ); 
+    addr = &execute_load_u16;
+    addr+=offset;
+    execute_load_symb_u16 = addr; 
     
-    execute_load_stub_s16 = translation_ptr; 
-    generate_symbian_stub_function_call( execute_load_s16 ); 
+    addr = &execute_load_s16;
+    addr+=offset;
+    execute_load_symb_s16 = addr; 
     
-    execute_store_stub_u32_safe = translation_ptr; 
-    generate_symbian_stub_function_call( execute_store_u32_safe ); 
+    addr = &execute_store_u32_safe;
+    addr+=offset;
+    execute_store_symb_u32_safe = addr; 
     
-    execute_store_stub_u32 = translation_ptr; 
-    generate_symbian_stub_function_call( execute_store_u32 ); 
+    addr = &execute_store_u32;
+    addr+=offset;
+    execute_store_symb_u32 = addr; 
  
-    execute_store_stub_u16 = translation_ptr; 
-    generate_symbian_stub_function_call( execute_store_u16 ); 
+    addr = &execute_store_u16;
+    addr+=offset;
+    execute_store_symb_u16 = addr; 
     
-    execute_store_stub_u8 = translation_ptr; 
-    generate_symbian_stub_function_call( execute_store_u8 ); 
+    addr = &execute_store_u8;
+    addr+=offset;
+    execute_store_symb_u8 = addr; 
     
-    execute_store_stub_cpsr = translation_ptr; 
-    generate_symbian_stub_function_call( execute_store_cpsr ); 
+    addr = &execute_store_cpsr;
+    addr+=offset;
+    execute_store_symb_cpsr = addr; 
     
-    execute_store_stub_spsr = translation_ptr; 
-    generate_symbian_stub_function_call( execute_store_spsr ); 
+    addr = &execute_store_spsr;
+    addr+=offset;
+    execute_store_symb_spsr = addr; 
     
-    execute_swi_stub_arm = translation_ptr; 
-    generate_symbian_stub_function_call( execute_swi_arm ); 
+    addr = &execute_swi_arm;
+    addr+=offset;
+    execute_swi_symb_arm = addr; 
     
-    execute_swi_stub_thumb = translation_ptr; 
-    generate_symbian_stub_function_call( execute_swi_thumb ); 
+    addr = &execute_swi_thumb;
+    addr+=offset;
+    execute_swi_symb_thumb = addr; 
     
-    execute_swi_hle_stub_div_arm = translation_ptr; 
-    generate_symbian_stub_function_call( execute_swi_hle_div_arm ); 
+    addr = &execute_swi_hle_div_arm;
+    addr+=offset;
+    execute_swi_hle_symb_div_arm = addr; 
     
-    execute_swi_hle_stub_div_thumb = translation_ptr; 
-    generate_symbian_stub_function_call( execute_swi_hle_div_thumb ); 
+    addr = &execute_swi_hle_div_thumb;
+    addr+=offset;
+    execute_swi_hle_symb_div_thumb = addr;
     
-    step_debug_stub_arm = translation_ptr; 
-    generate_symbian_stub_function_call( step_debug_arm ); 
+    addr = &step_debug_arm;
+    addr+=offset;
+    step_debug_symb_arm = addr; 
 
-    arm_indirect_branch_stub_arm = translation_ptr; 
-    generate_symbian_stub_function_call( arm_indirect_branch_arm ); 
+    addr = &arm_indirect_branch_arm;
+    addr+=offset;
+    arm_indirect_branch_symb_arm = addr; 
     
-    arm_indirect_branch_stub_thumb = translation_ptr; 
-    generate_symbian_stub_function_call( arm_indirect_branch_thumb ); 
+    addr = &arm_indirect_branch_thumb;
+    addr+=offset;
+    arm_indirect_branch_symb_thumb = addr; 
     
-    arm_indirect_branch_stub_dual_arm = translation_ptr; 
-    generate_symbian_stub_function_call( arm_indirect_branch_dual_arm ); 
+    addr = &arm_indirect_branch_dual_arm;
+    addr+=offset;
+    arm_indirect_branch_symb_dual_arm = addr; 
     
-    arm_indirect_branch_stub_dual_thumb = translation_ptr; 
-    generate_symbian_stub_function_call( arm_indirect_branch_dual_thumb ); 
-    
-    CLEAR_INSN_CACHE(function_stubs_base_ptr,
-    		function_stubs_base_ptr - translation_ptr );
+    addr = &arm_indirect_branch_dual_thumb;
+    addr+=offset;
+    arm_indirect_branch_symb_dual_thumb = addr; 
     
     }

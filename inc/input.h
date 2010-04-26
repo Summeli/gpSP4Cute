@@ -20,6 +20,8 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#include "common.h"
+
 typedef enum
 {
   BUTTON_L = 0x200,

@@ -23,13 +23,28 @@
 #ifdef __SYMBIAN32__
 #include <stdio.h>
 #include "debug.h"
-SDL_Surface *hw_screen;
+#include "symb_adaptation.h"
 
 u16 interptable_w[240];
 u16 interptable_h[160];
 
 u8 gba_blit = 0;
+const u32 video_scale = 1;
+
 #define RENDER_COLOR16_NORMAL
+
+#define GBA_SCREEN_WIDTH 240
+#define GBA_SCREEN_HEIGHT 160
+
+#define get_screen_pitch()                                                    \
+	GBA_SCREEN_WIDTH                                                          \
+  
+#define get_screen_w()                                                        \
+	GBA_SCREEN_WIDTH                                                          \
+
+#define get_screen_h()                                                        \
+	GBA_SCREEN_HEIGHT                                                         \
+  
 #endif
 
 #ifdef PSP_BUILD
@@ -104,21 +119,22 @@ static void Ge_Finish_Callback(int id, void *arg)
 SDL_Surface *hw_screen;
 #endif
 
-SDL_Surface *screen;
-SDL_Surface* screen_large;
-SDL_Surface* screen_small;
+u16 *screen;
+u16* screen_large;
+u16* screen_small;
 u16* large_ptr;
 u16* small_ptr;
-const u32 video_scale = 1; //summeli: todo, remove this
 
+#ifndef __SYMBIAN32__
+SDL_Surface *screen;
 #define get_screen_pixels()                                                   \
   ((u16 *)screen->pixels)                                                     \
 
 #define get_screen_pitch()                                                    \
   (screen->pitch / 2)                                                         \
-
 #endif
-
+#endif
+#endif
 void render_scanline_conditional_tile(u32 start, u32 end, u16 *scanline,
  u32 enable_flags, u32 dispcnt, u32 bldcnt, tile_layer_render_struct
  *layer_renderers);
@@ -2426,12 +2442,7 @@ void expand_normal(u16 *screen_ptr, u32 start, u32 end)
 //TODO: expandblend & normal!
 #endif
 
-#else
-
-//#define expand_normal(screen_ptr, start, end)
-
 #endif
-
 
 #ifndef GP2X_BUILD
 /*
@@ -3380,90 +3391,56 @@ void flip_screen()
 
 void flip_screen()
 {
-  if((video_scale != 1) && (current_scale != unscaled))
-  {
-    s32 x, y;
-    s32 x2, y2;
-    u16 *screen_ptr = get_screen_pixels();
-    u16 *current_scanline_ptr = screen_ptr;
-    u32 pitch = get_screen_pitch();
-    u16 current_pixel;
-    u32 i;
-
-    switch(video_scale)
-    {
-      case 2:
-        integer_scale_horizontal(2);
-        break;
-
-      case 3:
-        integer_scale_horizontal(3);
-        break;
-
-      default:
-      case 4:
-        integer_scale_horizontal(4);
-        break;
-
-    }
-
-    for(y = 159, y2 = (160 * video_scale) - 1; y >= 0; y--)
-    {
-      for(i = 0; i < video_scale; i++)
-      {
-        memcpy(screen_ptr + (y2 * pitch),
-         screen_ptr + (y * pitch), 480 * video_scale);
-        y2--;
-      }
-    }
-  }
-  //SUMMELI: TODO!
-#if defined(__SYMBIAN32__) 
-  if( gba_blit )
+#ifndef __SYMBIAN32__
+	if((video_scale != 1) && (current_scale != unscaled))
 	  {
-	  u16 *screenlarge_ptr = large_ptr;//(u16*) screen_large->pixels;
-	  u16 *screengba_ptr = small_ptr;//(u16*) screen->pixels;
-	  u16* screen_temp;
-	  u8 i=0;
-	  u8 j =0;
-	  u16 t1;
-	  u16 t2;
-	  u16 stop;
-	  for(j=0; j<158;j++)
-		  {
-		  for( i=0; i<240; i++)
-			  {
-			  *screenlarge_ptr = *screengba_ptr;
-			  if( interptable_w[i] != (interptable_w[i+1] -1) )
-				  {
-				  //interpolate, or reproduce the pixel
-				  screenlarge_ptr++;
-				  *screenlarge_ptr = *screengba_ptr;
-				  }
-			  screengba_ptr++;
-			  screenlarge_ptr++;
-			  }
-		  if( interptable_h[j] != (interptable_h[j+1] -1))
-			  {
-			  //copy whole previous line
-			  screen_temp = screenlarge_ptr - 320;
-			  memcpy(screenlarge_ptr, screen_temp, 320*2);
-			  screenlarge_ptr = screenlarge_ptr + 320;
-			  }
-		  }
-		 SDL_BlitSurface(screen_large, NULL, hw_screen, NULL);
-		 SDL_Flip(hw_screen);
+	    s32 x, y;
+	    s32 x2, y2;
+	    u16 *screen_ptr = get_screen_pixels();
+	    u16 *current_scanline_ptr = screen_ptr;
+	    u32 pitch = get_screen_pitch();
+	    u16 current_pixel;
+	    u32 i;
+
+	    switch(video_scale)
+	    {
+	      case 2:
+	        integer_scale_horizontal(2);
+	        break;
+
+	      case 3:
+	        integer_scale_horizontal(3);
+	        break;
+
+	      default:
+	      case 4:
+	        integer_scale_horizontal(4);
+	        break;
+
+	    }
+
+	    for(y = 159, y2 = (160 * video_scale) - 1; y >= 0; y--)
+	    {
+	      for(i = 0; i < video_scale; i++)
+	      {
+	        memcpy(screen_ptr + (y2 * pitch),
+	         screen_ptr + (y * pitch), 480 * video_scale);
+	        y2--;
+	      }
+	    }
 	  }
- else
-	 {
-	 SDL_BlitSurface(screen, NULL, hw_screen, NULL);
-	 SDL_Flip(hw_screen);
-	 }
-#else
-  //if(SDL_MUSTLOCK(screen)) SDL_UnlockSurface(screen);
-  SDL_Flip(screen);
-  //if(SDL_MUSTLOCK(screen)) SDL_LockSurface(screen);
 #endif
+	#ifdef GP2X_BUILD
+		memcpy(BaseAddress, get_screen_pixels(), 240*160*2);
+		gp2x_flipscreen();
+    #else
+#ifdef __SYMBIAN32__
+	//TODO!
+	symbian_blit(  screen );
+#else
+	  SDL_Flip(screen);
+#endif
+	#endif
 }
 
 #endif
@@ -3567,11 +3544,6 @@ void init_video()
 
 void init_video()
 {
-#ifdef __SYMBIAN32__
-	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE );
-#else
-  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE);
-#endif
 #ifdef GP2X_BUILD
   SDL_GP2X_AllowGfxMemory(NULL, 0);
 
@@ -3583,7 +3555,9 @@ void init_video()
 
   gp2x_load_mmuhack();
 #elif defined(__SYMBIAN32__)
-  
+  screen = allocateFramenBuffer( 320*240 );
+  //TODO: initilize video stuff here
+  /*
   hw_screen = SDL_SetVideoMode(320 * video_scale, 240 * video_scale,
      16, SDL_HWSURFACE | SDL_FULLSCREEN );
 
@@ -3597,11 +3571,11 @@ void init_video()
     large_ptr = (u16*) screen_large->pixels;
     small_ptr = (u16*) screen_small->pixels;
   //screen =SDL_SetVideoMode(320 * video_scale, 240 * video_scale, 16, SDL_HWSURFACE);
-    SDL_WM_SetCaption("gpsp4symbian","gpsp4symbian");
+    SDL_WM_SetCaption("gpsp4symbian","gpsp4symbian");*/
 #else
   screen = SDL_SetVideoMode(240 * video_scale, 160 * video_scale, 16, 0);
-#endif
   SDL_ShowCursor(SDL_DISABLE);
+#endif
 }
 
 #endif
@@ -3727,22 +3701,15 @@ void video_resolution_large()
   SDL_ShowCursor(0);
 
   gp2x_load_mmuhack();
-#elif defined(__SYMBIAN32__)
-  /*SDL_FreeSurface(screen);
- 
-  screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320 * video_scale,
-   240 * video_scale, 16, hw_screen->format->Rmask, hw_screen->format->Gmask, hw_screen->format->Bmask, 0);
- */
-  screen = screen_large;
+#else
+#ifdef __SYMBIAN32__
+  //TODO: set large video resolution here
   
-  resolution_width = 320;
-  resolution_height = 240;
-  SDL_ShowCursor(0);
-  gba_blit = 0;
 #else
   screen = SDL_SetVideoMode(480, 272, 16, 0);
   resolution_width = 480;
   resolution_height = 272;
+#endif
 #endif
 }
 
@@ -3785,6 +3752,7 @@ void video_resolution_small()
 
 void set_gba_resolution(video_scale_type scale)
 {
+#ifndef __SYMBIAN32__
   if(screen_scale != scale)
   {
     screen_scale = scale;
@@ -3798,17 +3766,21 @@ void set_gba_resolution(video_scale_type scale)
         break;
     }
   }
+#endif
+  screen_scale = scale;
+  small_resolution_width = 240;
+  small_resolution_height = 160;
 }
 
 void clear_screen(u16 color)
 {
   u16 *dest_ptr = get_screen_pixels();
-  u32 line_skip = get_screen_pitch() - screen->w;
+  u32 line_skip = get_screen_pitch() - get_screen_w();
   u32 x, y;
 
-  for(y = 0; y < screen->h; y++)
+  for(y = 0; y < get_screen_h(); y++)
   {
-    for(x = 0; x < screen->w; x++, dest_ptr++)
+    for(x = 0; x < get_screen_w(); x++, dest_ptr++)
     {
       *dest_ptr = color;
     }

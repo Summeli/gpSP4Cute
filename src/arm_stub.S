@@ -559,7 +559,6 @@ ext_store_u##store_type:                                                     ;\
   ldr r2, [lr]                            /* load PC                       */;\
   str r2, [reg_base, #REG_PC]             /* write out PC                  */;\
   store_align_##store_type()                                                 ;\
-  call_c_function(CallDebugFromASM); \
   call_c_function(write_memory##store_type)                                  ;\
   b write_epilogue                        /* handle additional write stuff */;\
 
