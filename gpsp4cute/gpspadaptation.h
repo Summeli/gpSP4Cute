@@ -23,8 +23,14 @@
 
 #include <QThread>
 
+
 #include "QBlitterWidget.h"
 #include "gpspSettings.h"
+
+//#define ENABLE_AUDIO
+#ifdef ENABLE_AUDIO
+#include <QAudio.h>
+#endif
 
 /* the gpspadapation is basically the emulation thread
  * it's also passing commands safely from the UI thread
@@ -56,7 +62,16 @@ public:
     QString gameconfigpath();
     QString getMainpath();
     void showErrorNote( QString message );
+
+#ifdef ENABLE_AUDIO
+private:
+    void initAudio();
+    void checkAudioDevices();
     
+public slots:
+	void audiocallback( QAudio::State state);
+#endif
+	
 signals:
     void frameblit();
     void dispatchErrorNote( QString message );
@@ -65,7 +80,7 @@ private:
     QBlitterWidget* blitter; //not owned
     TGPSPSettings gsettings;
     QString rom;
-    
+
 };
 
 

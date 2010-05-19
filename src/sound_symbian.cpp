@@ -194,7 +194,7 @@ static TInt AudioCallback(TAny* ptr)
 	coreAudioBuffer = output->NextFrameL();
 	
 	//Mix it
-	mixed = sound_callback(NULL, (u8*)coreAudioBuffer, g_FrameSize);
+	//mixed = sound_callback(NULL, (u8*)coreAudioBuffer, g_FrameSize);
 	
 	if( mixed )
 		output->FrameMixed();

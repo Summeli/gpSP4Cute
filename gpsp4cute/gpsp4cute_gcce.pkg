@@ -2,7 +2,7 @@
 &EN
 
 ; SIS header: name, uid, version
-#{"gpsp4cute"},(0xE0D278F3),1,0,0
+#{"gpsp4cute"},(0xE0D278F3),0,5,0
 
 ; Localised Vendor name
 %{"Vendor"}
@@ -21,10 +21,10 @@
 (0x2001E61C), 4, 6, 0, {"Qt"}
 
 ; Executable and default resource files
-"\epoc32\release\gcce\udeb\gpsp4cute.exe"    - "!:\sys\bin\gpsp4cute.exe"
-"\epoc32\data\z\resource\apps\gpsp4cute.rsc"    - "!:\resource\apps\gpsp4cute.rsc"
-"\epoc32\data\z\private\10003a3f\import\apps\gpsp4cute_reg.rsc"    - "!:\private\10003a3f\import\apps\gpsp4cute_reg.rsc"
-"\epoc32\data\z\resource\apps\gpsp4cute.mif"    - "!:\resource\apps\gpsp4cute.mif"
+"\S60\devices\S60_5th_Edition_SDK_v1.0\epoc32\release\gcce\udeb\gpsp.exe"    - "!:\sys\bin\gpsp.exe"
+"\S60\devices\S60_5th_Edition_SDK_v1.0\epoc32\data\z\resource\apps\gpsp.rsc"    - "!:\resource\apps\gpsp.rsc"
+"\S60\devices\S60_5th_Edition_SDK_v1.0\epoc32\data\z\private\10003a3f\import\apps\gpsp_reg.rsc"    - "!:\private\10003a3f\import\apps\gpsp_reg.rsc"
+"\S60\devices\S60_5th_Edition_SDK_v1.0\epoc32\data\z\resource\apps\gpsp.mif"    - "!:\resource\apps\gpsp.mif"
 
 "sis\game_config.txt"		-"!:\private\E0D278F3\game_config.txt"
 

@@ -50,6 +50,8 @@ u16* allocateFramenBuffer( u32 size );
  * */
 int symbian_library_main(u8* rom, u8* bios );
 
+//audio adaptation
+
 #ifdef __cplusplus
 };
 #endif

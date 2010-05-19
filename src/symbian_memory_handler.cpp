@@ -36,7 +36,7 @@ extern u8* rom_translation_ptr;
 extern u8* ram_translation_ptr;
 extern u8* bios_translation_ptr;
 
-#define KDistanceFromCodeSection 0x2000000
+#define KDistanceFromCodeSection 0x500000
 
 //in Symbian we have to tell to the OS that these memoryblocks contains codes,
 //so we can invalidate and execute the codeblock in the future.
@@ -122,10 +122,11 @@ int create_all_translation_caches()
 	}
 
 
-void CLEAR_INSN_CACHE(const u8 *code, size_t size)
-{
-    TUint start = (TUint) code;
-	User::IMB_Range((byte*) code, (byte*)start+size);   
+void CLEAR_INSN_CACHE(const u8 *code, int size)
+{	
+    TUint8* end = (TUint8*) code;
+    end += size;
+	User::IMB_Range( (void*) code, end );
 }
 
 void SymbianPackHeap()

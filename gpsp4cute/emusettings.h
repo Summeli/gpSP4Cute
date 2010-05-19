@@ -62,6 +62,7 @@ public slots:
     void frameskip( int skip );
     void screensettings( int settings );
     void showFPS( bool showFPS );
+    void setAspectRatio( bool aspectratio );
     void keyconfigDone();
     void exit();
     void resetButtonClicked();

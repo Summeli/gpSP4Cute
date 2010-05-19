@@ -37,11 +37,10 @@ void (*bitmapBlit)(TUint8* aScreen, TUint8* aBitmap) = 0;
 #include "common.h"
 extern u16* g_screenptr;
 
-QBlitterWidget::QBlitterWidget()
-:CActive( CActive::EPriorityStandard )
+QBlitterWidget::QBlitterWidget( QWidget *parent )
+: QWidget( parent ), CActive( CActive::EPriorityStandard )
     {
 	__DEBUG_IN
-    QWidget();
 
     iDSA = NULL;
     iDSBitmap = NULL;
@@ -50,6 +49,11 @@ QBlitterWidget::QBlitterWidget()
     
     //no choises in here :-)
     screenmode = 0;
+    keepratio = true;
+    
+    logo = new smallgpsplogo( parent );
+    logo->setGeometry(QRect(160, 320, 640, 360));
+    
     __DEBUG_OUT
     }
 
@@ -146,9 +150,10 @@ void QBlitterWidget::startDSA()
 	__DEBUG_OUT
 	}
 
-void QBlitterWidget::setScreenMode( int mode)
+void QBlitterWidget::setScreenMode( int mode, bool keepaspectratio )
 	{
 	screenmode = mode;
+	keepratio = keepaspectratio;
 	}
 
 void QBlitterWidget::Restart(RDirectScreenAccess::TTerminationReasons aReason)
@@ -179,27 +184,82 @@ void QBlitterWidget::RunL()
 	
 	}
 
-void QBlitterWidget::createScreenBuffer()
+void QBlitterWidget::createScreenBuffer( )
 	{
-	switch( screenmode )
+	if( keepratio )
 		{
-		case 0:
-		    iDSBitmap->Create(
-		    		TRect(160,0,640,360), CDirectScreenBitmap::EDoubleBuffer); 
-		    bitmapBlit = BlitWidgetDSA;
-			break;
-		case 1:
-			 iDSBitmap->Create(
-					    		TRect(80,0,560,360), CDirectScreenBitmap::EDoubleBuffer); 
-			bitmapBlit = BlitWidgetDSA;
-			break;
-		case 2:
-		    iDSBitmap->Create(
-				    		TRect(0,0,640,360), CDirectScreenBitmap::EDoubleBuffer); 
-			 bitmapBlit = BlitWidgetFullScreen;
-			break;
-		default:
-			break;
+		switch( screenmode )
+			{
+			case 0:
+				iDSBitmap->Create(
+						TRect(160,0,640,320), CDirectScreenBitmap::EDoubleBuffer); 
+				bitmapBlit = Blitkeepratio;
+				logo->setGeometry(QRect(160, 320, 640, 360));
+				break;
+			case 1:
+				 iDSBitmap->Create(
+									TRect(80,0,560,320), CDirectScreenBitmap::EDoubleBuffer); 
+				bitmapBlit = Blitkeepratio;
+				logo->setGeometry(QRect(80, 320, 560, 360));
+				break;
+			case 2:
+				iDSBitmap->Create(
+								TRect(0,0,640,360), CDirectScreenBitmap::EDoubleBuffer); 
+				 bitmapBlit = BlitWidgetFullScreen;
+				break;
+			default:
+				break;
+			}
+		logo->show();
 		}
+	else
+		{
+		logo->hide();
+		switch( screenmode )
+			{
+			case 0:
+				iDSBitmap->Create(
+						TRect(160,0,640,360), CDirectScreenBitmap::EDoubleBuffer); 
+				bitmapBlit = BlitWidgetDSA;
+				break;
+			case 1:
+				 iDSBitmap->Create(
+									TRect(80,0,560,360), CDirectScreenBitmap::EDoubleBuffer); 
+				bitmapBlit = BlitWidgetDSA;
+				break;
+			case 2:
+				iDSBitmap->Create(
+								TRect(0,0,640,360), CDirectScreenBitmap::EDoubleBuffer); 
+				 bitmapBlit = BlitWidgetFullScreen;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+void QBlitterWidget::setLogo()
+	{
+	if( keepratio )
+		{
+		switch( screenmode )
+			{
+			case 0:
+				logo->setGeometry(QRect(160, 320, 640, 360));
+				break;
+			case 1:
+				logo->setGeometry(QRect(80, 320, 560, 360));
+				break;
+			case 2:
+				break;
+			default:
+				break;
+			}
+		logo->show();
+		}
+	else
+		{
+		logo->hide();
+		}	
 	}
 

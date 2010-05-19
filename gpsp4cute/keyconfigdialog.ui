@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" >
  <class>keyconfigdialogClass</class>
- <widget class="QWidget" name="keyconfigdialogClass">
-  <property name="geometry">
+ <widget class="QWidget" name="keyconfigdialogClass" >
+  <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,17 +9,17 @@
     <height>150</height>
    </rect>
   </property>
-  <property name="baseSize">
+  <property name="baseSize" >
    <size>
     <width>640</width>
     <height>150</height>
    </size>
   </property>
-  <property name="windowTitle">
+  <property name="windowTitle" >
    <string>keyconfigdialog</string>
   </property>
-  <widget class="QLabel" name="keyLabel">
-   <property name="geometry">
+  <widget class="QLabel" name="keyLabel" >
+   <property name="geometry" >
     <rect>
      <x>0</x>
      <y>0</y>
@@ -28,22 +27,23 @@
      <height>150</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true"/>
+   <property name="styleSheet" >
+    <string notr="true" />
    </property>
-   <property name="text">
-    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+   <property name="text" >
+    <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Press Up&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">Press Up, or &lt;/p>
+&lt;p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">Press Skip to skip this button&lt;/p>&lt;/body>&lt;/html></string>
    </property>
-   <property name="alignment">
+   <property name="alignment" >
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QPushButton" name="cancelButton">
-   <property name="geometry">
+  <widget class="QPushButton" name="cancelButton" >
+   <property name="geometry" >
     <rect>
      <x>240</x>
      <y>100</y>
@@ -51,12 +51,12 @@ p, li { white-space: pre-wrap; }
      <height>41</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Cancel</string>
+   <property name="text" >
+    <string>Skip</string>
    </property>
   </widget>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
+ <layoutdefault spacing="6" margin="11" />
  <resources/>
  <connections/>
 </ui>

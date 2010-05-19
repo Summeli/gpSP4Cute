@@ -17,32 +17,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef VIDEOSETTINGS_H
-#define VIDEOSETTINGS_H
+
+#ifndef SMALLOPTIONSWIDGET_H
+#define SMALLOPTIONSWIDGET_H
 
 #include <QtGui/QWidget>
-#include "ui_videosettings.h"
+#include "ui_smalloptionswidget.h"
 
-class videosettings : public QWidget
+class smalloptionswidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    videosettings(int frameskip, bool showFPS, bool aspectratio,
-    		QWidget *parent = 0);
-    ~videosettings();
+    smalloptionswidget(QWidget *parent = 0);
+    ~smalloptionswidget();
     
-public slots:
-    void setFrameskip(int framestoskip);
-    void showFPSChecked( bool fps );
-    void aspectRatioChecked( bool aspectratio );
-    
- signals:
-    void frameskip( int framestoskip );
-    void showFPS( bool fps );
-    void setAspectRatio( bool aspectratio );
+signals:
+	void virtualKeyEvent( quint32 aKey, bool isDown );
+	void showMenu();
+	
+protected:
+	void mousePressEvent(QMouseEvent* event );
+	void mouseReleaseEvent(QMouseEvent* event );
+	void mouseMoveEvent(QMouseEvent* event);
+	
+	
 private:
-    Ui::videosettingsClass ui;
+	void processbuttons( QMouseEvent* event );
+	quint32 getSnesKeys( QMouseEvent* event );
+
+private:
+    Ui::smalloptionswidgetClass ui;
+    quint32 prevkeys;
 };
 
-#endif // VIDEOSETTINGS_H
+#endif // SMALLOPTIONSWIDGET_H

@@ -36,6 +36,7 @@ u32 sound_frequency = 44100;
 
 #ifdef __SYMBIAN32__
 #include "sound_symbian.h"
+#include "symb_adaptation.h"
 #endif
 
 //SDL_AudioSpec sound_settings;
@@ -624,11 +625,8 @@ void update_gbc_sound(u32 cpu_ticks)
     source[i] = 0;                                                            \
   }                                                                           \
 
-#ifndef __SYMBIAN32__
-void sound_callback(void *userdata, Uint8 *stream, int length)
-#else
-int sound_callback(void *userdata, u8 *stream, int length)
-#endif
+#if 1
+void sound_callback(void *userdata, u8 *stream, int length)
 {
   u32 sample_length = length / 2;
   u32 _length;
@@ -636,18 +634,102 @@ int sound_callback(void *userdata, u8 *stream, int length)
   s16 *stream_base = (s16 *)stream;
   s16 *source;
   s32 current_sample;
+/*
+  if( audio_on == 0 ) 
+  {
+    return;
+  }
+*/
 #if 0
+#if 1
+  if(((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) <
+   length)
+  {
+    //struct timeval current_time;
+    struct timespec thewaittime;
 
-  SDL_LockMutex(sound_mutex);
+    //gettimeofday(&current_time, NULL);
+    thewaittime.tv_sec  = 0; //current_time.tv_sec + 1;
+    thewaittime.tv_nsec = 100000000; //current_time.tv_usec*1000; //((current_time.tv_usec*1000)+(990000000));
 
+    pthread_cond_signal(&cond);
+    pthread_cond_timedwait(&cond, &id, &thewaittime);
+/*
+    if(((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) <
+      length)
+    {
+      memset(stream, 0, length);
+  //pthread_mutex_unlock(&id);
+      return;
+    }
+*/
+  }
+#else
+#if 1
+  i = 0;
   while(((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) <
    length)
   {
-    SDL_CondWait(sound_cv, sound_mutex);
+    pthread_cond_signal(&cond);
+    if(++i >= 2)
+    {
+	break;
+    }
+    usleep(1000);
   }
-
-  if(global_enable_audio)
+#else
+  if(((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) <
+   length)
   {
+    //printf("sound_callback00: buf: %u bufbase: %u length: %u ", (u32)gbc_sound_buffer_index, (u32)sound_buffer_base, (u32)length);
+    pthread_cond_signal(&cond);
+    if((sound_buffer_base + sample_length) >= BUFFER_SIZE)
+    {
+      u32 partial_length = (BUFFER_SIZE - sound_buffer_base) * 2;
+      sound_copy_null(sound_buffer_base, partial_length);
+      source = (s16 *)sound_buffer;
+      sound_copy(0, length - partial_length, normal);
+      sound_buffer_base = (length - partial_length) / 2;
+    }
+    else
+    {
+      sound_copy_null(sound_buffer_base, length);
+      sound_buffer_base += sample_length;
+    }
+    //pthread_mutex_unlock(&id);
+    return;
+  }
+#endif
+#endif
+#endif
+
+#if 0
+  pthread_mutex_lock(&id);
+#endif
+
+#if 1
+	u64 current_ticks;
+	u64 wait_ticks;
+	
+	get_ticks_us(&current_ticks);
+	get_ticks_us(&wait_ticks);
+
+	while(audio_on != 0 && (((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) < length) && wait_ticks < (current_ticks + 50000))
+	{
+		get_ticks_us(&wait_ticks);
+	}
+#endif
+  {
+/*
+    if(((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) <
+     length)
+    {
+      u32 new_length = ((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE);
+      memset(stream + new_length, 0, length - new_length);
+      length = new_length;
+      sample_length = length / 2;
+    }
+*/
     if((sound_buffer_base + sample_length) >= BUFFER_SIZE)
     {
       u32 partial_length = (BUFFER_SIZE - sound_buffer_base) * 2;
@@ -662,6 +744,8 @@ int sound_callback(void *userdata, u8 *stream, int length)
       sound_buffer_base += sample_length;
     }
   }
+
+#if 0
   else
   {
     if((sound_buffer_base + sample_length) >= BUFFER_SIZE)
@@ -680,35 +764,13 @@ int sound_callback(void *userdata, u8 *stream, int length)
   }
 #endif
 #if 0
-  SDL_CondSignal(sound_cv);
-
-  SDL_UnlockMutex(sound_mutex);
+#if 0
+  pthread_cond_signal(&cond);
 #endif
-  
-#ifdef __SYMBIAN32__
-	
-  if(audio_on != 0 && (((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) < length))
-	{
-	return 0;
-	//get_ticks_us(&wait_ticks);
-	}
-  
-  if((sound_buffer_base + sample_length) >= BUFFER_SIZE)
-  {
-    u32 partial_length = (BUFFER_SIZE - sound_buffer_base) * 2;
-    sound_copy(sound_buffer_base, partial_length, normal);
-    source = (s16 *)sound_buffer;
-    sound_copy(0, length - partial_length, normal);
-    sound_buffer_base = (length - partial_length) / 2;
-  }
-  else
-  {
-    sound_copy(sound_buffer_base, length, normal);
-    sound_buffer_base += sample_length;
-  }
-  return 1;
+  pthread_mutex_unlock(&id);
 #endif
 }
+#endif
 
 // Special thanks to blarrg for the LSFR frequency used in Meridian, as posted
 // on the forum at http://meridian.overclocked.org:

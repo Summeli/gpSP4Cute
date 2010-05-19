@@ -19,13 +19,14 @@
 
 
 #include "cuteDebug.h"
+
 #ifdef _DEBUG
 
 #include <QtGui>
 #include <QApplication>
 
 QTime timeDebug;
-QFile file("F:\\Data\\gpspdebug.txt");
+QFile file("E:\\Data\\gpspdebug.txt");
 
 void debugOutput(QtMsgType type, const char *msg)
 {

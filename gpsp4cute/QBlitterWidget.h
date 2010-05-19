@@ -22,24 +22,28 @@
 #define QBLITTERWIDGET_H_
 
 #include <QtGui/QWidget>
+#include <QLabel>
 
 #include <w32std.h>
 #include <e32base.h>
 #include <cdsb.h>
+
+#include "smallgpsplogo.h"
 
 class QBlitterWidget : public QWidget, public CActive, public MDirectScreenAccess
 {
 Q_OBJECT
 
 public:
-    QBlitterWidget();
+	QBlitterWidget( QWidget *parent = 0 );
     ~QBlitterWidget();
     
 public slots:
     void render();
     void stopDSA();
     void startDSA();
-    void setScreenMode( int mode);
+    void setScreenMode( int mode, bool keepaspectratio );
+    void setLogo();
     
 protected:
     void paintEvent(QPaintEvent *);
@@ -60,8 +64,10 @@ protected: //data
     TUint8* bitmapdata;
     
     int screenmode;
+    bool keepratio;
     CDirectScreenAccess *iDSA;
     CDirectScreenBitmap *iDSBitmap;
+    smallgpsplogo* logo;
 
 };
 

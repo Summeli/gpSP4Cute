@@ -20,16 +20,17 @@
 
 #include "videosettings.h"
 
-videosettings::videosettings(int frameskip, bool showFPS,
+videosettings::videosettings(int frameskip, bool showFPS, bool aspectratio,
 		QWidget *parent)
     : QWidget(parent)
 {
 	ui.setupUi(this);
 	ui.frameSkipBox->setCurrentIndex( frameskip );
 	ui.showFPS->setChecked(showFPS);
-	
+	ui.aspectratio->setChecked(aspectratio);
 	connect(ui.frameSkipBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setFrameskip(int)));
 	connect(ui.showFPS, SIGNAL(toggled(bool )), this, SLOT(showFPSChecked(bool)));
+	connect(ui.aspectratio, SIGNAL(toggled(bool )), this, SLOT(aspectRatioChecked(bool)));
 }
 
 videosettings::~videosettings()
@@ -46,4 +47,9 @@ void videosettings::setFrameskip( int framestoskip )
 void videosettings::showFPSChecked( bool fps )
 	{
 	emit( showFPS(fps) );
+	}
+
+void videosettings::aspectRatioChecked( bool aspectratio )
+	{
+	emit(setAspectRatio( aspectratio ) );
 	}

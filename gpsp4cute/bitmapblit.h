@@ -24,6 +24,7 @@
 #include <e32def.h>
 
 void BlitWidgetDSA( TUint8* aScreen, TUint8* aBitmap );
+void Blitkeepratio( TUint8* aScreen, TUint8* aBitmap );
 void BlitWidgetFullScreen( TUint8* aScreen, TUint8* aBitmap );
 
 #endif /* BITMAPBLIT_H_ */

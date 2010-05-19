@@ -27,7 +27,7 @@ extern "C" {
 #endif
 
 int create_all_translation_caches();
-void CLEAR_INSN_CACHE(const u8 *code, size_t size);
+void CLEAR_INSN_CACHE(const u8 *code, int size);
 void SymbianPackHeap();
 void close_all_caches();
 void keepBacklightOn();

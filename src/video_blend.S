@@ -1,7 +1,7 @@
 .align 2
 
 .global expand_blend
-.global expand_normal
+@.global expand_normal
 
 @ Input:
 @   r0 = screen_src_ptr
@@ -10,12 +10,12 @@
 @   r3 = end
 
 6:
-  .word io_registers
-  .word palette_ram_converted
-  .word 0x04000200                @ combine test mask
-  .word 0x07E0F81F                @ clamp mask
-  .word 0x000003FE                @ palette index mask
-  .word 0x08010020                @ saturation mask
+  .long io_registers
+  .long palette_ram_converted
+  .long 0x04000200                @ combine test mask
+  .long 0x07E0F81F                @ clamp mask
+  .long 0x000003FE                @ palette index mask
+  .long 0x08010020                @ saturation mask
 
 expand_blend:
   stmdb sp!, { r4, r5, r6, r9, r10, r11, r14 }
@@ -153,8 +153,8 @@ expand_blend:
 @   r2 = end
 
 1:
-  .word palette_ram_converted
-  .word 0x3FE
+  .long palette_ram_converted
+  .long 0x3FE
 
 expand_normal:
   stmdb sp!, { r4, r5, r6, r7, r14 }

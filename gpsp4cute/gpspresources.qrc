@@ -5,6 +5,9 @@
     <qresource prefix="/graphics" >
         <file>gfx/downarrow.png</file>
         <file>gfx/dpad.png</file>
+        <file>gfx/gpsp4symbianlogo.png</file>
         <file>gfx/gpsplogo.png</file>
+        <file>gfx/left.png</file>
+        <file>gfx/right.png</file>
     </qresource>
 </RCC>

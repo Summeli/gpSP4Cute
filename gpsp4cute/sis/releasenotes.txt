@@ -15,7 +15,8 @@ Homepage: http://gpsp-dev.blogspot.com/
 Olli Hinkka
 * Memory Relocator code
 
-Saiyaku 
+Saiyaku
+* The gpsp4Symbian logo 
 * The D-PAD grapchics
 
 Summeli

@@ -2420,14 +2420,12 @@ fill_line_builder(color32);
 #ifdef RENDER_COLOR16_NORMAL
 
 #ifndef GP2X_BUILD
-/*
+
 void expand_normal(u16 *screen_ptr, u32 start, u32 end)
 {
   u32 i, pixel_source;
   screen_ptr += start;
-
-  return;
-
+  
   end -= start;
 
   for(i = 0; i < end; i++)
@@ -2438,7 +2436,7 @@ void expand_normal(u16 *screen_ptr, u32 start, u32 end)
     screen_ptr++;
   }
 }
-*/
+
 //TODO: expandblend & normal!
 #endif
 

@@ -35,6 +35,32 @@ inline void copyPixel16MU( TUint32* bitmap, TUint16* screen, TUint32 red,
 	*bitmap = (red << 16) | (green << 8) | (blue);
 	}
 
+void Blitkeepratio( TUint8* aScreen, TUint8* aBitmap )
+	{
+	TUint32* bitmap = (TUint32*) aBitmap;
+	TUint16* screen = (TUint16*) aScreen;
+	TUint32* screen_temp;
+	
+	TUint32 red = 0;
+	TUint32 green = 0;
+	TUint32 blue = 0;
+	for(TInt j=0; j<160;j++)
+	 {
+	 for( TInt i=0; i<240; i++)
+	   {
+	   copyPixel16MU( bitmap, screen, red, green, blue );
+	   bitmap++;
+	   copyPixel16MU( bitmap, screen, red, green, blue );
+	   screen++;
+	   bitmap++;
+	   }
+	 screen_temp = bitmap - 480;
+	 memcpy(bitmap, screen_temp, 4*480);
+	 bitmap += 480;
+	 }
+	
+	}
+
 void BlitWidgetDSA( TUint8* aScreen, TUint8* aBitmap )
 	{
 	TUint32* bitmap = (TUint32*) aBitmap;

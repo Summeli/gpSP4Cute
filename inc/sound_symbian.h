@@ -33,7 +33,7 @@ void DeInit_SYmbian_Audio();
 void Start_Symbian_Audio();
 void Stop_Symbian_Audio();
 
-extern int sound_callback(void *userdata, u8 *stream, int length);
+extern void sound_callback(void *userdata, u8 *stream, int length);
 
 
 #ifdef __cplusplus

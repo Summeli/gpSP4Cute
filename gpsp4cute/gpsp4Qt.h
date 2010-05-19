@@ -34,6 +34,8 @@
 #include "cuteErrorDialog.h"
 
 #include "dpadwidget.h"
+#include "smalloptionswidget.h"
+#include "rightbuttonwidget.h"
 #include "gpspadaptation.h"
 
 /* This class is the UI controller in the UI thread side
@@ -91,6 +93,8 @@ private:
     gpspadaptation* adaptation;
     QString currentROM;
     cuteErrorDialog* errorDialog;
+    smalloptionswidget* smallwidget;
+    rightbuttonwidget* rsmallwidget;
 };
 
 #endif // GPSP4QT_H

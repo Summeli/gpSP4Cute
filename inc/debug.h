@@ -21,7 +21,7 @@
 #define __DEBUG_H__
 
 //#define __DEBUG__ON__
-//#define __DEBUG_TO_FILE__
+#define __DEBUG_TO_FILE__
 
 #ifdef __DEBUG__ON__
 

@@ -88,13 +88,32 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>50</y>
+     <y>20</y>
      <width>321</width>
      <height>41</height>
     </rect>
    </property>
    <property name="text">
     <string>show FPS</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="aspectratio">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>80</y>
+     <width>321</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>keep aspect ratio</string>
    </property>
    <property name="checkable">
     <bool>true</bool>

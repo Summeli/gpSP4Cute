@@ -21,9 +21,9 @@
     <property name="geometry">
      <rect>
       <x>250</x>
-      <y>180</y>
+      <y>186</y>
       <width>121</width>
-      <height>71</height>
+      <height>65</height>
      </rect>
     </property>
     <property name="text">
@@ -34,9 +34,9 @@
     <property name="geometry">
      <rect>
       <x>250</x>
-      <y>260</y>
+      <y>266</y>
       <width>121</width>
-      <height>71</height>
+      <height>65</height>
      </rect>
     </property>
     <property name="text">
@@ -47,9 +47,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>260</y>
-      <width>221</width>
-      <height>71</height>
+      <y>266</y>
+      <width>131</width>
+      <height>65</height>
      </rect>
     </property>
     <property name="text">
@@ -60,9 +60,9 @@
     <property name="geometry">
      <rect>
       <x>510</x>
-      <y>260</y>
+      <y>266</y>
       <width>121</width>
-      <height>71</height>
+      <height>65</height>
      </rect>
     </property>
     <property name="text">
@@ -73,9 +73,9 @@
     <property name="geometry">
      <rect>
       <x>510</x>
-      <y>180</y>
+      <y>186</y>
       <width>121</width>
-      <height>71</height>
+      <height>65</height>
      </rect>
     </property>
     <property name="text">
@@ -102,7 +102,7 @@
      </property>
      <property name="styleSheet">
       <string notr="true">QLabel{
-	background-image: url(:/graphics/gfx/gpsplogo.png);
+	background-image: url(:/graphics/gfx/gpsp4symbianlogo.png);
   background-repeat: no-repeat;
 	background-position: center;
 }</string>
@@ -111,27 +111,14 @@
       <string/>
      </property>
     </widget>
-    <widget class="QPushButton" name="aboutButton">
-     <property name="geometry">
-      <rect>
-       <x>510</x>
-       <y>100</y>
-       <width>121</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>About</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="saveloadState">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>150</y>
+      <y>155</y>
       <width>241</width>
-      <height>110</height>
+      <height>105</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -143,10 +130,10 @@
     <widget class="QPushButton" name="saveStateButton">
      <property name="geometry">
       <rect>
-       <x>158</x>
+       <x>161</x>
        <y>40</y>
-       <width>81</width>
-       <height>61</height>
+       <width>75</width>
+       <height>55</height>
       </rect>
      </property>
      <property name="text">
@@ -159,7 +146,7 @@
        <x>84</x>
        <y>40</y>
        <width>75</width>
-       <height>61</height>
+       <height>55</height>
       </rect>
      </property>
      <item>
@@ -191,10 +178,10 @@
     <widget class="QPushButton" name="loadStateButton">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>3</x>
        <y>40</y>
-       <width>81</width>
-       <height>61</height>
+       <width>75</width>
+       <height>55</height>
       </rect>
      </property>
      <property name="text">
@@ -206,9 +193,9 @@
     <property name="geometry">
      <rect>
       <x>380</x>
-      <y>260</y>
+      <y>266</y>
       <width>121</width>
-      <height>71</height>
+      <height>65</height>
      </rect>
     </property>
     <property name="text">
@@ -219,13 +206,26 @@
     <property name="geometry">
      <rect>
       <x>380</x>
-      <y>180</y>
+      <y>186</y>
       <width>121</width>
-      <height>71</height>
+      <height>65</height>
      </rect>
     </property>
     <property name="text">
      <string>Reset</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="aboutButton">
+    <property name="geometry">
+     <rect>
+      <x>155</x>
+      <y>266</y>
+      <width>80</width>
+      <height>65</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>About</string>
     </property>
    </widget>
   </widget>

@@ -1,7 +1,8 @@
 TEMPLATE = app
-TARGET = gpsp4cute
+TARGET = gpsp
 QT += core \
-    gui # multimedia
+    gui \
+    multimedia
 HEADERS += filewidget.h \
     dpadwidget.h \
 	QRemoteControlKeys.h \
@@ -9,7 +10,7 @@ HEADERS += filewidget.h \
     controlsettings.h \
     videosettings.h \
     audiosettings.h \
-    gpsp4cute.loc \
+    gpsp.loc \
     keyconfigdialog.h \
     viewcontroller.h \
     emusettings.h \
@@ -17,7 +18,11 @@ HEADERS += filewidget.h \
     QBlitterWidget.h \
     gpspSettings.h \
     gpsp4Qt.h \
-    cuteErrorDialog.h
+    cuteErrorDialog.h \
+    smalloptionswidget.h \
+    rightbuttonwidget.h \
+    smallgpsplogo.h
+    
 SOURCES += cuteErrorDialog.cpp \
     filewidget.cpp \
     dpadwidget.cpp \
@@ -34,7 +39,11 @@ SOURCES += cuteErrorDialog.cpp \
     QBlitterWidget.cpp \
     main.cpp \
     gpsp4Qt.cpp \
-    bitmapblit.cpp
+    bitmapblit.cpp \
+    smalloptionswidget.cpp \
+    rightbuttonwidget.cpp \
+    smallgpsplogo.cpp 
+    
 FORMS += cuteErrorDialog.ui \
     filewidget.ui \
     dpadwidget.ui \
@@ -43,7 +52,10 @@ FORMS += cuteErrorDialog.ui \
     videosettings.ui \
     keyconfigdialog.ui \
     audiosettings.ui \
-    emusettings.ui
+    emusettings.ui \
+    smalloptionswidget.ui \
+    rightbuttonwidget.ui \
+    smallgpsplogo.ui
 
 RESOURCES += gpspresources.qrc
 
@@ -66,8 +78,11 @@ symbian:TARGET.EPOCHEAPSIZE = 0x200000 \
     0x800000
     
 symbian:TARGET.EPOCSTACKKSIZE = 0x10000
-#symbian:TARGET.CAPABILITY += SwEvent
+symbian:TARGET.CAPABILITY += SwEvent
 symbian:ICON = gfx/gpsp.svg
 symbian:INCLUDEPATH += ../inc/
 
 OTHER_FILES += summelistyle.qss
+
+packageheader = "$${LITERAL_HASH}{\"gpsp\"}, (0xE0D278F3), 0, 5, 0 "
+default_deployment.pkg_prerules = packageheader

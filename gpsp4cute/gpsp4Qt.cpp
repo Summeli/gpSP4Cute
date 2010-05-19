@@ -41,7 +41,17 @@ gpsp4Qt::gpsp4Qt(QWidget *parent)
     connect(dpad, SIGNAL(showMenu()), this, SLOT( showAntSnesMenu()) );
     connect(dpad, SIGNAL(virtualKeyEvent(quint32, bool)), this, SLOT( virtualKeyEvent(quint32, bool)) );
     
-    widget = new QBlitterWidget();
+    smallwidget = new smalloptionswidget( this );
+    smallwidget->setGeometry(QRect(0, 0, 80, 360));
+    smallwidget->hide();
+    connect(smallwidget, SIGNAL(showMenu()), this, SLOT( showAntSnesMenu()) );
+    connect(dpad, SIGNAL(virtualKeyEvent(quint32, bool)), this, SLOT( virtualKeyEvent(quint32, bool)) );
+    
+    rsmallwidget = new rightbuttonwidget( this );
+    rsmallwidget->setGeometry(QRect(560, 0, 640, 360));
+    rsmallwidget->hide();
+     
+    widget = new QBlitterWidget( this );
     widget->setObjectName(QString::fromUtf8("QBlitterWidget"));
     widget->setGeometry(QRect(160, 0, 640, 360));
     
@@ -179,16 +189,21 @@ void gpsp4Qt::updateSettings( TGPSPSettings antSettings )
 	__DEBUG_IN
 	iSettings = antSettings;
 	adaptation->showgpspFPS(antSettings.iShowFPS);
-	widget->setScreenMode(antSettings.iScreenSettings);
+	widget->setScreenMode(antSettings.iScreenSettings, 
+			antSettings.ikeepAspectRatio);
 	
 	//check d-pad
 	if( antSettings.iScreenSettings == 0 )
 		{
 		dpad->show();
+		smallwidget->hide();
+		rsmallwidget->hide();
 		}
 	else
 		{
 		dpad->hide();
+		smallwidget->show();
+		rsmallwidget->show();
 		}
 	
 	__DEBUG_OUT

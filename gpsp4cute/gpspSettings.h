@@ -37,6 +37,7 @@ struct TGPSPSettings
 	QString iBios;
 	int iLastSlot;
 	bool iShowFPS;
+	bool ikeepAspectRatio;
 	int iFrameSkip;
 	
 	//Audio Settings

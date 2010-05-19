@@ -1,0 +1,39 @@
+<ui version="4.0" >
+ <class>smalloptionswidgetClass</class>
+ <widget class="QWidget" name="smalloptionswidgetClass" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>80</width>
+    <height>360</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>smalloptionswidget</string>
+  </property>
+  <widget class="QLabel" name="leftLabel" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>80</width>
+     <height>360</height>
+    </rect>
+   </property>
+   <property name="styleSheet" >
+    <string notr="true" >QLabel{
+background-image: url(:/graphics/gfx/left.png);
+}</string>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <resources>
+  <include location="gpspresources.qrc" />
+ </resources>
+ <connections/>
+</ui>

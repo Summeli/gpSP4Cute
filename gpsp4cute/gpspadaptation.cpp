@@ -64,8 +64,9 @@ void gpspadaptation::run()
     __DEBUG_IN
     
     __DEBUG2("QThread::currentThreadId():", QThread::currentThreadId());
- 
-    
+#ifdef ENABLE_AUDIO
+    initAudio();
+#endif
 	connect(this, SIGNAL(frameblit()), blitter, SLOT(render()), 
 			Qt::BlockingQueuedConnection );
 	
@@ -190,6 +191,119 @@ void gpspadaptation::showErrorNote( QString message )
 	__DEBUG_OUT
 	}
 
+#ifdef ENABLE_AUDIO
+#include <QAudioDeviceInfo>
+#include <QAudioFormat>
+
+void gpspadaptation::audiocallback( QAudio::State state)
+	{
+	
+	}
+
+void gpspadaptation::initAudio()
+	{
+	//TO not care
+	/*if( gsettings.iAudioOn )
+		{
+		
+		}*/
+	
+	//DEUBUG
+	checkAudioDevices();
+//we should use the default device
+	QAudioDeviceInfo defaultdevice =  QAudioDeviceInfo::defaultOutputDevice();
+
+	QAudioFormat format;
+	format.setCodec( QString("audio/pcm"));
+	}
+
+// Used only for debuggin purposes
+void gpspadaptation::checkAudioDevices()
+	{
+	QList<QAudioDeviceInfo> devlist = QAudioDeviceInfo::availableDevices ( QAudio::AudioOutput );
+
+	for (int i = 0; i < devlist.size(); ++i)
+    	{
+		QString device = devlist.at(i).deviceName();
+		__DEBUG1( device );
+    	}
+	
+	//we should use the default device
+	QAudioDeviceInfo defaultdevice =  QAudioDeviceInfo::defaultOutputDevice();
+	
+	__DEBUG2( "default output device is:", defaultdevice.deviceName() );
+	
+	QStringList list = defaultdevice.supportedCodecs();
+	__DEBUG1("gpspadaptation: list of supporetd audio codecs: ");
+	for (int i = 0; i < list.size(); ++i)
+    	{
+		QString codec = list.at(i);
+		__DEBUG1( codec );
+    	}
+	
+	__DEBUG1("gpspadaptation: list of supported sampletypes: ");
+	 QList<QAudioFormat::SampleType> sampleTypez = defaultdevice.supportedSampleTypes();
+	 for (int i = 0; i < sampleTypez.size(); ++i) 
+		 {
+		 switch(sampleTypez.at(i)) 
+			 {
+			case QAudioFormat::SignedInt:
+			__DEBUG1("SignedInt");
+			break;
+		 case QAudioFormat::UnSignedInt:
+			 __DEBUG1("UnSignedInt");
+			 break;
+		 case QAudioFormat::Float:
+			 __DEBUG1("Float");
+			 break;
+		 case QAudioFormat::Unknown:
+			 __DEBUG1("Unknown");
+			 }
+		 }
+			 
+	__DEBUG1("gpspadaptation: list of supported endianess: "); 
+	 QList<QAudioFormat::Endian> endianz = defaultdevice.supportedByteOrders();
+	 for (int i = 0; i < endianz.size(); ++i) 
+		 {
+		 switch (endianz.at(i)) 
+			 {
+			 case QAudioFormat::LittleEndian:
+				 __DEBUG1("Little Endian");
+				 break;
+			 case QAudioFormat::BigEndian:
+				 __DEBUG1("Big Endian");
+				 break;
+			 }
+		 }
+	 
+	 __DEBUG1("gpspadaptation: list of supported frequenzies: "); 
+	 QList<int> fequenz = defaultdevice.supportedFrequencies();
+	 for (int i = 0; i < fequenz.size(); ++i) 
+		 {
+		 int freq = fequenz.at(i);
+		 __DEBUG2("supported fequence;", freq );
+		 }
+	 
+	 __DEBUG1("gpspadaptation: list of supported channels: "); 
+	 QList<int> chanz = defaultdevice.supportedChannels();
+	 for (int i = 0; i < chanz.size(); ++i) 
+		 {
+		 int chan = chanz.at(i);
+		 __DEBUG2("supported channels;", chan );
+		 }
+
+	 __DEBUG1("gpspadaptation: list of supported samplesizes: "); 
+	 QList<int> sampz = defaultdevice.supportedSampleSizes();
+	 for (int i = 0; i < sampz.size(); ++i) 
+		 {
+		 int samp = sampz.at(i);
+		 __DEBUG2("supported samplesize;", samp );
+		 }	    
+			 
+	}
+
+#endif
+	 
 u32 updateSymbianInput()
 	{
 	__DEBUG_IN

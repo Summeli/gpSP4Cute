@@ -152,14 +152,12 @@ u8 *file_ext[] = { ".gba", ".bin", ".zip", NULL };
 #ifdef ARM_ARCH
 void ChangeWorkingDirectory(char *exe)
 {
-#ifndef _WIN32_WCE
   char *s = strrchr(exe, '/');
   if (s != NULL) {
     *s = '\0';
     chdir(exe);
     *s = '/';
   }
-#endif
 }
 #endif
 

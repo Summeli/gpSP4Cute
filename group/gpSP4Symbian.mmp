@@ -15,7 +15,6 @@ UID		  0x100039CE 0xE0D278F3
 
 SOURCEPATH		..\src
 SOURCE		    gpsp4Symbian_sdl.cpp
-SOURCE			debug.cpp
 SOURCE			cpu.c 
 SOURCE		    video.c 
 SOURCE			sound.c 
@@ -25,23 +24,12 @@ SOURCE			gui.c
 SOURCE			zip.c 
 SOURCE			cheats.c 
 SOURCE			memory.c 
-SOURCEPATH		..\data
 
-START RESOURCE	gpSP4Symbian.rss
-HEADER
-TARGET gpSP4Symbian
-TARGETPATH resource\apps
-END //RESOURCE
 
-START RESOURCE	gpSP4Symbian_reg.rss
-TARGET gpSP4Symbian_reg
-TARGETPATH 	  \private\10003a3f\apps
-END //RESOURCE
 
 
 
 USERINCLUDE	   ..\inc
-USERINCLUDE    ..\help
 
 SYSTEMINCLUDE	 \epoc32\include
 SYSTEMINCLUDE	\epoc32\include\stdapis
@@ -66,4 +54,8 @@ DEBUGGABLE_UDEBONLY
 SOURCEPATH ..\src
 SOURCE gpspmain.c
 SOURCEPATH ..\gpsp4cute
-SOURCE moc_AntAudio.cpp
+SOURCE moc_AntAudio.cpp bitmapblit.cpp cuteErrorDialog.cpp
+SOURCEPATH ..\src
+SOURCE relocator.cpp relocator_glue.s
+SOURCEPATH ..\gpsp4cute
+SOURCE rightbuttonwidget.cpp

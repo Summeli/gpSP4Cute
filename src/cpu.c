@@ -4120,7 +4120,7 @@ u32 function_cc step_debug(u32 pc, u32 cycles)
         debug_on();
 
       break;
-
+#if 0
     case COUNTDOWN_BREAKPOINT_C:
     {
       if(pc == 0x18)
@@ -4140,6 +4140,7 @@ u32 function_cc step_debug(u32 pc, u32 cycles)
 
       break;
     }
+#endif
   }
 
   if((current_debug_state == STEP) ||
@@ -4171,7 +4172,7 @@ u32 function_cc step_debug(u32 pc, u32 cycles)
 */
     debug_screen_update();
     output_field++;
-#if 0
+
     if(current_debug_state != STEP_RUN)
     {
 
@@ -4281,7 +4282,6 @@ u32 function_cc step_debug(u32 pc, u32 cycles)
       case 'q':
         quit();
     }
-#endif
 #if 0
     SDL_PauseAudio(0);
     SDL_UnlockMutex(sound_mutex);

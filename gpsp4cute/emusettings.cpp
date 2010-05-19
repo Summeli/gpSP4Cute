@@ -25,7 +25,7 @@
 #include "emusettings.h"
 #include "cuteDebug.h"
 
-#define KSettingsVersion 4
+#define KSettingsVersion 5
 
 EmuSettings::EmuSettings(QWidget *parent)
     : QMainWindow(parent)
@@ -44,7 +44,7 @@ EmuSettings::EmuSettings(QWidget *parent)
 	audiosettings->hide();
 	
 	antvideosettings =new videosettings( gpspsettings.iFrameSkip, 
-					gpspsettings.iShowFPS, this );
+			gpspsettings.iShowFPS, gpspsettings.ikeepAspectRatio, this );
 	antvideosettings->setGeometry(QRect(0, 0, 640, 150));
 	antvideosettings->hide();
 	
@@ -86,7 +86,7 @@ EmuSettings::EmuSettings(QWidget *parent)
 	//connect video settings
 	connect( antvideosettings, SIGNAL(frameskip(int)), this, SLOT( frameskip(int) ));
 	connect( antvideosettings, SIGNAL(showFPS(bool)), this, SLOT( showFPS(bool) ));
-	
+	connect( antvideosettings, SIGNAL(setAspectRatio(bool)), this, SLOT( setAspectRatio(bool) ));
 
 	//connect filewidget
 	connect( fileview, SIGNAL(loadROM()), this, SLOT( loadROM()));
@@ -222,6 +222,14 @@ void EmuSettings::showFPS( bool showFPS )
 	__DEBUG_OUT
 	}
 
+void EmuSettings::setAspectRatio( bool aspectratio )
+	{
+	__DEBUG_IN
+	settingsChanged = true;
+	gpspsettings.ikeepAspectRatio = aspectratio;
+	__DEBUG_OUT
+	}
+
 void EmuSettings::showAudioSettings()
 	{
 	if( currentWidget == EAudioWidget )
@@ -312,6 +320,8 @@ void EmuSettings::keyconfigDone()
 		__DEBUG2("keyconfigDone: keyID is ", keydialog->getKeyBind(i) );
 		gpspsettings.iScanKeyTable[i] = keydialog->getKeyBind(i);
 		}
+	//take the keyevents away, so it doesn't crash
+	remotecontrol->subscribeKeyEvent( this );
     //Delete the dialog
 	keydialog->hide();
     delete keydialog;
@@ -476,6 +486,7 @@ void EmuSettings::setDefaultSettings()
 	gpspsettings.iBios = "";
 	gpspsettings.iLastSlot = 0;
 	gpspsettings.iShowFPS = false;
+	gpspsettings.ikeepAspectRatio = true;
 	gpspsettings.iFrameSkip = 0;
 	gpspsettings.iAudioOn = false;
 	gpspsettings.iSampleRate = 22050;
@@ -503,6 +514,7 @@ void EmuSettings::savecurrentSettings()
 	settings.setValue("bios",gpspsettings.iBios);
 	settings.setValue("lastslot",gpspsettings.iLastSlot);
 	settings.setValue("showfps",gpspsettings.iShowFPS);
+	settings.setValue("aspectratio",gpspsettings.ikeepAspectRatio);
 	settings.setValue("frameskip",gpspsettings.iFrameSkip);
 	settings.setValue("audioOn",gpspsettings.iAudioOn);
 	settings.setValue("samplerate",gpspsettings.iSampleRate);
@@ -537,6 +549,7 @@ void EmuSettings::loadSettings()
 	gpspsettings.iLastROM = settings.value("lastrom").toString();
 	gpspsettings.iBios = settings.value("bios").toString();
 	gpspsettings.iShowFPS = settings.value("showfps").toBool();
+	gpspsettings.ikeepAspectRatio = settings.value("aspectratio").toBool();
 	gpspsettings.iFrameSkip = settings.value("frameskip").toInt();
 	gpspsettings.iAudioOn = settings.value("audioOn").toBool();
 	gpspsettings.iSampleRate = settings.value("samplerate").toInt();
