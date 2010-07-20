@@ -1,6 +1,6 @@
 /* The background of the tab bar */
 QMainWindow {
-  background: #111111;
+  background: #1e1e1e;
   color: #F8F8F8;
   padding: 0;
   margin: 0;
@@ -8,7 +8,7 @@ QMainWindow {
 }
 
 QWidget {
-  background: #111111;
+  background: #1e1e1e;
   color: #F8F8F8;
   padding: 0;
   margin: 0;
@@ -22,7 +22,7 @@ QStackedWidget {
     
 /* Dialogs */
 QDialog {
-  background: #111111;
+  background: #1e1e1e;
   color: #F8F8F8;
   padding: 0;
   margin: 0;
@@ -31,7 +31,7 @@ QDialog {
     
 /* Form fields */
 QLabel {
-  background: #111111;
+  background: #1e1e1e;
   padding: 0;
   margin: 0;
 }
@@ -129,7 +129,7 @@ QSlider::handle:horizontal {
  }
 
 QGroupBox {
-  background: #111111; 
+  background: #1e1e1e; 
   padding: 0;
   margin: 0;
   border: 1px solid #666;
@@ -140,7 +140,7 @@ QGroupBox::title {
  subcontrol-origin: margin;
  subcontrol-position: top left; /* position at the top left */
  padding: 0 3px;
- background-color: #111111;
+ background-color: #1e1e1e;
  color: #F8F8F8;
  }
  

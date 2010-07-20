@@ -31,6 +31,9 @@
 #include <eikenv.h>
 #include <coecntrl.h>
 #include <w32std.h>
+#include <e32std.h> 
+#include <HAL.h>
+#include <hal_data.h>
 
 void (*bitmapBlit)(TUint8* aScreen, TUint8* aBitmap) = 0;
 
@@ -46,6 +49,12 @@ QBlitterWidget::QBlitterWidget( QWidget *parent )
     iDSBitmap = NULL;
     
     CActiveScheduler::Add( this );
+    TInt uid = 0;
+    HAL::Get(HAL::EMachineUid, uid);
+    if( uid == 0x2000c520 ) //Samsung i8910
+    	samsung = true; //use hacks
+    else 
+    	samsung = false;
     
     //no choises in here :-)
     screenmode = 0;
@@ -141,6 +150,7 @@ void QBlitterWidget::startDSA()
 	    CEikonEnv::Static()->WsSession().Flush();
 	    iDSA->StartL();
 	    CFbsBitGc *gc = iDSA->Gc();
+	    //gc->SetOrientation(CFbsBitGc::EGraphicsOrientationRotated90);
 	    RRegion *region = iDSA->DrawingRegion();
 	    
 	    gc->SetClippingRegion(region);
@@ -161,6 +171,7 @@ void QBlitterWidget::Restart(RDirectScreenAccess::TTerminationReasons aReason)
 	__DEBUG_IN
     TRAPD( err, iDSA->StartL() ); // You may panic here, if you want
     CFbsBitGc* gc = iDSA->Gc();
+    //gc->SetOrientation(CFbsBitGc::EGraphicsOrientationRotated90);
     RRegion* region = iDSA->DrawingRegion();
     gc->SetClippingRegion(region);
  
@@ -186,13 +197,20 @@ void QBlitterWidget::RunL()
 
 void QBlitterWidget::createScreenBuffer( )
 	{
+	
+	if( samsung )
+		{
+		createScreenBufferSamsung(); //use the samsung hack instead
+		return;
+		}
+	
 	if( keepratio )
 		{
 		switch( screenmode )
 			{
 			case 0:
 				iDSBitmap->Create(
-						TRect(160,0,640,320), CDirectScreenBitmap::EDoubleBuffer); 
+					TRect(160,0,640,320), CDirectScreenBitmap::EDoubleBuffer); 
 				bitmapBlit = Blitkeepratio;
 				logo->setGeometry(QRect(160, 320, 640, 360));
 				break;
@@ -237,6 +255,65 @@ void QBlitterWidget::createScreenBuffer( )
 			}
 		}
 	}
+
+void QBlitterWidget::createScreenBufferSamsung()
+	{
+	if( keepratio )
+		{
+		switch( screenmode )
+			{
+			case 0:
+				iDSBitmap->Create(
+					TRect(40,160,360,640), CDirectScreenBitmap::EDoubleBuffer); 
+				bitmapBlit = BlitkeepratioSamsung;
+				logo->setGeometry(QRect(160, 320, 640, 360));
+				break;
+			case 1:
+				 iDSBitmap->Create(
+					//	TRect(80,0,560,320), CDirectScreenBitmap::EDoubleBuffer); 
+						TRect(40,80,360,560), CDirectScreenBitmap::EDoubleBuffer); 
+				bitmapBlit = BlitkeepratioSamsung;
+				logo->setGeometry(QRect(80, 320, 560, 360));
+				break;
+			case 2:
+				iDSBitmap->Create(
+						//TRect(0,0,640,360), CDirectScreenBitmap::EDoubleBuffer); 
+						TRect(0,0,360,640), CDirectScreenBitmap::EDoubleBuffer); 
+				 bitmapBlit = BlitWidgetFullScreen;
+				break;
+			default:
+				break;
+			}
+		logo->show();
+		}
+	else
+		{
+		logo->hide();
+		switch( screenmode )
+			{
+			case 0:
+				iDSBitmap->Create(
+						//TRect(160,0,640,360), CDirectScreenBitmap::EDoubleBuffer); 
+						TRect(0,160,360,640), CDirectScreenBitmap::EDoubleBuffer); 
+				bitmapBlit = BlitWidgetDSASamsung;
+				break;
+			case 1:
+				 iDSBitmap->Create(
+						 //TRect(80,0,560,360), CDirectScreenBitmap::EDoubleBuffer); 
+						 TRect(0,80,360,560), CDirectScreenBitmap::EDoubleBuffer); 
+				bitmapBlit = BlitWidgetDSASamsung;
+				break;
+			case 2:
+				iDSBitmap->Create(
+								//TRect(0,0,640,360), CDirectScreenBitmap::EDoubleBuffer); 
+								TRect(0,0,360,640), CDirectScreenBitmap::EDoubleBuffer); 
+				 bitmapBlit = BlitWidgetFullScreen;
+				break;
+			default:
+				break;
+		}
+	}
+}
 
 void QBlitterWidget::setLogo()
 	{

@@ -21,7 +21,7 @@
     <property name="geometry">
      <rect>
       <x>250</x>
-      <y>186</y>
+      <y>190</y>
       <width>121</width>
       <height>65</height>
      </rect>
@@ -34,7 +34,7 @@
     <property name="geometry">
      <rect>
       <x>250</x>
-      <y>266</y>
+      <y>265</y>
       <width>121</width>
       <height>65</height>
      </rect>
@@ -47,7 +47,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>266</y>
+      <y>265</y>
       <width>131</width>
       <height>65</height>
      </rect>
@@ -60,7 +60,7 @@
     <property name="geometry">
      <rect>
       <x>510</x>
-      <y>266</y>
+      <y>265</y>
       <width>121</width>
       <height>65</height>
      </rect>
@@ -73,7 +73,7 @@
     <property name="geometry">
      <rect>
       <x>510</x>
-      <y>186</y>
+      <y>190</y>
       <width>121</width>
       <height>65</height>
      </rect>
@@ -94,9 +94,9 @@
     <widget class="QLabel" name="atntLabel">
      <property name="geometry">
       <rect>
-       <x>-1</x>
+       <x>0</x>
        <y>0</y>
-       <width>641</width>
+       <width>640</width>
        <height>140</height>
       </rect>
      </property>
@@ -115,10 +115,10 @@
    <widget class="QGroupBox" name="saveloadState">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>155</y>
+      <x>2</x>
+      <y>171</y>
       <width>241</width>
-      <height>105</height>
+      <height>91</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -130,10 +130,10 @@
     <widget class="QPushButton" name="saveStateButton">
      <property name="geometry">
       <rect>
-       <x>161</x>
-       <y>40</y>
-       <width>75</width>
-       <height>55</height>
+       <x>150</x>
+       <y>26</y>
+       <width>81</width>
+       <height>56</height>
       </rect>
      </property>
      <property name="text">
@@ -144,9 +144,9 @@
      <property name="geometry">
       <rect>
        <x>84</x>
-       <y>40</y>
-       <width>75</width>
-       <height>55</height>
+       <y>26</y>
+       <width>61</width>
+       <height>56</height>
       </rect>
      </property>
      <item>
@@ -178,10 +178,10 @@
     <widget class="QPushButton" name="loadStateButton">
      <property name="geometry">
       <rect>
-       <x>3</x>
-       <y>40</y>
-       <width>75</width>
-       <height>55</height>
+       <x>1</x>
+       <y>26</y>
+       <width>81</width>
+       <height>56</height>
       </rect>
      </property>
      <property name="text">
@@ -193,7 +193,7 @@
     <property name="geometry">
      <rect>
       <x>380</x>
-      <y>266</y>
+      <y>265</y>
       <width>121</width>
       <height>65</height>
      </rect>
@@ -206,7 +206,7 @@
     <property name="geometry">
      <rect>
       <x>380</x>
-      <y>186</y>
+      <y>190</y>
       <width>121</width>
       <height>65</height>
      </rect>
@@ -219,13 +219,31 @@
     <property name="geometry">
      <rect>
       <x>155</x>
-      <y>266</y>
+      <y>265</y>
       <width>80</width>
       <height>65</height>
      </rect>
     </property>
     <property name="text">
      <string>About</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="separator">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>150</y>
+      <width>640</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+background-image: url(:/graphics/gfx/separator.png);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

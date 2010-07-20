@@ -29,20 +29,16 @@ class AudioSettings : public QWidget
     Q_OBJECT
 
 public:
-    AudioSettings(int audioOn, int samplerate, int stereoOn, int volume, 
+    AudioSettings(int audioOn, int volume, 
 					QWidget *parent = 0);
     ~AudioSettings();
 
 public slots:
     void setAudioOn( int audioOn );
-    void setSampleRate( int sampleRate );
-    void setStereoOn( int stereoOn );
     void setVolume( int volume );
     
  signals:
    void AudioOn( int audioOn );
-   void SampleRate( int sampleRate );
-   void enableStereo( int stereoOn );
    void Volume( int volume );
    
 private:

@@ -23,8 +23,13 @@
 
 #include <e32def.h>
 
+
 void BlitWidgetDSA( TUint8* aScreen, TUint8* aBitmap );
 void Blitkeepratio( TUint8* aScreen, TUint8* aBitmap );
 void BlitWidgetFullScreen( TUint8* aScreen, TUint8* aBitmap );
+
+//hacked blit functions for Samsung i8910
+void BlitWidgetDSASamsung( TUint8* aScreen, TUint8* aBitmap );
+void BlitkeepratioSamsung( TUint8* aScreen, TUint8* aBitmap );
 
 #endif /* BITMAPBLIT_H_ */

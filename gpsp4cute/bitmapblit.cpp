@@ -141,3 +141,111 @@ void BlitWidgetFullScreen( TUint8* aScreen, TUint8* aBitmap )
 	 bitmap += 640;
 	 }
 	}
+
+void BlitWidgetDSASamsung( TUint8* aScreen, TUint8* aBitmap )
+	{
+	TUint32* bitmap = (TUint32*) aBitmap;
+	TUint16* screen = (TUint16*) aScreen;
+	screen += 160 * 240;
+	TUint32* screen_temp;
+	TUint32* bittemp = bitmap;
+	TUint32 red = 0;
+	TUint32 green = 0;
+	TUint32 blue = 0;
+	
+	TUint32 extinterp = 0;
+	
+	for(TInt j=0; j<160;j++)
+	 {
+	 screen -= 240;
+	 for( TInt i=0; i<240; i++)
+	   {
+	   copyPixel16MU( bitmap, screen, red, green, blue );
+	   bitmap += 320;
+	   copyPixel16MU( bitmap, screen, red, green, blue );
+	   bitmap += 320;
+	   screen++;
+	   }
+	 screen -= 240;
+	 bittemp++;
+	 bitmap = bittemp;
+	 
+	 extinterp++;
+	 if( extinterp == 4 )
+		 {
+		 TUint16* screen_tmp = screen;
+		 //copy the prev line:
+		 for( TInt i=0; i<240; i++)
+			   {
+			   copyPixel16MU( bitmap, screen_tmp, red, green, blue );
+			   bitmap += 320;
+			   copyPixel16MU( bitmap, screen_tmp, red, green, blue );
+			   bitmap += 320;
+			   screen_tmp++;
+			   }
+		 bittemp++;
+		 bitmap = bittemp;
+		 
+		 extinterp = 0;
+		 }
+	 
+	 
+	 //copyPrevLineSamsung( bitmap );
+	 TUint16* screen_cop = screen;
+	 for( TInt i=0; i<240; i++)
+		   {
+		   copyPixel16MU( bitmap, screen_cop, red, green, blue );
+		   bitmap += 320;
+		   copyPixel16MU( bitmap, screen_cop, red, green, blue );
+		   bitmap += 320;
+		   screen_cop++;
+		   }
+		
+	 bittemp++;
+	 bitmap = bittemp; 
+	 }
+	
+	}
+
+void BlitkeepratioSamsung( TUint8* aScreen, TUint8* aBitmap )
+	{
+	TUint32* bitmap = (TUint32*) aBitmap;
+	TUint16* screen = (TUint16*) aScreen;
+	screen += 160 * 240;
+	TUint32* screen_temp;
+	TUint32* bittemp = bitmap;
+	TUint32 red = 0;
+	TUint32 green = 0;
+	TUint32 blue = 0;
+	for(TInt j=0; j<160;j++)
+	 {
+	 screen -= 240;
+	 for( TInt i=0; i<240; i++)
+	   {
+	   copyPixel16MU( bitmap, screen, red, green, blue );
+	   bitmap += 320;
+	   copyPixel16MU( bitmap, screen, red, green, blue );
+	   bitmap += 320;
+	   screen++;
+	   }
+	 screen -= 240;
+	 bittemp++;
+	 bitmap = bittemp;
+	 
+	 //copyPrevLineSamsung( bitmap );
+	 TUint16* screen_cop = screen;
+	 for( TInt i=0; i<240; i++)
+		   {
+		   copyPixel16MU( bitmap, screen_cop, red, green, blue );
+		   bitmap += 320;
+		   copyPixel16MU( bitmap, screen_cop, red, green, blue );
+		   bitmap += 320;
+		   screen_cop++;
+		   }
+		
+	 bittemp++;
+	 bitmap = bittemp;
+	 
+	 }
+	
+	}

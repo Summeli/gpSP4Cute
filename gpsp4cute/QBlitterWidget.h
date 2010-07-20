@@ -48,6 +48,7 @@ public slots:
 protected:
     void paintEvent(QPaintEvent *);
     void createScreenBuffer();
+    void createScreenBufferSamsung();
     
 public:
     // from MDirectScreenAccess class  
@@ -68,7 +69,7 @@ protected: //data
     CDirectScreenAccess *iDSA;
     CDirectScreenBitmap *iDSBitmap;
     smallgpsplogo* logo;
-
+    bool samsung;
 };
 
 #endif /* QBLITTERWIDGET_H_ */

@@ -45,7 +45,7 @@ gpsp4Qt::gpsp4Qt(QWidget *parent)
     smallwidget->setGeometry(QRect(0, 0, 80, 360));
     smallwidget->hide();
     connect(smallwidget, SIGNAL(showMenu()), this, SLOT( showAntSnesMenu()) );
-    connect(dpad, SIGNAL(virtualKeyEvent(quint32, bool)), this, SLOT( virtualKeyEvent(quint32, bool)) );
+    connect(smallwidget, SIGNAL(virtualKeyEvent(quint32, bool)), this, SLOT( virtualKeyEvent(quint32, bool)) );
     
     rsmallwidget = new rightbuttonwidget( this );
     rsmallwidget->setGeometry(QRect(560, 0, 640, 360));

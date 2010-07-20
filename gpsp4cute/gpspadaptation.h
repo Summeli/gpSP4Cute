@@ -29,7 +29,11 @@
 
 //#define ENABLE_AUDIO
 #ifdef ENABLE_AUDIO
-#include <QAudio.h>
+#include <QAudioOutput>
+#include <QAudioDeviceInfo>
+#include <QAudioFormat>
+#include <QBuffer>
+#include <QTimer>
 #endif
 
 /* the gpspadapation is basically the emulation thread
@@ -69,7 +73,9 @@ private:
     void checkAudioDevices();
     
 public slots:
-	void audiocallback( QAudio::State state);
+	void pullTimerExpired();
+	void notified();
+	void stateChanged(QAudio::State state);
 #endif
 	
 signals:
@@ -81,6 +87,15 @@ private:
     TGPSPSettings gsettings;
     QString rom;
 
+#ifdef ENABLE_AUDIO    
+    //AUDIO
+    QAudioOutput* qaudio;
+    QAudioFormat audioformat;
+    QBuffer* audioOut;
+    QIODevice* m_output; //now owned
+    QByteArray* audioBuf;
+    QTimer* m_pullTimer;
+#endif
 };
 
 

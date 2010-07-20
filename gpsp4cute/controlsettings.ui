@@ -61,11 +61,6 @@
      <string>hide touch D-pad</string>
     </property>
    </item>
-   <item>
-    <property name="text">
-     <string/>
-    </property>
-   </item>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

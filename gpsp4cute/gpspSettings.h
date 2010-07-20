@@ -42,8 +42,6 @@ struct TGPSPSettings
 	
 	//Audio Settings
 	bool iAudioOn;
-	int iSampleRate;
-	bool iStereo;
 	int iVolume;
 	int iScreenSettings;
 };

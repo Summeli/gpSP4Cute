@@ -77,8 +77,6 @@ public slots:
     //Audio Settings
     void showAudioSettings();
     void setAudioOn( int audioOn );
-    void setSampleRate( int sampleRate );
-    void setStereoOn( int stereoOn );
     void setVolume( int volume );
     
     //Video Settings

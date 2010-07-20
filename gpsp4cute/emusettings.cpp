@@ -25,7 +25,7 @@
 #include "emusettings.h"
 #include "cuteDebug.h"
 
-#define KSettingsVersion 5
+#define KSettingsVersion 7
 
 EmuSettings::EmuSettings(QWidget *parent)
     : QMainWindow(parent)
@@ -38,8 +38,7 @@ EmuSettings::EmuSettings(QWidget *parent)
 	saveSlotIndexChanged(gpspsettings.iLastSlot);
 	//int audioOn, int samplerte, int stereoOn, int volume, bool enablespeedhack, QWidget *parent 
 	//TODO: read settings
-	audiosettings = new AudioSettings(gpspsettings.iAudioOn, gpspsettings.iSampleRate, 
-										gpspsettings.iStereo, gpspsettings.iVolume, this );
+	audiosettings = new AudioSettings(gpspsettings.iAudioOn, gpspsettings.iVolume, this );
 	audiosettings->setGeometry(QRect(0, 0, 640, 150));
 	audiosettings->hide();
 	
@@ -74,13 +73,8 @@ EmuSettings::EmuSettings(QWidget *parent)
 	connect(ui.aboutButton, SIGNAL(clicked()), this, SLOT(aboutClicked()));
 	connect(ui.saveSlotBox, SIGNAL(currentIndexChanged(int)), this, SLOT(saveSlotIndexChanged(int)));
 	
-	//audio is not yet supported
-	ui.audioButton->setEnabled( FALSE );
-	
 	//connect audio settins
 	connect( audiosettings, SIGNAL(AudioOn(int)), this, SLOT( setAudioOn(int)));
-	connect( audiosettings, SIGNAL(SampleRate(int)), this, SLOT( setSampleRate(int)));
-	connect( audiosettings, SIGNAL(enableStereo(int)), this, SLOT( setStereoOn(int)));
 	connect( audiosettings, SIGNAL(Volume(int)), this, SLOT( setVolume(int)));
 	
 	//connect video settings
@@ -288,23 +282,6 @@ void EmuSettings::setAudioOn( int audioOn )
     gpspsettings.iAudioOn = (bool) audioOn;
     }
 
-void EmuSettings::setSampleRate( int sampleRate )
-    {
-	__DEBUG_IN
-	settingsChanged = true;
-	__DEBUG2("SampleRate is", sampleRate );
-    gpspsettings.iSampleRate = sampleRate;
-	__DEBUG_OUT
-    }
-
-void EmuSettings::setStereoOn( int stereoOn )
-    {
-	__DEBUG_IN
-	settingsChanged = true;
-	gpspsettings.iStereo = (bool) stereoOn;
-	__DEBUG_OUT
-    }
-
 void EmuSettings::setVolume( int volume )
     {
 	settingsChanged = true;
@@ -489,8 +466,6 @@ void EmuSettings::setDefaultSettings()
 	gpspsettings.ikeepAspectRatio = true;
 	gpspsettings.iFrameSkip = 0;
 	gpspsettings.iAudioOn = false;
-	gpspsettings.iSampleRate = 22050;
-	gpspsettings.iStereo = false;
 	gpspsettings.iVolume = 4;
 	gpspsettings.iLastSlot = 1;
 	gpspsettings.iScreenSettings = 0;
@@ -502,26 +477,24 @@ void EmuSettings::savecurrentSettings()
 	__DEBUG_IN
 
 	QSettings settings;
-	settings.setValue("version", KSettingsVersion );
+	settings.setValue("gpsp_version", KSettingsVersion );
 
 	for(int i=0;i<10;i++)
 		{
-	    QString keyval = "kebind";
+	    QString keyval = "gpsp_kebind";
 	    keyval.append( QString::number(i) );
 		settings.setValue(keyval, gpspsettings.iScanKeyTable[i]);
 		}
-	settings.setValue("lastrom",gpspsettings.iLastROM);
-	settings.setValue("bios",gpspsettings.iBios);
-	settings.setValue("lastslot",gpspsettings.iLastSlot);
-	settings.setValue("showfps",gpspsettings.iShowFPS);
-	settings.setValue("aspectratio",gpspsettings.ikeepAspectRatio);
-	settings.setValue("frameskip",gpspsettings.iFrameSkip);
-	settings.setValue("audioOn",gpspsettings.iAudioOn);
-	settings.setValue("samplerate",gpspsettings.iSampleRate);
-	settings.setValue("stereo",gpspsettings.iStereo);
-	settings.setValue("volume",gpspsettings.iVolume);
-	settings.setValue("lastslot",gpspsettings.iLastSlot);
-	settings.setValue("screensettings", gpspsettings.iScreenSettings);
+	settings.setValue("gpsp_lastrom",gpspsettings.iLastROM);
+	settings.setValue("gpsp_bios",gpspsettings.iBios);
+	settings.setValue("gpsp_lastslot",gpspsettings.iLastSlot);
+	settings.setValue("gpsp_showfps",gpspsettings.iShowFPS);
+	settings.setValue("gpsp_aspectratio",gpspsettings.ikeepAspectRatio);
+	settings.setValue("gpsp_frameskip",gpspsettings.iFrameSkip);
+	settings.setValue("gpsp_audioOn",gpspsettings.iAudioOn);
+	settings.setValue("gpsp_volume",gpspsettings.iVolume);
+	settings.setValue("gpsp_lastslot",gpspsettings.iLastSlot);
+	settings.setValue("gpsp_screensettings", gpspsettings.iScreenSettings);
 	settings.sync();
 	__DEBUG_OUT
 	}
@@ -530,7 +503,7 @@ void EmuSettings::loadSettings()
 	{
 	__DEBUG_IN
 	QSettings settings;
-	int version = settings.value("version").toInt();
+	int version = settings.value("gpsp_version").toInt();
 	if( version != KSettingsVersion )
 		{
 		__DEBUG1("No version was set, creating default settings");
@@ -542,20 +515,18 @@ void EmuSettings::loadSettings()
 
 	for(int i=0;i<10;i++)
 		{
-	    QString keyval = "kebind";
+	    QString keyval = "gpsp_kebind";
 	    keyval.append( QString::number(i) );
 	    gpspsettings.iScanKeyTable[i] = settings.value(keyval).toUInt();
 		}
-	gpspsettings.iLastROM = settings.value("lastrom").toString();
-	gpspsettings.iBios = settings.value("bios").toString();
-	gpspsettings.iShowFPS = settings.value("showfps").toBool();
-	gpspsettings.ikeepAspectRatio = settings.value("aspectratio").toBool();
-	gpspsettings.iFrameSkip = settings.value("frameskip").toInt();
-	gpspsettings.iAudioOn = settings.value("audioOn").toBool();
-	gpspsettings.iSampleRate = settings.value("samplerate").toInt();
-	gpspsettings.iStereo = settings.value("stereo").toBool();
-	gpspsettings.iVolume = settings.value("volume").toInt();
-	gpspsettings.iLastSlot = settings.value("lastslot").toInt();
-	gpspsettings.iScreenSettings = settings.value("screensettings").toInt();
+	gpspsettings.iLastROM = settings.value("gpsp_lastrom").toString();
+	gpspsettings.iBios = settings.value("gpsp_bios").toString();
+	gpspsettings.iShowFPS = settings.value("gpsp_showfps").toBool();
+	gpspsettings.ikeepAspectRatio = settings.value("gpsp_aspectratio").toBool();
+	gpspsettings.iFrameSkip = settings.value("gpsp_frameskip").toInt();
+	gpspsettings.iAudioOn = settings.value("gpsp_audioOn").toBool();
+	gpspsettings.iVolume = settings.value("gpsp_volume").toInt();
+	gpspsettings.iLastSlot = settings.value("gpsp_lastslot").toInt();
+	gpspsettings.iScreenSettings = settings.value("gpsp_screensettings").toInt();
 	__DEBUG_OUT
 	}

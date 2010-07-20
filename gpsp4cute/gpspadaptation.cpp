@@ -46,6 +46,12 @@ quint8 paused;
 
 quint32 adaptationkey = 0;
 
+//const int AudioBufferSize =  16 * 2 * 450; //450 samples in 20ms
+const int AudioBufferSize =  16 * 2 * 160; //160 samples in 20ms
+
+extern "C" {
+extern void sound_callback(void *userdata, u8 *stream, int length);
+};
 /*
  * 240 x 160 resolution is used in gpsp emulator, the image is scaled in the apdatation layer
  * */
@@ -194,11 +200,29 @@ void gpspadaptation::showErrorNote( QString message )
 #ifdef ENABLE_AUDIO
 #include <QAudioDeviceInfo>
 #include <QAudioFormat>
+void gpspadaptation::pullTimerExpired()
+	{
+	sound_callback( NULL,(u8*) audioBuf->data(), AudioBufferSize ); //mix the data
+	m_output->write(audioBuf->data(), 16 * 2 * 450 ); //write it
+	}
 
-void gpspadaptation::audiocallback( QAudio::State state)
+void gpspadaptation::notified()
 	{
 	
 	}
+
+void gpspadaptation::stateChanged(QAudio::State state)
+	{
+	if( state == QAudio::IdleState )
+		{
+
+		}
+	if( state == QAudio::ActiveState )
+		{
+		//render
+		}
+	}
+
 
 void gpspadaptation::initAudio()
 	{
@@ -209,13 +233,50 @@ void gpspadaptation::initAudio()
 		}*/
 	
 	//DEUBUG
-	checkAudioDevices();
+//	checkAudioDevices();
+	
 //we should use the default device
-	QAudioDeviceInfo defaultdevice =  QAudioDeviceInfo::defaultOutputDevice();
 
 	QAudioFormat format;
 	format.setCodec( QString("audio/pcm"));
+	//format.setSampleRate( 22500 );
+	format.setSampleRate( 8000 );
+	format.setByteOrder( QAudioFormat::LittleEndian );
+	format.setSampleType( QAudioFormat::SignedInt );
+	format.setChannelCount( 2 );
+	format.setSampleSize( 16 );
+		
+	QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
+	if (!info.isFormatSupported(format)) {
+		 qWarning()<<"raw audio format not supported by backend, cannot play audio.";
+		 return;
+	 }
+	 
+	QAudioDeviceInfo defaultdevice =  QAudioDeviceInfo::defaultOutputDevice();
+	qaudio = new QAudioOutput( defaultdevice, format, this );
+	
+    connect(qaudio, SIGNAL(notify()), SLOT(notified()));
+    connect(qaudio, SIGNAL(stateChanged(QAudio::State)), SLOT(stateChanged(QAudio::State)));
+    
+	audioOut = new QBuffer();
+
+	audioBuf = new QByteArray();
+	audioBuf->resize( AudioBufferSize ); 
+
+	/*
+	audioOut->setBuffer( audioBuf );
+	bool err = audioOut->open(QIODevice::ReadOnly);
+	*/
+
+	m_pullTimer = new QTimer(this);
+	
+    connect(m_pullTimer, SIGNAL(timeout()), SLOT(pullTimerExpired()));
+    
+
+    m_output = qaudio->start();
+    m_pullTimer->start(20);
 	}
+
 
 // Used only for debuggin purposes
 void gpspadaptation::checkAudioDevices()
