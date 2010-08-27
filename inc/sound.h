@@ -21,6 +21,7 @@
 #define SOUND_H
 
 #define BUFFER_SIZE 65536
+//#define BUFFER_SIZE 16384
 
 // A lot of sound cards on PC can't handle such small buffers but this
 // seems to work well on PSP.

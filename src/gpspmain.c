@@ -336,8 +336,7 @@ int main(int argc, char *argv[])
 #endif
   }
 
-#define _DUMMY_TEST
-#ifdef _DUMMY_TEST
+#ifdef __SYMBIAN32__
   save_game_config_file();
   if(load_gamepak( rom ) == -1)
 	  DEBUG("Game load failed");
@@ -408,16 +407,6 @@ int main(int argc, char *argv[])
 #ifdef __SYMBIAN32__
   get_ticks_us(&frame_count_initial_timestamp);
 #endif
-
-/*  u8 current_savestate_filename[512];
-  get_savestate_filename_noshot(savestate_slot,
-   current_savestate_filename);
-  load_state(current_savestate_filename); */
-
-  //debug_on();
-
-  //current_debug_state = STEP;
-    //breakpoint_value = strtol(argv[2], NULL, 16);
  
   execute_arm_translate(execute_cycles);
   execute_arm(execute_cycles);

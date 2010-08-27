@@ -2,7 +2,7 @@
 &EN
 
 ; SIS header: name, uid, version
-#{"gpsp4cute"},(0xE0D278F3),0,5,0
+#{"gpsp"},(0xE0D278F3),0,6,0
 
 ; Localised Vendor name
 %{"Vendor"}

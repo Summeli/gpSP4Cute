@@ -46,11 +46,9 @@ quint8 paused;
 
 quint32 adaptationkey = 0;
 
-//const int AudioBufferSize =  16 * 2 * 450; //450 samples in 20ms
-const int AudioBufferSize =  16 * 2 * 160; //160 samples in 20ms
-
 extern "C" {
-extern void sound_callback(void *userdata, u8 *stream, int length);
+
+void init_audio_app();
 };
 /*
  * 240 x 160 resolution is used in gpsp emulator, the image is scaled in the apdatation layer
@@ -59,9 +57,11 @@ extern void sound_callback(void *userdata, u8 *stream, int length);
 #define KSCREENHEIGHT 160
 #define KSCREENWIDTH 240
 
-gpspadaptation::gpspadaptation( QBlitterWidget* widget  )
+gpspadaptation::gpspadaptation( QBlitterWidget* widget, audio* audioInterface  )
     {
     blitter = widget;
+    m_audio = audioInterface;
+	
     g_gpspAdapt = this;
     }
 
@@ -70,19 +70,26 @@ void gpspadaptation::run()
     __DEBUG_IN
     
     __DEBUG2("QThread::currentThreadId():", QThread::currentThreadId());
-#ifdef ENABLE_AUDIO
-    initAudio();
-#endif
+    
 	connect(this, SIGNAL(frameblit()), blitter, SLOT(render()), 
 			Qt::BlockingQueuedConnection );
+
+	connect(this, SIGNAL(initAudio()), m_audio, SLOT(initAudio()), 
+			Qt::BlockingQueuedConnection );
 	
-	__DEBUG3("Starting the gpsp, ROM and bios:", rom, gsettings.iBios );
+	connect(this, SIGNAL(startAudio()), m_audio, SLOT(startAudio())  );
+	connect(this, SIGNAL(stopAudio()), m_audio, SLOT(stopAudio()) );
+	
+	__DEBUG3("Starting the gpsp, ROM and bios:", rom, m_settings.iBios );
 	//Start the main in the emulator
 	symbian_library_main( (u8*) rom.toStdString().c_str(), 
-			(u8*) gsettings.iBios.toStdString().c_str() );
+			(u8*) m_settings.iBios.toStdString().c_str() );
 	
 	__DEBUG1("Main loop returned!");
     disconnect(this, SIGNAL(frameblit()), blitter, SLOT(render()) );
+    disconnect(this, SIGNAL(initAudio()), m_audio, SLOT(initAudio()) );
+    disconnect(this, SIGNAL(startAudio()), m_audio, SLOT(startAudio()) );
+    disconnect(this, SIGNAL(stopAudio()), m_audio, SLOT(stopAudio()) );
     }
 
 
@@ -95,6 +102,11 @@ void gpspadaptation::Start()
 	{
     __DEBUG_IN
     paused = 0;
+	if( QThread::isRunning() )
+		{
+		if( !m_audio->isStarted() && m_settings.iAudioOn )
+			m_audio->startAudio();
+		}
     __DEBUG_OUT
     
 	}
@@ -104,6 +116,11 @@ void gpspadaptation::Stop()
 	{
     __DEBUG_IN
     paused = 1;
+	if( isRunning() )
+		{
+		if( m_audio->isStarted() )
+			m_audio->stopAudio();
+		}
     __DEBUG_OUT
 	}
 
@@ -118,9 +135,10 @@ void gpspadaptation::ResetGame()
 void gpspadaptation::LoadRom( QString aFileName,  TGPSPSettings settings )
 	{
 	__DEBUG_IN
-    gsettings = settings; 
+    m_settings = settings; 
     rom = aFileName;
     paused = 0;
+    m_audio->setVolume( settings.iVolume );
     if( !isRunning() )
     	{
 		__DEBUG1("thread wasn't yet running, starting the thread");
@@ -160,10 +178,12 @@ void gpspadaptation::exitgpsp()
     __DEBUG_OUT
 	}
 
-void gpspadaptation::showgpspFPS( bool fps )
+void gpspadaptation::updateSettings( TGPSPSettings settings  )
 	{
 	__DEBUG_IN
-	gp2x_fps_debug = fps;
+	m_settings = settings;
+	gp2x_fps_debug = settings.iShowFPS;
+	m_audio->setVolume( settings.iVolume );
 	__DEBUG_OUT
 	}
 
@@ -171,6 +191,15 @@ void gpspadaptation::blit( const quint16* screen )
 	{
     __DEBUG_IN
     emit(frameblit());
+    __DEBUG_OUT
+	}
+
+void gpspadaptation::initializeAudio()
+	{
+    __DEBUG_IN
+    emit initAudio();
+    if( m_settings.iAudioOn )	
+    	emit(startAudio());
     __DEBUG_OUT
 	}
 
@@ -196,174 +225,6 @@ void gpspadaptation::showErrorNote( QString message )
 	emit(dispatchErrorNote(message));
 	__DEBUG_OUT
 	}
-
-#ifdef ENABLE_AUDIO
-#include <QAudioDeviceInfo>
-#include <QAudioFormat>
-void gpspadaptation::pullTimerExpired()
-	{
-	sound_callback( NULL,(u8*) audioBuf->data(), AudioBufferSize ); //mix the data
-	m_output->write(audioBuf->data(), 16 * 2 * 450 ); //write it
-	}
-
-void gpspadaptation::notified()
-	{
-	
-	}
-
-void gpspadaptation::stateChanged(QAudio::State state)
-	{
-	if( state == QAudio::IdleState )
-		{
-
-		}
-	if( state == QAudio::ActiveState )
-		{
-		//render
-		}
-	}
-
-
-void gpspadaptation::initAudio()
-	{
-	//TO not care
-	/*if( gsettings.iAudioOn )
-		{
-		
-		}*/
-	
-	//DEUBUG
-//	checkAudioDevices();
-	
-//we should use the default device
-
-	QAudioFormat format;
-	format.setCodec( QString("audio/pcm"));
-	//format.setSampleRate( 22500 );
-	format.setSampleRate( 8000 );
-	format.setByteOrder( QAudioFormat::LittleEndian );
-	format.setSampleType( QAudioFormat::SignedInt );
-	format.setChannelCount( 2 );
-	format.setSampleSize( 16 );
-		
-	QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
-	if (!info.isFormatSupported(format)) {
-		 qWarning()<<"raw audio format not supported by backend, cannot play audio.";
-		 return;
-	 }
-	 
-	QAudioDeviceInfo defaultdevice =  QAudioDeviceInfo::defaultOutputDevice();
-	qaudio = new QAudioOutput( defaultdevice, format, this );
-	
-    connect(qaudio, SIGNAL(notify()), SLOT(notified()));
-    connect(qaudio, SIGNAL(stateChanged(QAudio::State)), SLOT(stateChanged(QAudio::State)));
-    
-	audioOut = new QBuffer();
-
-	audioBuf = new QByteArray();
-	audioBuf->resize( AudioBufferSize ); 
-
-	/*
-	audioOut->setBuffer( audioBuf );
-	bool err = audioOut->open(QIODevice::ReadOnly);
-	*/
-
-	m_pullTimer = new QTimer(this);
-	
-    connect(m_pullTimer, SIGNAL(timeout()), SLOT(pullTimerExpired()));
-    
-
-    m_output = qaudio->start();
-    m_pullTimer->start(20);
-	}
-
-
-// Used only for debuggin purposes
-void gpspadaptation::checkAudioDevices()
-	{
-	QList<QAudioDeviceInfo> devlist = QAudioDeviceInfo::availableDevices ( QAudio::AudioOutput );
-
-	for (int i = 0; i < devlist.size(); ++i)
-    	{
-		QString device = devlist.at(i).deviceName();
-		__DEBUG1( device );
-    	}
-	
-	//we should use the default device
-	QAudioDeviceInfo defaultdevice =  QAudioDeviceInfo::defaultOutputDevice();
-	
-	__DEBUG2( "default output device is:", defaultdevice.deviceName() );
-	
-	QStringList list = defaultdevice.supportedCodecs();
-	__DEBUG1("gpspadaptation: list of supporetd audio codecs: ");
-	for (int i = 0; i < list.size(); ++i)
-    	{
-		QString codec = list.at(i);
-		__DEBUG1( codec );
-    	}
-	
-	__DEBUG1("gpspadaptation: list of supported sampletypes: ");
-	 QList<QAudioFormat::SampleType> sampleTypez = defaultdevice.supportedSampleTypes();
-	 for (int i = 0; i < sampleTypez.size(); ++i) 
-		 {
-		 switch(sampleTypez.at(i)) 
-			 {
-			case QAudioFormat::SignedInt:
-			__DEBUG1("SignedInt");
-			break;
-		 case QAudioFormat::UnSignedInt:
-			 __DEBUG1("UnSignedInt");
-			 break;
-		 case QAudioFormat::Float:
-			 __DEBUG1("Float");
-			 break;
-		 case QAudioFormat::Unknown:
-			 __DEBUG1("Unknown");
-			 }
-		 }
-			 
-	__DEBUG1("gpspadaptation: list of supported endianess: "); 
-	 QList<QAudioFormat::Endian> endianz = defaultdevice.supportedByteOrders();
-	 for (int i = 0; i < endianz.size(); ++i) 
-		 {
-		 switch (endianz.at(i)) 
-			 {
-			 case QAudioFormat::LittleEndian:
-				 __DEBUG1("Little Endian");
-				 break;
-			 case QAudioFormat::BigEndian:
-				 __DEBUG1("Big Endian");
-				 break;
-			 }
-		 }
-	 
-	 __DEBUG1("gpspadaptation: list of supported frequenzies: "); 
-	 QList<int> fequenz = defaultdevice.supportedFrequencies();
-	 for (int i = 0; i < fequenz.size(); ++i) 
-		 {
-		 int freq = fequenz.at(i);
-		 __DEBUG2("supported fequence;", freq );
-		 }
-	 
-	 __DEBUG1("gpspadaptation: list of supported channels: "); 
-	 QList<int> chanz = defaultdevice.supportedChannels();
-	 for (int i = 0; i < chanz.size(); ++i) 
-		 {
-		 int chan = chanz.at(i);
-		 __DEBUG2("supported channels;", chan );
-		 }
-
-	 __DEBUG1("gpspadaptation: list of supported samplesizes: "); 
-	 QList<int> sampz = defaultdevice.supportedSampleSizes();
-	 for (int i = 0; i < sampz.size(); ++i) 
-		 {
-		 int samp = sampz.at(i);
-		 __DEBUG2("supported samplesize;", samp );
-		 }	    
-			 
-	}
-
-#endif
 	 
 u32 updateSymbianInput()
 	{
@@ -475,6 +336,11 @@ bool isBiosValid( const char* bios )
 	  return false;
 	  }
 	return true;
+	}
+
+void init_audio_app()
+	{
+	g_gpspAdapt->initializeAudio();
 	}
 
 //Debug helpers for the C-side

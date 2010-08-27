@@ -23,13 +23,19 @@
 
 #include "antaudio.h"
 #include "sound_symbian.h"
+#include "cutedebug.h"
 
 #define KNoSegs  3
 
-#define KCallBackInterval 1000
-#define KCallBackDelayFromStart 100000
+#define KCallBackInterval 50000
+#define KCallBackDelayFromStart 50000
 
-                 
+
+//const int AudioBufferSize =   2 * 2 * 551; //16bit * stereo * samples (11khz) in 50ms
+
+// 2(magic?) * 16bit * stereo * samples (11025hz) in 50ms
+const int AudioBufferSize =  2 * 2 * 2 * 550; // 2(magic?) * 16bit * stereo * samples (
+
 CAntAudio::CAntAudio(TInt aRate, TBool aStereo, TInt aPcmFrames, TInt aVolume )
 : iRate(aRate), iStereo(aStereo), iPcmFrames(aPcmFrames), iVolume( aVolume )
 {
@@ -74,13 +80,13 @@ void CAntAudio::ConstructL( )
 		case 44100: iMdaAudioDataSettings.iSampleRate = TMdaAudioDataSettings::ESampleRate44100Hz; break;
 		default:    iMdaAudioDataSettings.iSampleRate = TMdaAudioDataSettings::ESampleRate8000Hz;  break;
 	}
-
+			 
 	iMdaAudioDataSettings.iChannels   = (iStereo) ? TMdaAudioDataSettings::EChannelsStereo : TMdaAudioDataSettings::EChannelsMono;
 	iMdaAudioDataSettings.iCaps       = TMdaAudioDataSettings::ESampleRateFixed | iMdaAudioDataSettings.iSampleRate;
 	iMdaAudioDataSettings.iFlags      = TMdaAudioDataSettings::ENoNetworkRouting;
 	
-	//TInt	bytesPerFrame = iStereo ? iPcmFrames << 2 : iPcmFrames << 1;
-    TInt bytesPerFrame = iPcmFrames;
+	TInt bytesPerFrame = AudioBufferSize;
+	
 	for (TInt i=0 ; i<KSoundBuffers ; i++)
 	{
 		//TODO: calculate correct buffer size!
@@ -101,7 +107,7 @@ void CAntAudio::Reset()
 	iMdaAudioOutputStream->Open(&iMdaAudioDataSettings);
 		
     iWait->Start();
-	iMdaAudioOutputStream->SetPriority(EPriorityMuchMore, EMdaPriorityPreferenceNone);
+	iMdaAudioOutputStream->SetPriority(EPriorityMuchMore, EMdaPriorityPreferenceTime);
 	TInt MaxVol = iMdaAudioOutputStream->MaxVolume();
 	TInt vol = (MaxVol * iVolume) / MaxVol;
 	iMdaAudioOutputStream->SetVolume(vol);
@@ -146,7 +152,9 @@ TInt CAntAudio::FreeBufferCount()
 
 void CAntAudio::SetVolume( TInt aVolume )
 	{
-	iMdaAudioOutputStream->SetVolume( aVolume );
+	TInt max = iMdaAudioOutputStream->MaxVolume();
+	TInt vol = max/10 * aVolume;
+	iMdaAudioOutputStream->SetVolume( vol );
 	}
 void CAntAudio::MaoscOpenComplete(TInt aError)
 {
@@ -182,7 +190,6 @@ void CAntAudio::MaoscPlayComplete(TInt aError)
 
 static CAntAudio* output = NULL;
 static CPeriodic* periodictimer = NULL;
-static int g_FrameSize;
 
 
 static TInt AudioCallback(TAny* ptr)
@@ -192,13 +199,16 @@ static TInt AudioCallback(TAny* ptr)
 	
 	//GET audio buf
 	coreAudioBuffer = output->NextFrameL();
-	
-	//Mix it
-	//mixed = sound_callback(NULL, (u8*)coreAudioBuffer, g_FrameSize);
-	
-	if( mixed )
+	if( coreAudioBuffer )
+		{
+		//Mix it
+		sound_callback( NULL, (u8*)coreAudioBuffer, AudioBufferSize );
 		output->FrameMixed();
-	 
+		}
+	else
+		{
+		__DEBUG1("frame not mixed, not enough free buffers");
+		}
 	}
 
 void Init_Symbian_Audio( int samplerate, int bytesperframe )
@@ -206,9 +216,8 @@ void Init_Symbian_Audio( int samplerate, int bytesperframe )
 	output = CAntAudio::NewL( samplerate, ETrue, bytesperframe , 0);
 	output->Reset();
 	
+	
 	periodictimer = CPeriodic::NewL( EPriorityNormal ); 
-	//periodictimer->Start( KCallBackDelayFromStart, KCallBackInterval, TCallBack( AudioCallback, NULL ) );
-	g_FrameSize = bytesperframe;
 	}
 
 void DeInit_SYmbian_Audio()
@@ -219,11 +228,24 @@ void DeInit_SYmbian_Audio()
 	delete output;
 	}
 
-void Start_Symbian_Audio()
+void Start_Symbian_Audio( int vol )
 	{
 	if( !periodictimer->IsActive() )
-		output->SetVolume(4);
+		{
+		u8 *coreAudioBuffer = output->NextFrameL();
+		output->FrameMixed();
+		
+		coreAudioBuffer = output->NextFrameL();
+		output->FrameMixed();
+		
+		output->SetVolume(vol);
 		periodictimer->Start( KCallBackDelayFromStart, KCallBackInterval, TCallBack( AudioCallback, NULL ) );
+		}
+	}
+
+void set_SymbianVolume( int volume )
+	{
+	output->SetVolume( volume );
 	}
 void Stop_Symbian_Audio()
 	{

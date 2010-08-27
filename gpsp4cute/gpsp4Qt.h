@@ -37,6 +37,7 @@
 #include "smalloptionswidget.h"
 #include "rightbuttonwidget.h"
 #include "gpspadaptation.h"
+#include "audio.h"
 
 /* This class is the UI controller in the UI thread side
  * it's only purpose is to keep things in order in the UI
@@ -85,7 +86,7 @@ private slots:
     
 private:
     QBlitterWidget* widget;
-    
+    audio* m_audio;
     TGPSPSettings iSettings;
     QList<antKeyEvent> iPressedKeys;
     QRemoteControlKeys* remotecontrol;

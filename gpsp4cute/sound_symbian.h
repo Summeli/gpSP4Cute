@@ -29,8 +29,8 @@ extern "C" {
 //Wrapper functions for symbian audio
 void Init_Symbian_Audio( int samplerate, int bytesperframe );
 void DeInit_SYmbian_Audio();
-
-void Start_Symbian_Audio();
+void set_SymbianVolume( int volume );
+void Start_Symbian_Audio( int vol );
 void Stop_Symbian_Audio();
 
 extern void sound_callback(void *userdata, u8 *stream, int length);

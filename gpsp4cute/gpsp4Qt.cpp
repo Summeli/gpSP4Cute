@@ -55,7 +55,9 @@ gpsp4Qt::gpsp4Qt(QWidget *parent)
     widget->setObjectName(QString::fromUtf8("QBlitterWidget"));
     widget->setGeometry(QRect(160, 0, 640, 360));
     
-    adaptation = new gpspadaptation( widget );
+    m_audio = new audio( this );
+    
+    adaptation = new gpspadaptation( widget, m_audio );
     
     connect(this, SIGNAL(Start()), widget, SLOT(startDSA()) );
     connect(this, SIGNAL(Stop()), widget, SLOT(stopDSA()) );
@@ -188,7 +190,7 @@ void gpsp4Qt::updateSettings( TGPSPSettings antSettings )
 	{
 	__DEBUG_IN
 	iSettings = antSettings;
-	adaptation->showgpspFPS(antSettings.iShowFPS);
+	adaptation->updateSettings( antSettings );
 	widget->setScreenMode(antSettings.iScreenSettings, 
 			antSettings.ikeepAspectRatio);
 	

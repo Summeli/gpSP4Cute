@@ -24,7 +24,7 @@
 #include <MdaAudioOutputStream.h>
 #include <e32base.h>
 
-const TInt KSoundBuffers = 4;
+const TInt KSoundBuffers = 5;
 const TInt KBlockTime = 1000000 / 5; // hardcoded: 5 updates/sec
 const TInt KMaxLag = 260000; // max sound lag, lower values increase chanse of underflow
 const TInt KMaxUnderflows = 50; // max underflows/API errors we are going allow in a row (to prevent lockups)

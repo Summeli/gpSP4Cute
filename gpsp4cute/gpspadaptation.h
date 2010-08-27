@@ -26,15 +26,7 @@
 
 #include "QBlitterWidget.h"
 #include "gpspSettings.h"
-
-//#define ENABLE_AUDIO
-#ifdef ENABLE_AUDIO
-#include <QAudioOutput>
-#include <QAudioDeviceInfo>
-#include <QAudioFormat>
-#include <QBuffer>
-#include <QTimer>
-#endif
+#include "audio.h"
 
 /* the gpspadapation is basically the emulation thread
  * it's also passing commands safely from the UI thread
@@ -44,7 +36,7 @@ class gpspadaptation : public QThread
     Q_OBJECT
 
 public:
-    gpspadaptation( QBlitterWidget* widget );
+    gpspadaptation( QBlitterWidget* widget, audio* audioInterface );
     ~gpspadaptation();
     
     virtual void run();
@@ -62,40 +54,23 @@ public slots:
     void exitgpsp();
 
 public:
-    void showgpspFPS( bool fps );
+    void updateSettings( TGPSPSettings settings );
     QString gameconfigpath();
     QString getMainpath();
     void showErrorNote( QString message );
+	void initializeAudio();
 
-#ifdef ENABLE_AUDIO
-private:
-    void initAudio();
-    void checkAudioDevices();
-    
-public slots:
-	void pullTimerExpired();
-	void notified();
-	void stateChanged(QAudio::State state);
-#endif
-	
 signals:
     void frameblit();
     void dispatchErrorNote( QString message );
-    
+    void initAudio();
+    void startAudio();
+    void stopAudio();
 private:
     QBlitterWidget* blitter; //not owned
-    TGPSPSettings gsettings;
+    audio* m_audio;
+    TGPSPSettings m_settings;
     QString rom;
-
-#ifdef ENABLE_AUDIO    
-    //AUDIO
-    QAudioOutput* qaudio;
-    QAudioFormat audioformat;
-    QBuffer* audioOut;
-    QIODevice* m_output; //now owned
-    QByteArray* audioBuf;
-    QTimer* m_pullTimer;
-#endif
 };
 
 

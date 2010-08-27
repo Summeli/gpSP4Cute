@@ -19,8 +19,6 @@
 
 
 #include "common.h"
-//#include <SDL.h>
-//#include <sdl_mutex.h>
 
 u32 global_enable_audio = 0;
 u32 audio_on = 0;
@@ -31,17 +29,13 @@ gbc_sound_struct gbc_sound_channel[4];
 #if defined(GP2X_BUILD) || defined(TAVI_BUILD)
 u32 sound_frequency = 44100;
 #else
-u32 sound_frequency = 44100;
+u32 sound_frequency = 11025;
 #endif
 
 #ifdef __SYMBIAN32__
-#include "sound_symbian.h"
 #include "symb_adaptation.h"
+extern void init_audio_app();
 #endif
-
-//SDL_AudioSpec sound_settings;
-//SDL_mutex *sound_mutex;
-//SDL_cond *sound_cv;
 
 #ifndef PSP_BUILD
 u32 audio_buffer_size_number = 7;
@@ -888,11 +882,11 @@ void init_sound()
   init_noise_table(noise_table15, 32767, 14);
   init_noise_table(noise_table7, 127, 6);
 
-#ifdef __SYMBIAN32__
-   Init_Symbian_Audio( sound_frequency, audio_buffer_size / 4 );
-#endif
   
   reset_sound();
+#ifdef __SYMBIAN32__
+  init_audio_app();
+#endif
 #if 0
   SDL_OpenAudio(&desired_spec, &sound_settings);
   sound_frequency = sound_settings.freq;

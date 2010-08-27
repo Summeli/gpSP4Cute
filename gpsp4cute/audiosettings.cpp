@@ -29,7 +29,7 @@ AudioSettings::AudioSettings(int audioOn, int volume,
 	ui.volumeSlider->setValue( volume );
 	
 	connect(ui.AudioOnOffBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setAudioOn(int)));
-	connect(ui.volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(setVolume(int)));
+	connect(ui.volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(setVolume(int)));
 	
 }
 

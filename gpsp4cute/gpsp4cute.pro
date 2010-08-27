@@ -1,8 +1,10 @@
 TEMPLATE = app
 TARGET = gpsp
+#CONFIG += mobility
+#MOBILITY += sensors \
+#			multimedia
 QT += core \
-    gui \
-    multimedia
+    gui 
 HEADERS += filewidget.h \
     dpadwidget.h \
 	QRemoteControlKeys.h \
@@ -21,7 +23,8 @@ HEADERS += filewidget.h \
     cuteErrorDialog.h \
     smalloptionswidget.h \
     rightbuttonwidget.h \
-    smallgpsplogo.h
+    smallgpsplogo.h \
+    audio.h
     
 SOURCES += cuteErrorDialog.cpp \
     filewidget.cpp \
@@ -42,7 +45,9 @@ SOURCES += cuteErrorDialog.cpp \
     bitmapblit.cpp \
     smalloptionswidget.cpp \
     rightbuttonwidget.cpp \
-    smallgpsplogo.cpp 
+    smallgpsplogo.cpp \
+    audio.cpp \
+    sound_symbian.cpp
     
 FORMS += cuteErrorDialog.ui \
     filewidget.ui \
@@ -70,6 +75,7 @@ symbian:LIBS += -lgpsp4symbian.lib \
     -lremconcoreapi \
     -lremconinterfacebase \
     -lecom \
+    -lhal \
     -lmmfcontrollerframework #TODO: remove when audio can be removed..
  symbian:TARGET.UID3 \
     = \
