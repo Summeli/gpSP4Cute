@@ -40,6 +40,11 @@ void (*bitmapBlit)(TUint8* aScreen, TUint8* aBitmap) = 0;
 #include "common.h"
 extern u16* g_screenptr;
 
+#define Samsungi8910i 0x2000c520
+#define SESatio 0x2001F0A1
+#define SEVivaz 0x20024EEC
+#define SEVivazPro 0x20024EED
+
 QBlitterWidget::QBlitterWidget( QWidget *parent )
 : QWidget( parent ), CActive( CActive::EPriorityStandard )
     {
@@ -51,11 +56,15 @@ QBlitterWidget::QBlitterWidget( QWidget *parent )
     CActiveScheduler::Add( this );
     TInt uid = 0;
     HAL::Get(HAL::EMachineUid, uid);
-    if( uid == 0x2000c520 ) //Samsung i8910
+    if( uid == Samsungi8910i || uid == SESatio ||
+    		uid == SEVivaz || uid == SEVivazPro )
+    	{
     	samsung = true; //use hacks
+    	}
     else 
+    	{
     	samsung = false;
-    
+    	}
     //no choises in here :-)
     screenmode = 0;
     keepratio = true;
@@ -99,6 +108,9 @@ void QBlitterWidget::render()
     
     iDSBitmap->EndUpdate(iStatus);
     SetActive();
+    
+    //this is required for SE Satio, Vivaz, and S^3 phones
+    iDSA->ScreenDevice()->Update();
     
     __DEBUG_OUT
     }
