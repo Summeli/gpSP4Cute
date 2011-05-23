@@ -51,9 +51,10 @@ ViewController::ViewController()
 
 #endif
     
-	remotekeys = new QRemoteControlKeys();
+    remotekeys = new QRemoteControlKeys();
 	 
     emuView = new gpsp4Qt();
+    emuView->setGeometry(QRect(0, 0, 640, 360));
     emuView->setRemoteControl( remotekeys );
     emuView->hide();
     

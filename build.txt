@@ -1,12 +1,1 @@
 How to build gpSP for Symbian:
-
-First you should install MinGW and general makefile system for Symbian.
-Find instructions at http://www.summeli.fi/?p=1052.
-
-There are dependencies to Anotherguests SDL library.
-Get it at http://www.anotherguest.se/
-
-Also Nokia's OpenC plugin is required
-
-You should put bga_bios.bin and game_config.txt files under E:\gba\
-directory in Symbian. 

@@ -35,6 +35,7 @@ void loadStyleSheet()
         }
     QString styleSheet = QLatin1String(file.readAll());
     qApp->setStyleSheet(styleSheet);
+    file.close();
 }
 
 int main(int argc, char *argv[])

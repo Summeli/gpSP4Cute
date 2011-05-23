@@ -744,7 +744,7 @@ s32 load_config_file()
   u8 config_path[512];
    
 #ifdef __SYMBIAN32__
-  sprintf(config_path, "%s\\%s", "E:\\GBA", GPSP_CONFIG_FILENAME);
+   sprintf(config_path, "%s\\%s", main_path, GPSP_CONFIG_FILENAME);
 #else  
   #if (defined(PSP_BUILD) || defined(ARM_ARCH)) && !defined(_WIN32_WCE)
     sprintf(config_path, "%s/%s", main_path, GPSP_CONFIG_FILENAME);

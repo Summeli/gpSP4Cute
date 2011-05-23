@@ -2,20 +2,17 @@
 &EN
 
 ; SIS header: name, uid, version
-#{"gpsp"}, (0xE0D278F3), 0, 6, 1, TYPE=SA
+#{"gpsp"},(0xE0D278F3),0,7,0
 
 ; Localised Vendor name
-%{"Vendor"}
+%{"Summeli"}
 
 ; Unique Vendor name
-:"Vendor"
+:"Summeli"
 
 ; Manual PKG pre-rules from PRO files
 ; Default HW/platform dependencies
-[0x101F7961],0,0,0,{"S60ProductID"}
-[0x102032BE],0,0,0,{"S60ProductID"}
-[0x102752AE],0,0,0,{"S60ProductID"}
-[0x1028315F],0,0,0,{"S60ProductID"}
+[0x20022E6D],0,0,0,{"S60ProductID"}
  
 ; Default dependency to Qt libraries
 (0x2001E61C), 4, 6, 0, {"Qt"}

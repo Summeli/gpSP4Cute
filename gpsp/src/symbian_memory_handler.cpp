@@ -36,7 +36,8 @@ extern u8* rom_translation_ptr;
 extern u8* ram_translation_ptr;
 extern u8* bios_translation_ptr;
 
-#define KDistanceFromCodeSection 0x500000
+#define KDistanceFromCodeSection 0x1200000
+
 
 //in Symbian we have to tell to the OS that these memoryblocks contains codes,
 //so we can invalidate and execute the codeblock in the future.
@@ -76,7 +77,7 @@ TInt CreateChunkAt(TUint32 addr,TInt minsize, TInt maxsize )
 int create_all_translation_caches()
 	{
 	TInt minsize = ROM_TRANSLATION_CACHE_SIZE + RAM_TRANSLATION_CACHE_SIZE + BIOS_TRANSLATION_CACHE_SIZE;
-	TInt maxsize = ROM_TRANSLATION_CACHE_SIZE + RAM_TRANSLATION_CACHE_SIZE + BIOS_TRANSLATION_CACHE_SIZE + 3 * 4096;
+        TInt maxsize = ROM_TRANSLATION_CACHE_SIZE + RAM_TRANSLATION_CACHE_SIZE + BIOS_TRANSLATION_CACHE_SIZE + 3 * 4096;
 	
 	RProcess process;
 	TModuleMemoryInfo  info;
@@ -88,7 +89,7 @@ int create_all_translation_caches()
 	TUint32 programAddr = 0x10000000;//(TUint32) info.iCodeBase;
 	programAddr += info.iCodeSize;
 	
-	TUint32 destAddr = programAddr - KDistanceFromCodeSection;
+        TUint32 destAddr = programAddr - KDistanceFromCodeSection;
 	
 	g_code_chunk = new RChunk();
 
@@ -126,67 +127,39 @@ void CLEAR_INSN_CACHE(const u8 *code, int size)
 {	
     TUint8* end = (TUint8*) code;
     end += size;
-	User::IMB_Range( (void*) code, end );
+    User::IMB_Range( (void*) code, end );
 }
 
 void SymbianPackHeap()
-	{
-	User::CompressAllHeaps();
-	User::Heap().Compress();
-	
-	RProcess myProcess;
-	myProcess.SetPriority(EPriorityForeground);
-	myProcess.Close();
-	}
+{
+    User::CompressAllHeaps();
+    User::Heap().Compress();
+/*
+    RProcess myProcess;
+    myProcess.SetPriority(EPriorityForeground);
+    myProcess.Close();*/
+}
 
 void close_all_caches()
-    {
+{
     g_code_heap->Free( rom_translation_cache );
     g_code_heap->Free( ram_translation_cache );
     g_code_heap->Free( bios_translation_cache );
-    
-    g_code_heap->Close();
- 
 
-    g_code_chunk->Close();;
-    }
+    g_code_heap->Close();
+
+    g_code_chunk->Close();
+}
 
 void keepBacklightOn()
-	{
-	User::ResetInactivityTime();
-	}
+{
+    User::ResetInactivityTime();
+}
 
 void symb_usleep(int aValue)
 {
-	User::AfterHighRes(aValue);
+    User::AfterHighRes(aValue);
 }
-
-extern u16 interptable_w[240];
-extern u16 interptable_h[160];
-void symb_create_interpolate_table()
-	{
-	TReal j = 1.33;
-	TReal loop = 0;
-	TReal real_temp;
-	
-	for( TInt i=0; i<240; i++)
-		{
-		real_temp = i*j + 0.5;
-		interptable_w[i] = real_temp;
-		}
-	
-	j= 1.5;
-	for( TInt i=0; i<160; i++)
-		{
-		real_temp = i*j + 0.5;
-		interptable_h[i] = real_temp;
-		}
-	}
-
-void symbian_blit( const u8* screen )
-	{
-	
-	}
 
 
 #endif

@@ -33,7 +33,7 @@
    <property name="geometry">
     <rect>
      <x>360</x>
-     <y>20</y>
+     <y>40</y>
      <width>251</width>
      <height>61</height>
     </rect>
@@ -42,23 +42,23 @@
     <string>Run Key Config</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="screensettings">
+  <widget class="QComboBox" name="dpadSettings">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>20</y>
+     <y>40</y>
      <width>331</width>
      <height>61</height>
     </rect>
    </property>
    <item>
     <property name="text">
-     <string>show touch D-pad</string>
+     <string>use 4 directions D-Pad</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>hide touch D-pad</string>
+     <string>use 8 directions D-Pad</string>
     </property>
    </item>
   </widget>

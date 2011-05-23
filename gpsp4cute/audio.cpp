@@ -23,6 +23,7 @@
 extern "C" void sound_callback(void *userdata, u8 *stream, int length);
 
 extern u32 audio_buffer_size;
+extern u32 sound_frequency;
 
 audio::audio(  QObject* parent )
     : QObject(parent), m_started(false), m_initialized( false ), m_volume( 0 )

@@ -196,13 +196,12 @@ FILE* mystderr = 0;
 void init_symbian_stuff()
 {
   if(create_all_translation_caches())
-	  {
-	  DEBUG( "Translation cache creation failed");
-	  }
+      {
+      DEBUG( "Translation cache creation failed");
+      }
+
   SymbianPackHeap();
- // create_functioncall_stubs_symbian();
   
-  symb_create_interpolate_table();
   modify_function_pointers_symbian( relocated_ro_offset );
 }
 

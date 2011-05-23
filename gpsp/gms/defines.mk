@@ -19,7 +19,6 @@ VARIANT = $(EPOCROOT2)/include/variant
 OS_HRH = $(VARIANT)/Symbian_OS.hrh
 
 SYMBIAN_MACRO = -D__SYMBIAN32__ -D__EPOC32__
-S60_MACRO = -D__SERIES60_30__ -D__SERIES60_3X__
 GCCE_MACRO = -D__GCCE__ -D__MARM__ -D__MARM_ARMV5__ -D__EABI__ -march=armv5t #-O0 -fexpensive-optimizations -finline -ffast-math -msoft-float -falign-functions=32 -falign-loops -falign-labels -falign-jumps -fomit-frame-pointer 
 CPP_MACRO = -D__SUPPORT_CPP_EXCEPTIONS__
 EXE_MACRO = -D__EXE__

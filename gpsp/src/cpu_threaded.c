@@ -3531,112 +3531,115 @@ void dump_translation_cache()
   file_close(bios_cache);
 }
 
+
+
 int modify_function_pointers_symbian( int offset )
     {
-    
+
     //generate the symbs into the memory
     u32 addr = &arm_update_gba_arm;
     addr+=offset;
-    arm_update_gba_symb_arm =  addr; 
-    
+    arm_update_gba_symb_arm =  addr;
+
     addr = &arm_update_gba_thumb;
     addr+=offset;
-    arm_update_gba_symb_thumb = addr; 
-    
+    arm_update_gba_symb_thumb = addr;
+
     addr = &arm_update_gba_idle_arm;
     addr+=offset;
-    arm_update_gba_idle_symb_arm = addr;  
-    
+    arm_update_gba_idle_symb_arm = addr;
+
     addr = &arm_update_gba_idle_thumb;
     addr+=offset;
-    arm_update_gba_idle_symb_thumb = addr; 
-    
+    arm_update_gba_idle_symb_thumb = addr;
+
     addr = &execute_spsr_restore;
     addr+=offset;
-    execute_spsr_symb_restore = addr; 
-    
+    execute_spsr_symb_restore = addr;
+
     addr = &execute_read_spsr;
     addr+=offset;
-    execute_read_symb_spsr = addr; 
-    
+    execute_read_symb_spsr = addr;
+
     addr = &execute_load_u32;
     addr+=offset;
-    execute_load_symb_u32 = addr; 
-    
+    execute_load_symb_u32 = addr;
+
     addr = &execute_load_s8;
     addr+=offset;
-    execute_load_symb_s8 = addr; 
-    
+    execute_load_symb_s8 = addr;
+
     addr = &execute_load_u8;
     addr+=offset;
-    execute_load_symb_u8 = addr; 
-    
+    execute_load_symb_u8 = addr;
+
     addr = &execute_load_u16;
     addr+=offset;
-    execute_load_symb_u16 = addr; 
-    
+    execute_load_symb_u16 = addr;
+
     addr = &execute_load_s16;
     addr+=offset;
-    execute_load_symb_s16 = addr; 
-    
+    execute_load_symb_s16 = addr;
+
     addr = &execute_store_u32_safe;
     addr+=offset;
-    execute_store_symb_u32_safe = addr; 
-    
+    execute_store_symb_u32_safe = addr;
+
     addr = &execute_store_u32;
     addr+=offset;
-    execute_store_symb_u32 = addr; 
- 
+    execute_store_symb_u32 = addr;
+
     addr = &execute_store_u16;
     addr+=offset;
-    execute_store_symb_u16 = addr; 
-    
+    execute_store_symb_u16 = addr;
+
     addr = &execute_store_u8;
     addr+=offset;
-    execute_store_symb_u8 = addr; 
-    
+    execute_store_symb_u8 = addr;
+
     addr = &execute_store_cpsr;
     addr+=offset;
-    execute_store_symb_cpsr = addr; 
-    
+    execute_store_symb_cpsr = addr;
+
     addr = &execute_store_spsr;
     addr+=offset;
-    execute_store_symb_spsr = addr; 
-    
+    execute_store_symb_spsr = addr;
+
     addr = &execute_swi_arm;
     addr+=offset;
-    execute_swi_symb_arm = addr; 
-    
+    execute_swi_symb_arm = addr;
+
     addr = &execute_swi_thumb;
     addr+=offset;
-    execute_swi_symb_thumb = addr; 
-    
+    execute_swi_symb_thumb = addr;
+
     addr = &execute_swi_hle_div_arm;
     addr+=offset;
-    execute_swi_hle_symb_div_arm = addr; 
-    
+    execute_swi_hle_symb_div_arm = addr;
+
     addr = &execute_swi_hle_div_thumb;
     addr+=offset;
     execute_swi_hle_symb_div_thumb = addr;
-    
+
     addr = &step_debug_arm;
     addr+=offset;
-    step_debug_symb_arm = addr; 
+    step_debug_symb_arm = addr;
 
     addr = &arm_indirect_branch_arm;
     addr+=offset;
-    arm_indirect_branch_symb_arm = addr; 
-    
+    arm_indirect_branch_symb_arm = addr;
+
     addr = &arm_indirect_branch_thumb;
     addr+=offset;
-    arm_indirect_branch_symb_thumb = addr; 
-    
+    arm_indirect_branch_symb_thumb = addr;
+
     addr = &arm_indirect_branch_dual_arm;
     addr+=offset;
-    arm_indirect_branch_symb_dual_arm = addr; 
-    
+    arm_indirect_branch_symb_dual_arm = addr;
+
     addr = &arm_indirect_branch_dual_thumb;
     addr+=offset;
-    arm_indirect_branch_symb_dual_thumb = addr; 
-    
+    arm_indirect_branch_symb_dual_thumb = addr;
+
     }
+

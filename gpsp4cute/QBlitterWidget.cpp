@@ -107,11 +107,11 @@ void QBlitterWidget::render()
     bitmapBlit( (TUint8*) g_screenptr, bitmapdata);
     
     iDSBitmap->EndUpdate(iStatus);
-    SetActive();
     
     //this is required for SE Satio, Vivaz, and S^3 phones
     iDSA->ScreenDevice()->Update();
     
+    SetActive();
     __DEBUG_OUT
     }
 /*

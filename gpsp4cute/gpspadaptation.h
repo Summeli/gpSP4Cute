@@ -23,10 +23,9 @@
 
 #include <QThread>
 
-
-#include "QBlitterWidget.h"
 #include "gpspSettings.h"
 #include "audio.h"
+#include "gpsp4Qt.h"
 
 /* the gpspadapation is basically the emulation thread
  * it's also passing commands safely from the UI thread
@@ -36,7 +35,7 @@ class gpspadaptation : public QThread
     Q_OBJECT
 
 public:
-    gpspadaptation( QBlitterWidget* widget, audio* audioInterface );
+    gpspadaptation( gpsp4Qt* widget, audio* audioInterface );
     ~gpspadaptation();
     
     virtual void run();
@@ -67,10 +66,11 @@ signals:
     void startAudio();
     void stopAudio();
 private:
-    QBlitterWidget* blitter; //not owned
+    gpsp4Qt* m_blitter; //not owned
+    
     audio* m_audio;
     TGPSPSettings m_settings;
-    QString rom;
+    QString m_rom;
 };
 
 

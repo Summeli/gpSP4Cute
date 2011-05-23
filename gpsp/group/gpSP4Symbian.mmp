@@ -1,0 +1,67 @@
+/* gpsp4Symbian buildfile
+ *
+ * Copyright (C) 2011 Summeli <summeli@summeli.fi>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
+
+
+TARGET			gpsp4symbian.lib
+TARGETTYPE 		LIB
+UID		  0x100039CE 0xE0D278F3
+
+SOURCEPATH		..\src
+SOURCE		symbian_memory_handler.cpp 
+SOURCE		relocator.cpp 
+       
+SOURCE		gpspmain.c
+SOURCE		cpu.c
+SOURCE		video.c
+SOURCE		sound.c
+SOURCE		input.c
+SOURCE		cpu_threaded.c
+SOURCE		gui.c
+SOURCE		zip.c
+SOURCE		cheats.c
+SOURCE		memory.c
+SOURCE		arm_stub_c.c
+SOURCE		asm_debug.c
+       
+SOURCE 		arm_stub.s
+SOURCE		video_blend.s
+SOURCE		relocator_glue.s
+
+
+USERINCLUDE	   ..\inc
+
+SYSTEMINCLUDE	 \epoc32\include
+SYSTEMINCLUDE	\epoc32\include\stdapis
+SYSTEMINCLUDE    \epoc32\include\libc
+
+LIBRARY			euser.lib avkon.lib eikcore.lib eiksrv.lib apparc.lib estlib.lib efsrv.lib 
+LIBRARY			cone.lib hal.lib fbscli.lib ws32.lib  apgrfx.lib gdi.lib bitgdi.lib  mediaclientaudiostream.lib 
+LIBRARY			bafl.lib estor.lib commonengine.lib hlplch.lib ezlib.lib libc.lib flogger.lib
+
+LANG SC
+
+VENDORID	  	  0
+SECUREID		  0xE0D278F3
+CAPABILITY	  	  ReadUserData
+
+#ifdef ENABLE_ABIV2_MODE
+DEBUGGABLE_UDEBONLY
+#endif
+// End of File
+

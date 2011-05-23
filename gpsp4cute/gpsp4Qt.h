@@ -25,8 +25,9 @@
 #include <QKeyEvent>
 #include <QList>
 #include <QThread>
+#include <QtOpenGL/QGLWidget>
+#include <QImage>
 
-#include "QBlitterWidget.h"
 #include "dpadwidget.h" 
 #include "gpspSettings.h"
 #include "MEmulatorAdaptation.h"
@@ -34,15 +35,15 @@
 #include "cuteErrorDialog.h"
 
 #include "dpadwidget.h"
-#include "smalloptionswidget.h"
 #include "rightbuttonwidget.h"
-#include "gpspadaptation.h"
 #include "audio.h"
+
+class gpspadaptation;
 
 /* This class is the UI controller in the UI thread side
  * it's only purpose is to keep things in order in the UI
  * thread side */
-class gpsp4Qt : public QMainWindow, MEmulatorAdaptation
+class gpsp4Qt : public QGLWidget, MEmulatorAdaptation
 {
     Q_OBJECT
 
@@ -54,8 +55,18 @@ public:
     void setRemoteControl( QRemoteControlKeys* remote );
     void keyPressEvent( QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent* event);
+    bool event(QEvent *event);
+
+//rendering stuff
+public slots:
+    void render();
+
+protected:
+    void paintEvent(QPaintEvent *);
+
 public: //From MEmulatorAdaptation
-    int getKeyEvent( antKeyEvent& keyEvent );
+    quint32 getGpspKeys();
+
 public:
     void LoadROM(QString rom, TGPSPSettings antSettings);
     void LoadState( int state );
@@ -77,7 +88,6 @@ signals:
 public slots:
     void showAntSnesMenu();
     void updateSettings( TGPSPSettings );
-    void virtualKeyEvent( quint32 aKey, bool isDown );
     void showErrorNote( QString message );
     void errorNoteDismissed();
     		
@@ -85,17 +95,32 @@ private slots:
 	void listencontrols();
     
 private:
-    QBlitterWidget* widget;
+    void LoadButtons();
+    void ApplyTransparency(QPixmap &pm, QString png);
+
+private:
     audio* m_audio;
-    TGPSPSettings iSettings;
-    QList<antKeyEvent> iPressedKeys;
-    QRemoteControlKeys* remotecontrol;
-    DPadWidget* dpad;
-    gpspadaptation* adaptation;
-    QString currentROM;
-    cuteErrorDialog* errorDialog;
-    smalloptionswidget* smallwidget;
-    rightbuttonwidget* rsmallwidget;
+    TGPSPSettings m_settings;
+    QRemoteControlKeys* m_remotecontrol;
+    DPadWidget* m_dpad;
+    gpspadaptation* m_adaptation;
+    QString m_currentROM;
+    cuteErrorDialog* m_errorDialog;
+    rightbuttonwidget* m_rightButtons;
+    
+    quint32 m_softKeys;
+    quint32 m_hardKeys;
+
+    //drawing
+    QImage* m_buf;
+    QPixmap m_dpadGraphics;
+    QPixmap m_buttonsGraphics;
+    QPixmap m_tlGraphics;
+    QPixmap m_trGraphics;
+    QPixmap m_menuGraphics;
+    QPixmap m_startSelectGraphics;
+    int m_buttonOpacity;
+    int m_stretch;
 };
 
 #endif // GPSP4QT_H

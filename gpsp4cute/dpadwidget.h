@@ -22,32 +22,22 @@
 #define DPADWIDGET_H
 
 #include <QtGui/QWidget>
-#include "ui_dpadwidget.h"
 
-class DPadWidget : public QWidget
+class DPadWidget : public QObject
 {
     Q_OBJECT
 
 public:
-    DPadWidget(QWidget *parent = 0);
+    DPadWidget(QObject *parent = 0);
     ~DPadWidget();
 
 signals:
-	void virtualKeyEvent( quint32 aKey, bool isDown );
 	void showMenu();
 	
-protected:
-	void mousePressEvent(QMouseEvent* event );
-	void mouseReleaseEvent(QMouseEvent* event );
-	void mouseMoveEvent(QMouseEvent* event);
+public:
+        quint32 getGpspKeys( int x, int y );
 	
 private:
-	void processbuttons( QMouseEvent* event );
-	quint32 getSnesKeys( QMouseEvent* event );
-	
-private:
-    Ui::DPadWidgetClass ui;
-    quint32 prevkeys;
 };
 
 #endif // DPADWIDGET_H

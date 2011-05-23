@@ -47,7 +47,6 @@ void function_cc execute_store_u32_safe(u32 address, u32 source);
 
 void step_debug_arm(u32 pc);
 
-
 /* Summeli: I practically broke this whole emit.h file, by creating these stubs
  * there is no going back ;-)
  * */

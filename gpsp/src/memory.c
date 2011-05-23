@@ -2987,11 +2987,18 @@ void init_gamepak_buffer()
   
   // There seems to be some issues with S60 devices too, lets try to use only 16MB wiht symbian also 
 #ifdef __SYMBIAN32__
-  gamepak_ram_buffer_size = 32 * 1024 * 1024;
+  gamepak_ram_buffer_size = 8 * 1024 * 1024;
   gamepak_rom = malloc(gamepak_ram_buffer_size);
 
+  // Try 8, for symbian, then lower in 2MB increments
+  while(gamepak_rom == NULL)
+  {
+    gamepak_ram_buffer_size -= (2 * 1024 * 1024);
+    gamepak_rom = malloc(gamepak_ram_buffer_size);
+  }
+
+#else
   if(gamepak_rom == NULL)
-#endif
   {
     // Try 16MB, for PSP, then lower in 2MB increments
     gamepak_ram_buffer_size = 16 * 1024 * 1024;
@@ -3002,6 +3009,7 @@ void init_gamepak_buffer()
       gamepak_rom = malloc(gamepak_ram_buffer_size);
     }
   }
+  #endif
   // Here's assuming we'll have enough memory left over for this,
   // and that the above succeeded (if not we're in trouble all around)
   gamepak_ram_pages = gamepak_ram_buffer_size / (32 * 1024);

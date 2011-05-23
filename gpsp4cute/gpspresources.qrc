@@ -1,14 +1,16 @@
 <RCC>
     <qresource prefix="/">
         <file>style/summelistyle.qss</file>
+        <file>gfx/dpad.png</file>
+        <file>gfx/menu.png</file>
+        <file>gfx/select_start_buttons.png</file>
+        <file>gfx/tl_button_top.png</file>
+        <file>gfx/tr_button_top.png</file>
+        <file>gfx/BAButtons.png</file>
     </qresource>
     <qresource prefix="/graphics">
         <file>gfx/downarrow.png</file>
-        <file>gfx/dpad.png</file>
         <file>gfx/gpsp4symbianlogo.png</file>
-        <file>gfx/gpsplogo.png</file>
-        <file>gfx/left.png</file>
-        <file>gfx/right.png</file>
         <file>gfx/separator.png</file>
     </qresource>
 </RCC>

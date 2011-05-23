@@ -60,9 +60,10 @@ public slots:
     void showFileMenu();
     void keyConfig();
     void frameskip( int skip );
-    void screensettings( int settings );
+    void DPadSettings( int settings );
     void showFPS( bool showFPS );
-    void setAspectRatio( bool aspectratio );
+    void stretch( int stretch );
+    void buttonOpacity( int opacity );
     void keyconfigDone();
     void exit();
     void resetButtonClicked();

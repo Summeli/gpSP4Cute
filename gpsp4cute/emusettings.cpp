@@ -25,7 +25,7 @@
 #include "emusettings.h"
 #include "cuteDebug.h"
 
-#define KSettingsVersion 7
+#define KSettingsVersion 8
 
 EmuSettings::EmuSettings(QWidget *parent)
     : QMainWindow(parent)
@@ -43,7 +43,7 @@ EmuSettings::EmuSettings(QWidget *parent)
 	audiosettings->hide();
 	
 	antvideosettings =new videosettings( gpspsettings.iFrameSkip, 
-			gpspsettings.iShowFPS, gpspsettings.ikeepAspectRatio, this );
+                        gpspsettings.iShowFPS, gpspsettings.iButtonOpacity, gpspsettings.iStretch, this );
 	antvideosettings->setGeometry(QRect(0, 0, 640, 150));
 	antvideosettings->hide();
 	
@@ -52,7 +52,7 @@ EmuSettings::EmuSettings(QWidget *parent)
 	fileview->setGeometry(QRect(0, 0, 640, 150));
 	fileview->hide();
 		
-	keysettings =new controlsettings( gpspsettings.iScreenSettings, this );
+        keysettings =new controlsettings( gpspsettings.iDpadSettings, this );
 	keysettings->setGeometry(QRect(0, 0, 640, 150));
 	keysettings->hide();
 	
@@ -80,7 +80,8 @@ EmuSettings::EmuSettings(QWidget *parent)
 	//connect video settings
 	connect( antvideosettings, SIGNAL(frameskip(int)), this, SLOT( frameskip(int) ));
 	connect( antvideosettings, SIGNAL(showFPS(bool)), this, SLOT( showFPS(bool) ));
-	connect( antvideosettings, SIGNAL(setAspectRatio(bool)), this, SLOT( setAspectRatio(bool) ));
+        connect( antvideosettings, SIGNAL(stretch(int)), this, SLOT( stretch(int) ));
+        connect( antvideosettings, SIGNAL(buttonOpacity(int)), this, SLOT( buttonOpacity(int) ));
 
 	//connect filewidget
 	connect( fileview, SIGNAL(loadROM()), this, SLOT( loadROM()));
@@ -199,12 +200,12 @@ void EmuSettings::frameskip( int skip )
 	__DEBUG_OUT
     }
 
-void EmuSettings::screensettings( int settings )
+void EmuSettings::DPadSettings( int settings )
 	{
 	__DEBUG_IN
 	__DEBUG2("current screensetetings are", settings );
 	settingsChanged = true;
-    gpspsettings.iScreenSettings = settings;
+        gpspsettings.iDpadSettings = settings;
 	__DEBUG_OUT
 	}
 
@@ -216,13 +217,17 @@ void EmuSettings::showFPS( bool showFPS )
 	__DEBUG_OUT
 	}
 
-void EmuSettings::setAspectRatio( bool aspectratio )
-	{
-	__DEBUG_IN
-	settingsChanged = true;
-	gpspsettings.ikeepAspectRatio = aspectratio;
-	__DEBUG_OUT
-	}
+void EmuSettings::stretch( int stretch )
+{
+    settingsChanged = true;
+    gpspsettings.iStretch = stretch;
+}
+
+void EmuSettings::buttonOpacity( int opacity )
+{
+    settingsChanged = true;
+    gpspsettings.iButtonOpacity = opacity;
+}
 
 void EmuSettings::showAudioSettings()
 	{
@@ -336,8 +341,11 @@ void EmuSettings::continueClicked()
 	//if there was no ROM loaded, load previous ROM
 	if( !romloaded )
 		{
+                //sanitycheck that we actually have a ROM to load
+                if(  gpspsettings.iLastROM.length() < 3 )
+                    return;
 		emit( LoadROM( gpspsettings.iLastROM, gpspsettings ));
-	    romloaded = true;
+                romloaded = true;
 		}
 	//just continue the game
 	else
@@ -463,12 +471,13 @@ void EmuSettings::setDefaultSettings()
 	gpspsettings.iBios = "";
 	gpspsettings.iLastSlot = 0;
 	gpspsettings.iShowFPS = false;
-	gpspsettings.ikeepAspectRatio = true;
 	gpspsettings.iFrameSkip = 0;
 	gpspsettings.iAudioOn = false;
 	gpspsettings.iVolume = 4;
 	gpspsettings.iLastSlot = 1;
-	gpspsettings.iScreenSettings = 0;
+        gpspsettings.iDpadSettings = 0;
+        gpspsettings.iStretch = 1;
+        gpspsettings.iButtonOpacity = 4;
 	__DEBUG_OUT
 	}
 
@@ -489,12 +498,13 @@ void EmuSettings::savecurrentSettings()
 	settings.setValue("gpsp_bios",gpspsettings.iBios);
 	settings.setValue("gpsp_lastslot",gpspsettings.iLastSlot);
 	settings.setValue("gpsp_showfps",gpspsettings.iShowFPS);
-	settings.setValue("gpsp_aspectratio",gpspsettings.ikeepAspectRatio);
 	settings.setValue("gpsp_frameskip",gpspsettings.iFrameSkip);
 	settings.setValue("gpsp_audioOn",gpspsettings.iAudioOn);
 	settings.setValue("gpsp_volume",gpspsettings.iVolume);
 	settings.setValue("gpsp_lastslot",gpspsettings.iLastSlot);
-	settings.setValue("gpsp_screensettings", gpspsettings.iScreenSettings);
+        settings.setValue("gpsp_dpadsettings", gpspsettings.iDpadSettings);
+        settings.setValue("gpsp_ButtonOpacity", gpspsettings.iButtonOpacity);
+        settings.setValue("gpsp_Stretch", gpspsettings.iStretch);
 	settings.sync();
 	__DEBUG_OUT
 	}
@@ -522,11 +532,12 @@ void EmuSettings::loadSettings()
 	gpspsettings.iLastROM = settings.value("gpsp_lastrom").toString();
 	gpspsettings.iBios = settings.value("gpsp_bios").toString();
 	gpspsettings.iShowFPS = settings.value("gpsp_showfps").toBool();
-	gpspsettings.ikeepAspectRatio = settings.value("gpsp_aspectratio").toBool();
 	gpspsettings.iFrameSkip = settings.value("gpsp_frameskip").toInt();
 	gpspsettings.iAudioOn = settings.value("gpsp_audioOn").toBool();
 	gpspsettings.iVolume = settings.value("gpsp_volume").toInt();
 	gpspsettings.iLastSlot = settings.value("gpsp_lastslot").toInt();
-	gpspsettings.iScreenSettings = settings.value("gpsp_screensettings").toInt();
+        gpspsettings.iDpadSettings = settings.value("gpsp_dpadsettings").toInt();
+        gpspsettings.iButtonOpacity = settings.value("gpsp_ButtonOpacity").toInt();
+        gpspsettings.iStretch = settings.value("gpsp_Stretch").toInt();
 	__DEBUG_OUT
 	}

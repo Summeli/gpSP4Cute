@@ -22,17 +22,13 @@
 
 #include <qglobal.h>
 
-struct antKeyEvent{
-	quint32 key;
-	bool keyDown;
-};
 
 class MEmulatorAdaptation
 	{
 public:
 	virtual ~MEmulatorAdaptation() {};
 public:
-	virtual int getKeyEvent( antKeyEvent& keyEvent ) = 0;
+        virtual quint32 getGpspKeys() = 0;
 	};
 
 #endif /* MEMULATORADAPTATION_H_ */

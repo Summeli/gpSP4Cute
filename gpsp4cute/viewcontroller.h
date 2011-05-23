@@ -24,7 +24,6 @@
 #include <QObject>
 #include <QString>
 
-//#include "settingsview.h"
 #include "gpsp4qt.h"
 #include "emusettings.h"
 #include "QRemoteControlKeys.h"

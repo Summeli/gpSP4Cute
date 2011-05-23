@@ -23,27 +23,29 @@
 
 #include <QString>
 
-enum TScreenSettings {
-	EShowDPad = 0,
-    EHideDpad,
-	EFullScreen
-};
 struct TGPSPSettings
 {
-	int iVersion;
-	//matches to the snes-keys
-	quint32 iScanKeyTable[10];
-	QString iLastROM;
-	QString iBios;
-	int iLastSlot;
-	bool iShowFPS;
-	bool ikeepAspectRatio;
-	int iFrameSkip;
-	
-	//Audio Settings
-	bool iAudioOn;
-	int iVolume;
-	int iScreenSettings;
+    enum TScreenSettings {
+        EMedium = 0,
+        EFullScreen
+    };
+
+    int iVersion;
+    //matches to the snes-keys
+    quint32 iScanKeyTable[10];
+    QString iLastROM;
+    QString iBios;
+    int iLastSlot;
+    bool iShowFPS;
+    int iFrameSkip;
+
+    //Audio Settings
+    bool iAudioOn;
+    int iVolume;
+    int iDpadSettings;
+
+    int iButtonOpacity;
+    int iStretch;
 };
 
 #endif /* ANTSETTINGS_H_ */

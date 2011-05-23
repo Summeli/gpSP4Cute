@@ -6,11 +6,10 @@ SECUREID = E0D278F3
 EPOCSTACKSIZE = 80000
 EPOCHEAPSIZE = 5000000,67108864
 CAPABILITY = LocalServices
-SYSINCLUDE = $(EPOCROOT2)/include $(EPOCROOT2)/include/esdl $(EPOCROOT2)/include/libc
+SYSINCLUDE = $(EPOCROOT2)/include $(EPOCROOT2)/include/libc $(EPOCROOT2)/include/platform
 USERINCLUDE = ../inc ../../gpsp4cute
 CXXSRCS = \
 		symbian_memory_handler.cpp \
-		sound_symbian.cpp \
 		relocator.cpp \
          $(NULL)
 CSRCS = \
