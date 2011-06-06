@@ -69,6 +69,10 @@ quint32 DPadWidget::getGpspKeys( int x, int y )
      }
     else if ( y > DPAD_TOP )
         {
+        //return only 4-directions
+        if( m_dpadMode == 0 )
+            return getFourDirectinalPad( x, y );
+
         qreal x = x - KCenter_x;
         qreal y = y - KCenter_y;
 
@@ -134,3 +138,53 @@ quint32 DPadWidget::getGpspKeys( int x, int y )
         return key;
     }
 
+quint32 DPadWidget::getFourDirectinalPad(  int x, int y )
+{
+    quint32 key = 0;
+
+    qreal rx = x - KCenter_x;
+    qreal ry = y - KCenter_y;
+
+    qreal r = qAtan2(ry, rx);
+
+    r = (r * 180) / KPi; //convert radians to degrees
+
+    //lets use full circle instead of negative angles
+    if (r < 0)
+    {
+        r = 360 + r;
+    }
+
+    qint32 angle = qRound(r);
+
+
+    //360 degrees is divided into 8 sectors.
+    if (angle > 337 || angle < 68)
+    {
+        //right key was pressed
+        key += BUTTON_RIGHT;
+    }
+
+    else if (angle >= 68 && angle < 158)
+    {
+        //Down key was pressed
+        key += BUTTON_DOWN;
+    }
+    else if (angle >= 158 && angle < 248)
+    {
+        //Left key was pressed
+        key += BUTTON_LEFT;
+    }
+    else if (angle >= 248 && angle < 337)
+    {
+        //up key was pressed
+        key += BUTTON_UP;
+    }
+    return key;
+}
+
+
+void DPadWidget::setDpadMode( int mode )
+{
+    m_dpadMode = mode;
+}

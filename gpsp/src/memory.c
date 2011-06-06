@@ -2986,7 +2986,7 @@ void init_gamepak_buffer()
   gamepak_rom = NULL;
   
   // There seems to be some issues with S60 devices too, lets try to use only 16MB wiht symbian also 
-#ifdef __SYMBIAN32__
+#if 0 //__SYMBIAN32__
   gamepak_ram_buffer_size = 8 * 1024 * 1024;
   gamepak_rom = malloc(gamepak_ram_buffer_size);
 

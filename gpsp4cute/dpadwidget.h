@@ -32,12 +32,16 @@ public:
     ~DPadWidget();
 
 signals:
-	void showMenu();
-	
+        void showMenu();
+public slots:
+        void setDpadMode( int mode );
+private:
+        quint32 getFourDirectinalPad(  int x, int y );
 public:
         quint32 getGpspKeys( int x, int y );
 	
 private:
+        int m_dpadMode;
 };
 
 #endif // DPADWIDGET_H

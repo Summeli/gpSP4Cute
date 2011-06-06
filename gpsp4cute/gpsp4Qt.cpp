@@ -292,6 +292,7 @@ void gpsp4Qt::updateSettings( TGPSPSettings antSettings )
 {
     __DEBUG_IN
     m_settings = antSettings;
+    m_dpad->setDpadMode( antSettings.iDpadSettings );
     m_adaptation->updateSettings( antSettings );
     __DEBUG_OUT
 }

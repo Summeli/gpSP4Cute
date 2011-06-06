@@ -71,7 +71,7 @@ extern u32 gp2x_fps_debug;
 gpspadaptation::gpspadaptation( gpsp4Qt* widget, audio* audioInterface  )
 {
     m_blitter = widget;
- //   m_audio = audioInterface;
+    m_audio = audioInterface;
 
     g_gpspAdapt = this;
 }
@@ -85,12 +85,12 @@ void gpspadaptation::run()
     connect(this, SIGNAL(frameblit()), m_blitter, SLOT(render()),
         Qt::BlockingQueuedConnection );
 
-   /* connect(this, SIGNAL(initAudio()), m_audio, SLOT(initAudio()),
+    connect(this, SIGNAL(initAudio()), m_audio, SLOT(initAudio()),
         Qt::BlockingQueuedConnection );
 
     connect(this, SIGNAL(startAudio()), m_audio, SLOT(startAudio())  );
     connect(this, SIGNAL(stopAudio()), m_audio, SLOT(stopAudio()) );
-*/
+
     __DEBUG3("Starting the gpsp, ROM and bios:", m_rom, m_settings.iBios );
     //Start the main in the emulator
     symbian_library_main( (u8*) m_rom.toStdString().c_str(),
@@ -99,8 +99,8 @@ void gpspadaptation::run()
     __DEBUG1("Main loop returned!");
     disconnect(this, SIGNAL(frameblit()), m_blitter, SLOT(render()) );
     disconnect(this, SIGNAL(initAudio()), m_audio, SLOT(initAudio()) );
-    //disconnect(this, SIGNAL(startAudio()), m_audio, SLOT(startAudio()) );
-    //disconnect(this, SIGNAL(stopAudio()), m_audio, SLOT(stopAudio()) );
+    disconnect(this, SIGNAL(startAudio()), m_audio, SLOT(startAudio()) );
+    disconnect(this, SIGNAL(stopAudio()), m_audio, SLOT(stopAudio()) );
 }
 
 
@@ -115,8 +115,8 @@ void gpspadaptation::Start()
     paused = 0;
     if( QThread::isRunning() )
         {
-      /*  if( !m_audio->isStarted() && m_settings.iAudioOn )
-            m_audio->startAudio();*/
+        if( !m_audio->isStarted() && m_settings.iAudioOn )
+            m_audio->startAudio();
         }
     __DEBUG_OUT
 }
@@ -128,8 +128,8 @@ void gpspadaptation::Stop()
     paused = 1;
     if( isRunning() )
         {
-    /*    if( m_audio->isStarted() )
-            m_audio->stopAudio();*/
+        if( m_audio->isStarted() )
+            m_audio->stopAudio();
         }
     __DEBUG_OUT
 }
@@ -193,7 +193,7 @@ void gpspadaptation::updateSettings( TGPSPSettings settings  )
     __DEBUG_IN
     m_settings = settings;
     gp2x_fps_debug = settings.iShowFPS;
- //   m_audio->setVolume( settings.iVolume );
+    m_audio->setVolume( settings.iVolume );
     __DEBUG_OUT
 }
 

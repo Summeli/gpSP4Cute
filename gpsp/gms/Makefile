@@ -76,7 +76,7 @@ preDEBUG:
 
 #preREL:
 #   RAU = $(EPOCROOT2)/RELEASE/ARMV5/UREL
-#   COMPFLAGS = -march=armv5t -O2 -mapcs -pipe -nostdinc -c -msoft-float \
+#   COMPFLAGS = -march=armv5t -O2 -j4 -mapcs -pipe -nostdinc -c -msoft-float \
 #   -MD $(REL_MACRO) -include $(EPOCROOT2)/include/gcce/gcce.h
 #   LD_EXE_FLAGS = -L$(CC_INSTALL_PATH)/arm-none-symbianelf/lib \
 #   -L$(EPOCROOT2)/RELEASE/ARMV5/UREL  \

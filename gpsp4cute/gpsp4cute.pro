@@ -74,7 +74,7 @@ symbian:TARGET.EPOCHEAPSIZE = 0x200000 \
     0x1000000
     
 symbian:TARGET.EPOCSTACKKSIZE = 0x10000
-#symbian:TARGET.CAPABILITY += SwEvent
+symbian: TARGET.CAPABILITY = UserEnvironment
 symbian:ICON = gfx/gpsp.svg
 symbian:INCLUDEPATH += ../gpsp/inc/
 
