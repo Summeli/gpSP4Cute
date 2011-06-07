@@ -25,7 +25,7 @@
 #include "emusettings.h"
 #include "cuteDebug.h"
 
-#define KSettingsVersion 8
+#define KSettingsVersion 9
 
 EmuSettings::EmuSettings(QWidget *parent)
     : QMainWindow(parent)
@@ -42,8 +42,8 @@ EmuSettings::EmuSettings(QWidget *parent)
 	audiosettings->setGeometry(QRect(0, 0, 640, 150));
 	audiosettings->hide();
 	
-	antvideosettings =new videosettings( gpspsettings.iFrameSkip, 
-                        gpspsettings.iShowFPS, gpspsettings.iButtonOpacity, gpspsettings.iStretch, this );
+        antvideosettings =new videosettings( gpspsettings.iShowFPS,
+                                            gpspsettings.iButtonOpacity, gpspsettings.iStretch, this );
 	antvideosettings->setGeometry(QRect(0, 0, 640, 150));
 	antvideosettings->hide();
 	
@@ -78,7 +78,6 @@ EmuSettings::EmuSettings(QWidget *parent)
 	connect( audiosettings, SIGNAL(Volume(int)), this, SLOT( setVolume(int)));
 	
 	//connect video settings
-	connect( antvideosettings, SIGNAL(frameskip(int)), this, SLOT( frameskip(int) ));
 	connect( antvideosettings, SIGNAL(showFPS(bool)), this, SLOT( showFPS(bool) ));
         connect( antvideosettings, SIGNAL(stretch(int)), this, SLOT( stretch(int) ));
         connect( antvideosettings, SIGNAL(buttonOpacity(int)), this, SLOT( buttonOpacity(int) ));
@@ -189,15 +188,6 @@ void EmuSettings::keyConfig()
     remotecontrol->subscribeKeyEvent( keydialog );
     keydialog->show();
     keydialog->setFocus();
-    }
-
-void EmuSettings::frameskip( int skip )
-    {
-	__DEBUG_IN
-	__DEBUG2("Frameskip is", skip );
-	settingsChanged = true;
-    gpspsettings.iFrameSkip = skip;
-	__DEBUG_OUT
     }
 
 void EmuSettings::DPadSettings( int settings )
@@ -471,7 +461,6 @@ void EmuSettings::setDefaultSettings()
 	gpspsettings.iBios = "";
 	gpspsettings.iLastSlot = 0;
 	gpspsettings.iShowFPS = false;
-	gpspsettings.iFrameSkip = 0;
 	gpspsettings.iAudioOn = false;
 	gpspsettings.iVolume = 4;
 	gpspsettings.iLastSlot = 1;
@@ -498,7 +487,6 @@ void EmuSettings::savecurrentSettings()
 	settings.setValue("gpsp_bios",gpspsettings.iBios);
 	settings.setValue("gpsp_lastslot",gpspsettings.iLastSlot);
 	settings.setValue("gpsp_showfps",gpspsettings.iShowFPS);
-	settings.setValue("gpsp_frameskip",gpspsettings.iFrameSkip);
 	settings.setValue("gpsp_audioOn",gpspsettings.iAudioOn);
 	settings.setValue("gpsp_volume",gpspsettings.iVolume);
 	settings.setValue("gpsp_lastslot",gpspsettings.iLastSlot);
@@ -532,7 +520,6 @@ void EmuSettings::loadSettings()
 	gpspsettings.iLastROM = settings.value("gpsp_lastrom").toString();
 	gpspsettings.iBios = settings.value("gpsp_bios").toString();
 	gpspsettings.iShowFPS = settings.value("gpsp_showfps").toBool();
-	gpspsettings.iFrameSkip = settings.value("gpsp_frameskip").toInt();
 	gpspsettings.iAudioOn = settings.value("gpsp_audioOn").toBool();
 	gpspsettings.iVolume = settings.value("gpsp_volume").toInt();
 	gpspsettings.iLastSlot = settings.value("gpsp_lastslot").toInt();

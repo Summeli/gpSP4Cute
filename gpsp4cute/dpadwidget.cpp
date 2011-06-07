@@ -73,8 +73,8 @@ quint32 DPadWidget::getGpspKeys( int x, int y )
         if( m_dpadMode == 0 )
             return getFourDirectinalPad( x, y );
 
-        qreal x = x - KCenter_x;
-        qreal y = y - KCenter_y;
+        qreal x_coord = x - KCenter_x;
+        qreal y_coord = y - KCenter_y;
 
         qreal r = qAtan2(y,x);
 

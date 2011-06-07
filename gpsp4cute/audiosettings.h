@@ -42,6 +42,8 @@ public slots:
    void Volume( int volume );
    
 private:
+   void updateVolumeLabel( int vol );
+private:
     Ui::AudioSettingsClass ui;
 };
 

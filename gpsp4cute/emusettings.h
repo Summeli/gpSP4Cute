@@ -59,7 +59,6 @@ public slots:
     void setBios();
     void showFileMenu();
     void keyConfig();
-    void frameskip( int skip );
     void DPadSettings( int settings );
     void showFPS( bool showFPS );
     void stretch( int stretch );

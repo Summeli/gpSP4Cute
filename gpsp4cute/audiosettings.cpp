@@ -24,13 +24,13 @@ AudioSettings::AudioSettings(int audioOn, int volume,
 							QWidget *parent )
     : QWidget(parent)
 {
-	ui.setupUi(this);
-	ui.AudioOnOffBox->setCurrentIndex( audioOn );
-	ui.volumeSlider->setValue( volume );
-	
-	connect(ui.AudioOnOffBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setAudioOn(int)));
-	connect(ui.volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(setVolume(int)));
-	
+    ui.setupUi(this);
+    ui.AudioOnOffBox->setCurrentIndex( audioOn );
+    ui.volumeSlider->setValue( volume );
+
+    connect(ui.AudioOnOffBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setAudioOn(int)));
+    connect(ui.volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(setVolume(int)));
+    updateVolumeLabel( volume );
 }
 
 AudioSettings::~AudioSettings()
@@ -40,12 +40,19 @@ AudioSettings::~AudioSettings()
 
 void AudioSettings::setAudioOn( int audioOn )
 {
-	emit( AudioOn(audioOn) );
+    emit( AudioOn(audioOn) );
 }
 
 
 void AudioSettings::setVolume( int volume )
-	{
-	emit( Volume(volume) );
-	}
+{
+    updateVolumeLabel( volume );
+    emit( Volume(volume) );
+}
 
+void AudioSettings::updateVolumeLabel( int vol )
+{
+    QString volstr( QString::number( vol * 10 ) );
+    volstr.append("%");
+    ui.volumeLabel->setText( volstr );
+}

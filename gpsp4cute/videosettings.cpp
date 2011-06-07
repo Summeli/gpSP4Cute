@@ -20,16 +20,14 @@
 
 #include "videosettings.h"
 
-videosettings::videosettings(int frameskip, bool showFps, int buttonOpacity, int stretch, QWidget *parent)
+videosettings::videosettings( bool showFps, int buttonOpacity, int stretch, QWidget *parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
-    ui.frameSkipBox->setCurrentIndex( frameskip );
     ui.showFPSbox->setChecked( showFps );
     ui.strechSettings->setCurrentIndex( stretch );
     ui.buttonOpacity->setValue( buttonOpacity );
 
-    connect(ui.frameSkipBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setFrameskip(int)));
     connect(ui.showFPSbox, SIGNAL(stateChanged(int)), this, SLOT(showFPSChecked(int)));
     connect(ui.strechSettings, SIGNAL(currentIndexChanged(int)), this, SLOT(stretchIndexChecked(int)));
     connect(ui.buttonOpacity, SIGNAL(valueChanged(int)), this, SLOT(setOpacity(int)));
@@ -41,11 +39,6 @@ videosettings::~videosettings()
 {
 
 }
-
-void videosettings::setFrameskip( int framestoskip )
-	{
-	emit (frameskip( framestoskip ));
-	}
 
 void videosettings::showFPSChecked( int state )
 {

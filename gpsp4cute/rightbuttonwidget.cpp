@@ -73,10 +73,10 @@ quint32 rightbuttonwidget::getGpspKeys( int x, int y )
          }
     else if ( y > BUTTONS_TOP )
         {
-        qreal x = x - KCenter_x;
-        qreal y = y - KCenter_y;
+        qreal x_coord = x - KCenter_x;
+        qreal y_coord = y - KCenter_y;
 
-        qreal r = qAtan2(y,x);
+        qreal r = qAtan2(y_coord,x_coord);
 
         r = (r * 180 )/ KPi; //convert radians to degrees
 
@@ -89,7 +89,17 @@ quint32 rightbuttonwidget::getGpspKeys( int x, int y )
         qint32 angle = qRound(r);
 
 
-        //360 degrees is divided into 4 sectors.
+        //360 degrees is divided into 2 sectors.
+       /* if (angle >= 226|| angle < 55 )
+            {
+            //A button was pressed
+            key += BUTTON_A;
+            }
+        else
+            {
+            key += BUTTON_B;
+            }*/
+        //360 degrees is divided into 2 sectorss
         if (angle >= 248|| angle < 23)
             {
             //A button was pressed
