@@ -3,7 +3,6 @@ gpSP4SCute: [gpsp][gpsp] for Symbian
 
 gpSP4Cute is a gameboy advanced emulator for Symbian. It's based on gpSP version 0.9-2Xb by Exophase for gp2x.
 
---------
 
 Building
 ----------
