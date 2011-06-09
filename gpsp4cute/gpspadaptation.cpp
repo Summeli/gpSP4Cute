@@ -43,6 +43,7 @@ u16* g_screenptr;
 quint8 paused;
 
 quint32 adaptationkey = 0;
+bool g_audioOn;
 
 extern "C" {
 
@@ -57,7 +58,8 @@ void trigger_key(u32 key);
 void saveState( u32 slot );
 void loadState( u32 slot );
 void doExitgpsp();
-void init_audio_app();
+void mixAudio();
+int sound_callback(void *userdata, u8 *stream, int length);
 };
 
 extern u32 gp2x_fps_debug;
@@ -68,11 +70,13 @@ extern u32 gp2x_fps_debug;
 #define KSCREENHEIGHT 160
 #define KSCREENWIDTH 240
 
-gpspadaptation::gpspadaptation( gpsp4Qt* widget, audio* audioInterface  )
+CAntAudio* g_audio;
+gpspadaptation::gpspadaptation( gpsp4Qt* widget, CAntAudio* audioInterface  )
 {
     m_blitter = widget;
     m_audio = audioInterface;
-
+    g_audio = audioInterface;
+    g_audioOn = false;
     g_gpspAdapt = this;
 }
 
@@ -85,11 +89,7 @@ void gpspadaptation::run()
     connect(this, SIGNAL(frameblit()), m_blitter, SLOT(render()),
         Qt::BlockingQueuedConnection );
 
-    connect(this, SIGNAL(initAudio()), m_audio, SLOT(initAudio()),
-        Qt::BlockingQueuedConnection );
-
-    connect(this, SIGNAL(startAudio()), m_audio, SLOT(startAudio())  );
-    connect(this, SIGNAL(stopAudio()), m_audio, SLOT(stopAudio()) );
+    connect(this, SIGNAL(audioFrameReady()), m_audio, SLOT(FrameMixed()), Qt::BlockingQueuedConnection);
 
     __DEBUG3("Starting the gpsp, ROM and bios:", m_rom, m_settings.iBios );
     //Start the main in the emulator
@@ -98,9 +98,7 @@ void gpspadaptation::run()
 
     __DEBUG1("Main loop returned!");
     disconnect(this, SIGNAL(frameblit()), m_blitter, SLOT(render()) );
-    disconnect(this, SIGNAL(initAudio()), m_audio, SLOT(initAudio()) );
-    disconnect(this, SIGNAL(startAudio()), m_audio, SLOT(startAudio()) );
-    disconnect(this, SIGNAL(stopAudio()), m_audio, SLOT(stopAudio()) );
+    disconnect(this, SIGNAL(audioFrameReady()), m_audio, SLOT(FrameMixed()));
 }
 
 
@@ -113,11 +111,11 @@ void gpspadaptation::Start()
 {
     __DEBUG_IN
     paused = 0;
-    if( QThread::isRunning() )
-        {
-        if( !m_audio->isStarted() && m_settings.iAudioOn )
-            m_audio->startAudio();
-        }
+
+    //we don't want to start this thread again
+    if (!isRunning())
+        start(QThread::NormalPriority);
+
     __DEBUG_OUT
 }
 
@@ -126,11 +124,7 @@ void gpspadaptation::Stop()
 {
     __DEBUG_IN
     paused = 1;
-    if( isRunning() )
-        {
-        if( m_audio->isStarted() )
-            m_audio->stopAudio();
-        }
+
     __DEBUG_OUT
 }
 
@@ -194,6 +188,7 @@ void gpspadaptation::updateSettings( TGPSPSettings settings  )
     m_settings = settings;
     gp2x_fps_debug = settings.iShowFPS;
     m_audio->setVolume( settings.iVolume );
+    g_audioOn = settings.iAudioOn;
     __DEBUG_OUT
 }
 
@@ -204,13 +199,9 @@ void gpspadaptation::blit( const quint16* screen )
     __DEBUG_OUT
 }
 
-void gpspadaptation::initializeAudio()
+void gpspadaptation::audioFrameMixed()
 {
-    __DEBUG_IN
-    emit initAudio();
-    if( m_settings.iAudioOn )
-    emit(startAudio());
-    __DEBUG_OUT
+    emit audioFrameReady();
 }
 
 QString gpspadaptation::gameconfigpath()
@@ -343,9 +334,18 @@ bool isBiosValid( const char* bios )
     return true;
 }
 
-void init_audio_app()
+void mixAudio( )
 {
-    g_gpspAdapt->initializeAudio();
+    if( g_audioOn )
+      {
+      u8* aframe = (u8*) g_audio->NextFrameL();
+      //TODO Modify sound_callback to send if we can/can't render the audio
+      if( aframe )
+        {
+        if ( sound_callback( NULL, aframe, KFramesize ) )
+            g_gpspAdapt->audioFrameMixed();
+        }
+      }
 }
 
 //Debug helpers for the C-side

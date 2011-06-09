@@ -1544,12 +1544,6 @@ u32 menu(u16 *real_original_screen)
   //SDL_LockMutex(sound_mutex);
 #endif
   //SDL_PauseAudio(1);
-#ifdef __SYMBIAN32__  
-  if( global_enable_audio )
-	{
-	Stop_Symbian_Audio();
-	}
-#endif
   
 #ifndef GP2X_BUILD
  // SDL_UnlockMutex(sound_mutex);
@@ -1703,10 +1697,5 @@ u32 menu(u16 *real_original_screen)
 
   //SDL_PauseAudio(0);
 
-	if( global_enable_audio )
-	  {
-	  Start_Symbian_Audio();
-	  }
-    
   return return_value;
 }

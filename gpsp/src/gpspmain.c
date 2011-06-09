@@ -66,6 +66,7 @@ u32 gp2x_fps_debug = 0;//1;
 u32 frames;
 u32 skipped_frames;
 u32 ticks_needed_total = 0;
+extern void mixAudio();
 #endif
 u32 skip_next_frame = 0;
 
@@ -658,6 +659,10 @@ u32 update_gba()
 
           update_screen();
 
+#ifdef __SYMBIAN32__
+          //try to render audio
+		  mixAudio();
+#endif
           if(update_backup_flag)
             update_backup();
 

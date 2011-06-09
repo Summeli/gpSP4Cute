@@ -20,7 +20,7 @@ HEADERS += filewidget.h \
     gpsp4Qt.h \
     cuteErrorDialog.h \
     rightbuttonwidget.h \
-    audio.h
+    AntAudio.h
     
 SOURCES += cuteErrorDialog.cpp \
     filewidget.cpp \
@@ -38,8 +38,7 @@ SOURCES += cuteErrorDialog.cpp \
     main.cpp \
     gpsp4Qt.cpp \
     rightbuttonwidget.cpp \
-    audio.cpp \
-    sound_symbian.cpp
+    AntAudio.cpp
     
 FORMS += cuteErrorDialog.ui \
     filewidget.ui \

@@ -33,10 +33,9 @@
 #include "MEmulatorAdaptation.h"
 #include "QRemoteControlKeys.h"
 #include "cuteErrorDialog.h"
-
+#include "AntAudio.h"
 #include "dpadwidget.h"
 #include "rightbuttonwidget.h"
-#include "audio.h"
 
 class gpspadaptation;
 
@@ -99,7 +98,7 @@ private:
     void ApplyTransparency(QPixmap &pm, QString png);
 
 private:
-    audio* m_audio;
+    CAntAudio* m_audio;
     TGPSPSettings m_settings;
     QRemoteControlKeys* m_remotecontrol;
     DPadWidget* m_dpad;
@@ -121,6 +120,7 @@ private:
     QPixmap m_startSelectGraphics;
     int m_buttonOpacity;
     int m_stretch;
+    int m_screenHeight;
 };
 
 #endif // GPSP4QT_H

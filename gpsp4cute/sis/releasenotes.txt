@@ -1,4 +1,4 @@
-gpSP4Symbian v. 0.6.0
+gpSP4Symbian v. 0.7.0
 
 Symbian port by summeli.
 Follow progress of gpsp port at my blog: http://www.summeli.fi

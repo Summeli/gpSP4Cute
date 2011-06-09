@@ -29,12 +29,11 @@ gbc_sound_struct gbc_sound_channel[4];
 #if defined(GP2X_BUILD) || defined(TAVI_BUILD)
 u32 sound_frequency = 44100;
 #else
-u32 sound_frequency = 11025;
+u32 sound_frequency = 44100;
 #endif
 
 #ifdef __SYMBIAN32__
 #include "symb_adaptation.h"
-extern void init_audio_app();
 #endif
 
 #ifndef PSP_BUILD
@@ -468,6 +467,7 @@ void update_gbc_sound(u32 cpu_ticks)
     buffer_ticks += 1;
     gbc_sound_partial_ticks &= 0xFFFF;
   }
+  
 #if 0
   SDL_LockMutex(sound_mutex);
   if(synchronize_flag)
@@ -620,7 +620,7 @@ void update_gbc_sound(u32 cpu_ticks)
   }                                                                           \
 
 #if 1
-void sound_callback(void *userdata, u8 *stream, int length)
+int sound_callback(void *userdata, u8 *stream, int length)
 {
   u32 sample_length = length / 2;
   u32 _length;
@@ -664,12 +664,12 @@ void sound_callback(void *userdata, u8 *stream, int length)
   while(((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) <
    length)
   {
-    pthread_cond_signal(&cond);
+    //pthread_cond_signal(&cond);
     if(++i >= 2)
-    {
-	break;
-    }
-    usleep(1000);
+       {
+	    break;
+       }
+    usleep(100);
   }
 #else
   if(((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) <
@@ -708,9 +708,10 @@ void sound_callback(void *userdata, u8 *stream, int length)
 	get_ticks_us(&current_ticks);
 	get_ticks_us(&wait_ticks);
 
-	while(audio_on != 0 && (((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) < length) && wait_ticks < (current_ticks + 50000))
+        if(audio_on != 0 && (((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) < length) && wait_ticks < (current_ticks + 50000))
 	{
-		get_ticks_us(&wait_ticks);
+        //	get_ticks_us(&wait_ticks);
+            return 0;
 	}
 #endif
   {
@@ -738,7 +739,7 @@ void sound_callback(void *userdata, u8 *stream, int length)
       sound_buffer_base += sample_length;
     }
   }
-
+  return 1;
 #if 0
   else
   {
@@ -884,9 +885,7 @@ void init_sound()
 
   
   reset_sound();
-#ifdef __SYMBIAN32__
-  init_audio_app();
-#endif
+
 #if 0
   SDL_OpenAudio(&desired_spec, &sound_settings);
   sound_frequency = sound_settings.freq;

@@ -22,10 +22,11 @@ gpsp is distributed under [GPLv2 license](https://github.com/Summeli/gpSP4Symbia
 
 Credits
 -------
-* Exophase [gpsp] Creator of original gpSP
-* Zodttd [Zodttd] Helping Exophase with ARM port
-* Summeli [summeli] Symbian port
-
+* Exophase [gpsp] - Creator of original gpSP
+* Zodttd [Zodttd] - Helping Exophase with ARM port
+* Summeli [summeli] - Symbian port
+* Olli Hinkka - Memory Relocator code
+* Saiyaku - graphics and app icon
 
 [gpsp]: http://gpsp-dev.blogspot.com/ "gpSP development bblog"
 [summeli]: www.summeli.fi

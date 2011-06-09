@@ -51,7 +51,7 @@ gpsp4Qt::gpsp4Qt(QWidget *parent)
     
     m_rightButtons = new rightbuttonwidget( this );
 
-    m_audio = new audio( this );
+    m_audio = new CAntAudio();
     
     m_adaptation = new gpspadaptation( this, m_audio );
     
@@ -69,7 +69,6 @@ gpsp4Qt::gpsp4Qt(QWidget *parent)
     connect(this, SIGNAL(Start()), this, SLOT(listencontrols()) );
     
     g_adaption = this;
-
     //create graphics for the button overlay
     LoadButtons();
     
@@ -116,22 +115,22 @@ void gpsp4Qt::paintEvent(QPaintEvent *)
 
     if ( (m_buf == NULL) || (m_stretch != m_settings.iStretch) )
         m_stretch = m_settings.iStretch;
-    {   QRect fullrect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT );
+    {   QRect fullrect(0,0,width(), height() );
         painter.fillRect(fullrect, QColor(0x11, 0x11, 0x11 ));
     }
 
     if (m_buf != NULL)
     {
         __DEBUG1("Creating QRectF");
-        int newWidth = SCREEN_WIDTH;
+        int newWidth = width();
         int left = 0;
         if(m_stretch == TGPSPSettings::EMedium ){
-            // 570 x 380 res
-            // left = 96;
-           //  newWidth = 448;
+            // 536 x 360 res
+            left = 52;
+            newWidth = 588;
         }
+        QRect target(left, SCREEN_TOP, newWidth, height() );
 
-        QRect target(left, SCREEN_TOP, newWidth, SCREEN_HEIGHT);
         __DEBUG1("Drawing image");
         painter.drawImage(target, *m_buf);
         __DEBUG1("Ending QPainter");

@@ -132,7 +132,7 @@ void EmuSettings::loadROM()
     }
 
 void EmuSettings::setBios()
-	{
+    {
     savecurrentSettings();
     QDir dir(gpspsettings.iBios);
     QString bios = QFileDialog::getOpenFileName(this,
@@ -150,19 +150,19 @@ void EmuSettings::setBios()
     //check that bios is valid
     if( !isBiosValid( bios.toStdString().c_str() ) )
     	{
-		//dispatch error note
-		QString error;
-		error.append("You have an incorrect BIOS image.                 \n");
-		error.append("While many games will work fine, some will not. It\n");
-		error.append("is strongly recommended that you obtain the       \n");
-		error.append("correct BIOS file. Do NOT report any bugs if you  \n");
-		error.append("are seeing this message.                          \n");
-		errorDialog = new cuteErrorDialog( error, this );
-		connect(errorDialog, SIGNAL(notifiedUser()), this, SLOT(errorNoteDismissed()) );
-		errorDialog->show();
-		errorDialog->setFocus();
+        //dispatch error note
+        QString error;
+        error.append("You have an incorrect BIOS image.                 \n");
+        error.append("While many games will work fine, some will not. It\n");
+        error.append("is strongly recommended that you obtain the       \n");
+        error.append("correct BIOS file. Do NOT report any bugs if you  \n");
+        error.append("are seeing this message.                          \n");
+        errorDialog = new cuteErrorDialog( error, this );
+        connect(errorDialog, SIGNAL(notifiedUser()), this, SLOT(errorNoteDismissed()) );
+        errorDialog->show();
+        errorDialog->setFocus();
     	}
-	}
+    }
 
 void EmuSettings::showFileMenu()
 	{

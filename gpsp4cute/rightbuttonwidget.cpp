@@ -33,7 +33,7 @@ const int BUTTONS_CENTER_BOTTOM = KCenter_y + 10;
 
 const int BUTTONS_TOP = 200 - 30;
 
-const int SELECT_LEFT = SCREEN_WIDTH - SMALLBUTTON_WIDTH / 2;
+const int SELECT_LEFT = BUTTON_WIDTH - SMALLBUTTON_WIDTH / 2;
 const int R_TOP = MENU_HEIGHT + SMALLBUTTON_HEIGHT;
 
 rightbuttonwidget::rightbuttonwidget(QObject *parent)
