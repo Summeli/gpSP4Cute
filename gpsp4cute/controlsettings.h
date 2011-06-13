@@ -29,15 +29,17 @@ class controlsettings : public QWidget
     Q_OBJECT
 
 public:
-    controlsettings( int dpadSettings, QWidget *parent = 0);
+    controlsettings( int dpadSettings, int hiddenABButtons, QWidget *parent = 0);
     ~controlsettings();
 
 public slots: 
      void keyConfig();
      void setDPadSettings( int settings );
+     void setButtonSettings( int settings );
 signals:
      void runkeyconfig();
      void dpadSettings(int settings);
+     void buttonSettings( int settings );
 
 private:
     Ui::controlsettingsClass ui;

@@ -37,7 +37,7 @@ const int SELECT_LEFT = BUTTON_WIDTH - SMALLBUTTON_WIDTH / 2;
 const int R_TOP = MENU_HEIGHT + SMALLBUTTON_HEIGHT;
 
 rightbuttonwidget::rightbuttonwidget(QObject *parent)
-    : QObject(parent)
+    : QObject(parent), m_buttonSettings(0)
 {
 }
 
@@ -105,7 +105,7 @@ quint32 rightbuttonwidget::getGpspKeys( int x, int y )
             //A button was pressed
             key += BUTTON_A;
             }
-        else if (angle >= 23 && angle < 68)
+        else if (angle >= 23 && angle < 68 && m_buttonSettings )
             {
             //A and B key was pressed
             key += BUTTON_B;
@@ -116,7 +116,7 @@ quint32 rightbuttonwidget::getGpspKeys( int x, int y )
             //B key was pressed
             key += BUTTON_B;
             }
-        else if (angle >= 203 && angle < 248)
+        else if (angle >= 203 && angle < 248 && m_buttonSettings )
             {
             //A and B key was pressed
             key += BUTTON_B;
@@ -126,3 +126,7 @@ quint32 rightbuttonwidget::getGpspKeys( int x, int y )
         return key;
 }
 
+ void rightbuttonwidget::setButtonSettings( int buttonSettings )
+ {
+     m_buttonSettings = buttonSettings;
+ }

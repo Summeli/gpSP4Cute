@@ -20,7 +20,7 @@
 
 #include "common.h"
 
-u32 global_enable_audio = 0;
+u32 global_enable_audio = 1;
 u32 audio_on = 0;
 
 direct_sound_struct direct_sound_channel[2];
@@ -710,7 +710,7 @@ int sound_callback(void *userdata, u8 *stream, int length)
 
         if(audio_on != 0 && (((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) < length) && wait_ticks < (current_ticks + 50000))
 	{
-        //	get_ticks_us(&wait_ticks);
+            //get_ticks_us(&wait_ticks);
             return 0;
 	}
 #endif

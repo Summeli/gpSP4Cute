@@ -556,6 +556,10 @@ u32 update_gba()
       gbc_update_count++;
       update_gbc_sound(cpu_ticks);
       gbc_sound_update = 0;
+#ifdef __SYMBIAN32__
+      //try to render audio
+      mixAudio();
+#endif
     }
 
     update_timer(0);
@@ -657,12 +661,13 @@ u32 update_gba()
           update_gbc_sound(cpu_ticks);
           synchronize();
 
-          update_screen();
-
 #ifdef __SYMBIAN32__
           //try to render audio
-		  mixAudio();
+          mixAudio();
 #endif
+
+          update_screen();
+
           if(update_backup_flag)
             update_backup();
 

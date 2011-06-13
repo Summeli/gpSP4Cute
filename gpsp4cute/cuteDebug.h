@@ -20,7 +20,7 @@
 #ifndef DEBUG_H_
 #define DEBUG_H_
 
-#define _DEBUG
+//#define _DEBUG
 void initdebug();
 
 #include <QDebug>

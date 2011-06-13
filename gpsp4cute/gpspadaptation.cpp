@@ -189,6 +189,7 @@ void gpspadaptation::updateSettings( TGPSPSettings settings  )
     gp2x_fps_debug = settings.iShowFPS;
     m_audio->setVolume( settings.iVolume );
     g_audioOn = settings.iAudioOn;
+    m_audio->Reset();
     __DEBUG_OUT
 }
 
@@ -254,7 +255,6 @@ u16* allocateFramenBuffer( u32 size )
 __DEBUG_IN
     //TODO: we could actually make a QImage in here, and use that pointer
     //Maybe with Symbian^3 :-)
-    //g_screenptr = (u16*) malloc( size );
     g_screenptr = (u16*) malloc( 240*160*4 );
     return g_screenptr;
     __DEBUG_OUT
@@ -343,7 +343,10 @@ void mixAudio( )
       if( aframe )
         {
         if ( sound_callback( NULL, aframe, KFramesize ) )
+            {
+            RDebug::Printf( "callback succeed, mixing" );
             g_gpspAdapt->audioFrameMixed();
+            }
         }
       }
 }

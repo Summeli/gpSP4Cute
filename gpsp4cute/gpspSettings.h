@@ -42,6 +42,7 @@ struct TGPSPSettings
     bool iAudioOn;
     int iVolume;
     int iDpadSettings;
+    int iButtonSettings;
 
     int iButtonOpacity;
     int iStretch;

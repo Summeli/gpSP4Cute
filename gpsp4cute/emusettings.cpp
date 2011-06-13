@@ -25,7 +25,7 @@
 #include "emusettings.h"
 #include "cuteDebug.h"
 
-#define KSettingsVersion 9
+#define KSettingsVersion 10
 
 EmuSettings::EmuSettings(QWidget *parent)
     : QMainWindow(parent)
@@ -52,7 +52,7 @@ EmuSettings::EmuSettings(QWidget *parent)
 	fileview->setGeometry(QRect(0, 0, 640, 150));
 	fileview->hide();
 		
-        keysettings =new controlsettings( gpspsettings.iDpadSettings, this );
+        keysettings =new controlsettings( gpspsettings.iDpadSettings,  gpspsettings.iButtonSettings, this );
 	keysettings->setGeometry(QRect(0, 0, 640, 150));
 	keysettings->hide();
 	
@@ -88,8 +88,9 @@ EmuSettings::EmuSettings(QWidget *parent)
 	
 	//connect control settings
 	connect( keysettings, SIGNAL(runkeyconfig()), this, SLOT( keyConfig() ));
-	connect( keysettings, SIGNAL(screensettings(int)), this, SLOT( screensettings(int) ));
-	
+        connect( keysettings, SIGNAL(dpadSettings(int)), this, SLOT( DPadSettings(int) ));
+        connect( keysettings, SIGNAL(buttonSettings(int)), this, SLOT( ButtonSettings(int) ));
+
 	romloaded = false;
 	settingsChanged = false;
 	errorDialog = NULL;
@@ -191,13 +192,20 @@ void EmuSettings::keyConfig()
     }
 
 void EmuSettings::DPadSettings( int settings )
-	{
-	__DEBUG_IN
-	__DEBUG2("current screensetetings are", settings );
-	settingsChanged = true;
-        gpspsettings.iDpadSettings = settings;
-	__DEBUG_OUT
-	}
+    {
+    __DEBUG_IN
+    __DEBUG2("current screensetetings are", settings );
+    settingsChanged = true;
+    gpspsettings.iDpadSettings = settings;
+    __DEBUG_OUT
+    }
+
+void EmuSettings::ButtonSettings( int settings )
+{
+    settingsChanged = true;
+    gpspsettings.iButtonSettings = settings;
+}
+
 
 void EmuSettings::showFPS( bool showFPS )
 	{
@@ -467,6 +475,7 @@ void EmuSettings::setDefaultSettings()
         gpspsettings.iDpadSettings = 0;
         gpspsettings.iStretch = 1;
         gpspsettings.iButtonOpacity = 4;
+        gpspsettings.iButtonSettings = 0;
 	__DEBUG_OUT
 	}
 
@@ -493,6 +502,7 @@ void EmuSettings::savecurrentSettings()
         settings.setValue("gpsp_dpadsettings", gpspsettings.iDpadSettings);
         settings.setValue("gpsp_ButtonOpacity", gpspsettings.iButtonOpacity);
         settings.setValue("gpsp_Stretch", gpspsettings.iStretch);
+        settings.setValue("gpsp_ButtonSettings", gpspsettings.iButtonSettings);
 	settings.sync();
 	__DEBUG_OUT
 	}
@@ -526,5 +536,6 @@ void EmuSettings::loadSettings()
         gpspsettings.iDpadSettings = settings.value("gpsp_dpadsettings").toInt();
         gpspsettings.iButtonOpacity = settings.value("gpsp_ButtonOpacity").toInt();
         gpspsettings.iStretch = settings.value("gpsp_Stretch").toInt();
+        gpspsettings.iButtonSettings = settings.value("gpsp_ButtonSettings").toInt();
 	__DEBUG_OUT
 	}

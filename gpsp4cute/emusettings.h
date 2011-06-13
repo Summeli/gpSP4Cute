@@ -60,6 +60,7 @@ public slots:
     void showFileMenu();
     void keyConfig();
     void DPadSettings( int settings );
+    void ButtonSettings( int settings );
     void showFPS( bool showFPS );
     void stretch( int stretch );
     void buttonOpacity( int opacity );

@@ -20,14 +20,16 @@
 
 #include "controlsettings.h"
 
-controlsettings::controlsettings( int dpadSettings, QWidget *parent)
+controlsettings::controlsettings( int dpadSettings, int hiddenABButtons, QWidget *parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
     ui.dpadSettings->setCurrentIndex( dpadSettings );
+    ui.buttonSettings->setCurrentIndex( hiddenABButtons );
 
     connect(ui.keyconfigButton, SIGNAL(clicked()), this, SLOT(keyConfig()));
     connect(ui.dpadSettings, SIGNAL(currentIndexChanged(int)), this, SLOT(setDPadSettings(int)));
+    connect(ui.buttonSettings, SIGNAL(currentIndexChanged(int)), this, SLOT(setButtonSettings(int)));
 }
 
 controlsettings::~controlsettings()
@@ -43,4 +45,9 @@ void controlsettings::keyConfig()
 void controlsettings::setDPadSettings( int settings )
 {
     emit( dpadSettings(settings) );
+}
+
+void controlsettings::setButtonSettings( int settings )
+{
+    emit( buttonSettings( settings ));
 }

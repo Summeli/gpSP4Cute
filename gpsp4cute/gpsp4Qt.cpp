@@ -127,7 +127,7 @@ void gpsp4Qt::paintEvent(QPaintEvent *)
         if(m_stretch == TGPSPSettings::EMedium ){
             // 536 x 360 res
             left = 52;
-            newWidth = 588;
+            newWidth = 533;
         }
         QRect target(left, SCREEN_TOP, newWidth, height() );
 
@@ -292,6 +292,7 @@ void gpsp4Qt::updateSettings( TGPSPSettings antSettings )
     __DEBUG_IN
     m_settings = antSettings;
     m_dpad->setDpadMode( antSettings.iDpadSettings );
+    m_rightButtons->setButtonSettings( antSettings.iButtonSettings );
     m_adaptation->updateSettings( antSettings );
     __DEBUG_OUT
 }

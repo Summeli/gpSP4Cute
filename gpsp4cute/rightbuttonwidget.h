@@ -32,10 +32,10 @@ public:
 
 public:
     quint32 getGpspKeys( int x, int y );
-
+    void setButtonSettings( int buttonSettings );
 
 private:
-
+    int m_buttonSettings;
 };
 
 #endif // RIGHTBUTTONWIDGET_H
