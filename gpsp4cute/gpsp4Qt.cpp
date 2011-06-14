@@ -103,7 +103,6 @@ void gpsp4Qt::render()
     __DEBUG_OUT
 }
 
-
 void gpsp4Qt::paintEvent(QPaintEvent *)
 {
     __DEBUG_IN

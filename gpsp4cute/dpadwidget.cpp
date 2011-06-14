@@ -76,7 +76,7 @@ quint32 DPadWidget::getGpspKeys( int x, int y )
         qreal x_coord = x - KCenter_x;
         qreal y_coord = y - KCenter_y;
 
-        qreal r = qAtan2(y,x);
+        qreal r = qAtan2( y_coord, x_coord);
 
         r = (r * 180 )/ KPi; //convert radians to degrees
 
