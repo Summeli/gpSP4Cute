@@ -280,20 +280,7 @@ typedef u32 fixed16_16;
 #endif
 
 //export some functions to be called from the c++ side  
-#ifdef __SYMBIAN32__
-#ifdef __cplusplus
-extern "C" {
 #endif
 
-void trigger_key(u32 key);
-void saveState( u32 slot );
-void loadState( u32 slot );
-void doExitgpsp();
-extern u32 gp2x_fps_debug;
-#ifdef __cplusplus
-};
-#endif
-#endif
 
-#endif
 

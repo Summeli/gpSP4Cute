@@ -26,6 +26,7 @@
 #include <QApplication>
 
 
+extern "C" void init_symbian_stuff();
 void loadStyleSheet()
 {
     QFile file(":/style/summelistyle.qss");
@@ -40,6 +41,7 @@ void loadStyleSheet()
 int main(int argc, char *argv[])
 {
 BEGIN_RELOCATED_CODE(0x10000000);
+   init_symbian_stuff();
    initdebug();
    QApplication a(argc, argv);
  

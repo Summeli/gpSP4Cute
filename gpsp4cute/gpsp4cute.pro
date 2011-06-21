@@ -12,7 +12,6 @@ HEADERS += filewidget.h \
     controlsettings.h \
     videosettings.h \
     audiosettings.h \
-    gpsp.loc \
     keyconfigdialog.h \
     viewcontroller.h \
     emusettings.h \
@@ -24,7 +23,7 @@ HEADERS += filewidget.h \
     smalloptionswidget.h \
     rightbuttonwidget.h \
     smallgpsplogo.h \
-    audio.h
+    AntAudio.h
     
 SOURCES += cuteErrorDialog.cpp \
     filewidget.cpp \
@@ -46,8 +45,7 @@ SOURCES += cuteErrorDialog.cpp \
     smalloptionswidget.cpp \
     rightbuttonwidget.cpp \
     smallgpsplogo.cpp \
-    audio.cpp \
-    sound_symbian.cpp
+    AntAudio.cpp
     
 FORMS += cuteErrorDialog.ui \
     filewidget.ui \
@@ -84,7 +82,7 @@ symbian:TARGET.EPOCHEAPSIZE = 0x200000 \
     0x800000
     
 symbian:TARGET.EPOCSTACKKSIZE = 0x10000
-symbian:TARGET.CAPABILITY += SwEvent
+#symbian:TARGET.CAPABILITY += SwEvent
 symbian:ICON = gfx/gpsp.svg
 symbian:INCLUDEPATH += ../inc/
 

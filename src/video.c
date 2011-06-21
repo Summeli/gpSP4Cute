@@ -3953,6 +3953,7 @@ void debug_screen_update()
 
 void debug_screen_printf(const char *format, ...)
 {
+	/*
   char str_buffer[512];
   u32 str_buffer_length;
   va_list ap;
@@ -3961,12 +3962,10 @@ void debug_screen_printf(const char *format, ...)
   //Summeli: in symbian the libc is only required because of vsnprintf
   str_buffer_length = vsnprintf(str_buffer, 512, format, ap);
   va_end(ap);
-/*
-  printf("printing debug string %s at %d %d\n", str_buffer,
-   debug_cursor_x, debug_cursor_y);
-*/
+  
   print_string(str_buffer, 0xFFFF, 0x0000, debug_cursor_x, debug_cursor_y);
   debug_cursor_x += FONT_WIDTH * str_buffer_length;
+  */
 }
 
 void debug_screen_newline(u32 count)
@@ -3979,12 +3978,14 @@ void debug_screen_newline(u32 count)
 
 void debug_screen_printl(const char *format, ...)
 {
+	/*
   va_list ap;
 
   va_start(ap, format);
   debug_screen_printf(format, ap);
   debug_screen_printf("\n");
   va_end(ap);
+  */
 }
 
 

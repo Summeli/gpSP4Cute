@@ -21,6 +21,7 @@
 
 // Special thanks to psp298 for the analog->dpad code!
 
+int g_retval;
 void trigger_key(u32 key)
 {
   u32 p1_cnt = io_registers[REG_P1CNT];
@@ -105,6 +106,11 @@ u32 update_input()
 {
   u32 new_key = updateSymbianInput();
   
+  if ( g_retval == 1 )
+     {
+     g_retval = 0;
+     return 1;
+     }
   if((new_key | key) != key)
 	  {
 	  DEBUG1("new key is triggered key=", key );
@@ -141,6 +147,11 @@ void doExitgpsp()
 	quit();
 	}
 
+void doResetgpsp()
+{
+    reset_gba();
+    reg[CHANGED_PC_STATUS] = 1;
+}
 #endif
 
 #ifdef PSP_BUILD

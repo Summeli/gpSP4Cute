@@ -2,7 +2,7 @@
 &EN
 
 ; SIS header: name, uid, version
-#{"gpsp"}, (0xE0D278F3), 0, 6, 1, TYPE=SA
+#{"gpsp"}, (0xE0D278F3), 0, 6, 5, TYPE=SA
 
 ; Localised Vendor name
 %{"Vendor"}
@@ -18,15 +18,15 @@
 [0x1028315F],0,0,0,{"S60ProductID"}
  
 ; Default dependency to Qt libraries
-(0x2001E61C), 4, 6, 0, {"Qt"}
+(0x2001E61C), 4, 6, 3, {"Qt"}
 
 ; Executable and default resource files
-"\S60\devices\S60_5th_Edition_SDK_v1.0\epoc32\release\gcce\urel\gpsp.exe"    - "!:\sys\bin\gpsp.exe"
-"\S60\devices\S60_5th_Edition_SDK_v1.0\epoc32\data\z\resource\apps\gpsp.rsc"    - "!:\resource\apps\gpsp.rsc"
-"\S60\devices\S60_5th_Edition_SDK_v1.0\epoc32\data\z\private\10003a3f\import\apps\gpsp_reg.rsc"    - "!:\private\10003a3f\import\apps\gpsp_reg.rsc"
-"\S60\devices\S60_5th_Edition_SDK_v1.0\epoc32\data\z\resource\apps\gpsp.mif"    - "!:\resource\apps\gpsp.mif"
+"/QtSDK/Symbian/SDKs/Symbian1Qt463/epoc32/release/gcce/urel/gpsp.exe"    - "!:/sys/bin/gpsp.exe"
+"/QtSDK/Symbian/SDKs/Symbian1Qt463/epoc32/data/z/resource/apps/gpsp.rsc"    - "!:/resource/apps/gpsp.rsc"
+"/QtSDK/Symbian/SDKs/Symbian1Qt463/epoc32/data/z/private/10003a3f/import/apps/gpsp_reg.rsc"    - "!:/private/10003a3f/import/apps/gpsp_reg.rsc"
+"/QtSDK/Symbian/SDKs/Symbian1Qt463/epoc32/data/z/resource/apps/gpsp.mif"    - "!:/resource/apps/gpsp.mif"
 
-"game_config.txt"		-"!:\private\E0D278F3\game_config.txt"
+"game_config.txt"		-"!:/private/E0D278F3/game_config.txt"
 
 ; Manual PKG post-rules from PRO files
 

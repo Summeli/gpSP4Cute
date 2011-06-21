@@ -66,6 +66,7 @@ u32 gp2x_fps_debug = 0;//1;
 u32 frames;
 u32 skipped_frames;
 u32 ticks_needed_total = 0;
+extern void mixAudio();
 #endif
 u32 skip_next_frame = 0;
 
@@ -202,7 +203,6 @@ void init_symbian_stuff()
   SymbianPackHeap();
  // create_functioncall_stubs_symbian();
   
-  symb_create_interpolate_table();
   modify_function_pointers_symbian( relocated_ro_offset );
 }
 
@@ -245,9 +245,6 @@ int main(int argc, char *argv[])
 #endif
    //fprintf(stdout, "I'm ALIVE" );
  
-#ifdef __SYMBIAN32__
-  init_symbian_stuff();
-#endif
   
   init_gamepak_buffer();
 
@@ -556,6 +553,9 @@ u32 update_gba()
       gbc_update_count++;
       update_gbc_sound(cpu_ticks);
       gbc_sound_update = 0;
+#ifdef __SYMBIAN32__
+      mixAudio();
+#endif
     }
 
     update_timer(0);
@@ -655,6 +655,9 @@ u32 update_gba()
             continue;
 
           update_gbc_sound(cpu_ticks);
+#ifdef __SYMBIAN32__
+          mixAudio();
+#endif
           synchronize();
 
           update_screen();
@@ -1102,3 +1105,4 @@ void printout(void *str, u32 val)
 {
   //printf(str, val);
 }
+

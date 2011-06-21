@@ -55,7 +55,7 @@ gpsp4Qt::gpsp4Qt(QWidget *parent)
     widget->setObjectName(QString::fromUtf8("QBlitterWidget"));
     widget->setGeometry(QRect(160, 0, 640, 360));
     
-    m_audio = new audio( this );
+    m_audio = new CAntAudio();
     
     adaptation = new gpspadaptation( widget, m_audio );
     

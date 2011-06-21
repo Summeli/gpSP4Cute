@@ -56,7 +56,7 @@ preGCCE:
 #   -MD $(DEB_MACRO) -include $(EPOCROOT2)/include/gcce/gcce.h
 #   LD_EXE_FLAGS = -L$(CC_INSTALL_PATH)/arm-none-symbianelf/lib \
 #   -L$(EPOCROOT2)/RELEASE/ARMV5/UDEB  \
-#   -L$(CC_INSTALL_PATH)/lib/gcc/arm-none-symbianelf/3.4.3 --target1-abs \
+#   -L$(CC_INSTALL_PATH)/lib/gcc/arm-none-symbianelf/4.4.1 --target1-abs \
 #   --no-undefined -nostdlib -shared -Ttext 0x8000 -Tdata 0x400000 \
 #   --default-symver -soname $(PROJECT_NAME){000a0000}[$(UID3)].exe \
 #   --entry _E32Startup -u _E32Startup \
@@ -80,7 +80,7 @@ preREL:
    -MD $(REL_MACRO) -include $(EPOCROOT2)/include/gcce/gcce.h
    LD_EXE_FLAGS = -L$(CC_INSTALL_PATH)/arm-none-symbianelf/lib \
    -L$(EPOCROOT2)/RELEASE/ARMV5/UREL  \
-   -L$(CC_INSTALL_PATH)/lib/gcc/arm-none-symbianelf/3.4.3 --target1-abs \
+   -L$(CC_INSTALL_PATH)/lib/gcc/arm-none-symbianelf/4.4.1 --target1-abs \
    --no-undefined -nostdlib -shared -Ttext 0x8000 -Tdata 0x400000 \
    --default-symver -soname $(PROJECT_NAME){000a0000}[$(UID3)].exe \
    --entry _E32Startup -u _E32Startup \
@@ -103,7 +103,7 @@ preALL:
 	$(EXE_MACRO) $(addprefix -D ,$(PRJ_MACRO)) \
 	-D__PRODUCT_INCLUDE__=$(OS_HRH) -I $(SRC_PATH) -I $(VARIANT) \
 	$(addprefix -I ,$(USERINCLUDE)) $(addprefix -I ,$(SYSINCLUDE)) \
-	-I $(CC_INSTALL_PATH)/lib/gcc/arm-none-symbianelf/3.4.3/include
+	-I $(CC_INSTALL_PATH)/lib/gcc/arm-none-symbianelf/4.4.1/include
   CXXFLAGS = $(CFLAGS) -Wno-ctor-dtor-privacy -x c++ $(CPP_MACRO)
   C_OBJS = $(patsubst %.c,$(OBJ_PATH)/%.o,$(CSRCS))
   CXX_OBJS = $(patsubst %.cpp,$(OBJ_PATH)/%.o,$(CXXSRCS))
