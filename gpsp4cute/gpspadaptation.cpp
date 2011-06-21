@@ -45,6 +45,7 @@ quint8 paused;
 quint32 adaptationkey = 0;
 bool g_audioOn;
 
+extern int g_retval;
 extern "C" {
 
 void WriteLOG( char* x );
@@ -60,6 +61,8 @@ void loadState( u32 slot );
 void doExitgpsp();
 void mixAudio();
 int sound_callback(void *userdata, u8 *stream, int length);
+void doResetgpsp();
+
 };
 
 extern u32 gp2x_fps_debug;
@@ -78,6 +81,7 @@ gpspadaptation::gpspadaptation( gpsp4Qt* widget, CAntAudio* audioInterface  )
     g_audio = audioInterface;
     g_audioOn = false;
     g_gpspAdapt = this;
+    g_retval = 0;
 }
 
 void gpspadaptation::run()
@@ -99,6 +103,8 @@ void gpspadaptation::run()
     __DEBUG1("Main loop returned!");
     disconnect(this, SIGNAL(frameblit()), m_blitter, SLOT(render()) );
     disconnect(this, SIGNAL(audioFrameReady()), m_audio, SLOT(FrameMixed()));
+
+
 }
 
 
@@ -131,8 +137,9 @@ void gpspadaptation::Stop()
 void gpspadaptation::ResetGame()
 {
     __DEBUG_IN
-    reset_gba();
-    reg[CHANGED_PC_STATUS] = 1;
+    doResetgpsp();
+    paused = 0;
+    g_retval = 1;
     __DEBUG_OUT
 }
 
@@ -156,6 +163,7 @@ void gpspadaptation::LoadRom( QString aFileName,  TGPSPSettings settings )
                     __DEBUG1("Game load failed");
         reset_gba();
         reg[CHANGED_PC_STATUS] = 1;
+        g_retval = 1;
         }
     __DEBUG_OUT
     }
@@ -171,14 +179,16 @@ void gpspadaptation::loadgpspState( int aState )
 {
     __DEBUG_IN
     loadState( aState );
+    g_retval = 1;
     __DEBUG_OUT
 }
 
 void gpspadaptation::exitgpsp()
 {
     __DEBUG_IN
-    paused = 0;
     doExitgpsp();
+    paused = 0;
+    g_retval = 1;
     __DEBUG_OUT
 }
 
@@ -238,7 +248,6 @@ u32 updateSymbianInput()
         {
          symb_usleep(15000);
         }
-
     return g_adaption->getGpspKeys();
     __DEBUG_OUT
 }

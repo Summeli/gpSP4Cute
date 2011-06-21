@@ -18,9 +18,9 @@ CSRCS = \
 			video.c \
 			input.c \
 			sound.c \
-			cpu_threaded.c \
 			gui.c \
 			zip.c \
+            cpu_threaded.c \
 			cheats.c \
 			arm_stub_c.c \
 			asm_debug.c \

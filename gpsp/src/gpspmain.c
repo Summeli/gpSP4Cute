@@ -245,10 +245,6 @@ int main(int argc, char *argv[])
 #endif
    //fprintf(stdout, "I'm ALIVE" );
  
-#ifdef __SYMBIAN32__
-  init_symbian_stuff();
-#endif
-  
   init_gamepak_buffer();
 
 #ifdef __SYMBIAN32__  
@@ -659,13 +655,13 @@ u32 update_gba()
             continue;
 
           update_gbc_sound(cpu_ticks);
-          synchronize();
 
 #ifdef __SYMBIAN32__
           //try to render audio
           mixAudio();
 #endif
-
+         synchronize();
+		 
           update_screen();
 
           if(update_backup_flag)

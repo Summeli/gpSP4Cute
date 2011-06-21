@@ -190,7 +190,7 @@ bool gpsp4Qt::event(QEvent *event)
         }
         case QEvent::FocusOut:
         {
-            showmenu();
+            showAntSnesMenu();
         }
         default:
             break;

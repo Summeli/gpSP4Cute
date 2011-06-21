@@ -63,6 +63,7 @@ signals:
     void frameblit();
     void dispatchErrorNote( QString message );
     void audioFrameReady();
+
 private:
     gpsp4Qt* m_blitter; //not owned
     
