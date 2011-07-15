@@ -95,7 +95,7 @@ extern u32 gp2x_fps_debug;
 
 
 //export some functions to be called from the c++ side  
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -128,7 +128,7 @@ extern u32 num_skipped_frames;
 #endif
 
 
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
 extern u64 frame_count_initial_timestamp;
 extern u32 real_frame_count;
 extern u32 virtual_frame_count;

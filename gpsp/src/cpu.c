@@ -42,9 +42,11 @@ u32 memory_writes_u8;
 u32 memory_writes_u16;
 u32 memory_writes_u32;
 
+#ifdef __SYMBIAN32__
 extern u8* rom_translation_cache;
 extern u8* ram_translation_cache;
 extern u8* bios_translation_cache;
+#endif
 
 static const u8 bit_count[256] =
 {

@@ -2017,7 +2017,7 @@ s32 load_game_config(u8 *gamepak_title, u8 *gamepak_code, u8 *gamepak_maker)
   translation_gate_targets = 0;
   flash_device_id = FLASH_DEVICE_MACRONIX_64KB;
 
-#ifdef __SYMBIAN32__
+#if 1//__SYMBIAN32__
   gameconfigFilePath( config_path  );
 #else
   sprintf(config_path, "%s/%s", main_path, CONFIG_FILENAME);  
@@ -2027,7 +2027,6 @@ s32 load_game_config(u8 *gamepak_title, u8 *gamepak_code, u8 *gamepak_maker)
 
   if(config_file)
   {
-	DEBUG("config file found");
     while(fgets(current_line, 256, config_file))
     {
       if(parse_config_line(current_line, current_variable, current_value)
@@ -2059,7 +2058,6 @@ s32 load_game_config(u8 *gamepak_title, u8 *gamepak_code, u8 *gamepak_maker)
             if(!strcmp(current_variable, "game_name"))
             {
               fclose(config_file);
-              DEBUG("config succesfully loaded!");
               return 0;
             }
 
@@ -2103,14 +2101,12 @@ s32 load_game_config(u8 *gamepak_title, u8 *gamepak_code, u8 *gamepak_maker)
         }
 
         fclose(config_file);
-        DEBUG("config succesfully loaded!");
         return 0;
       }
     }
 
     fclose(config_file);
   }
-  DEBUG("didn find the config for this game from game_config.txt");
   return -1;
 }
 

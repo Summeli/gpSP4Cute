@@ -854,7 +854,7 @@ void init_sound()
 #ifdef PSP_BUILD
   audio_buffer_size = (audio_buffer_size_number * 1024) + 3072;
 #elif defined(TAVI_BUILD) || defined(ARM_ARCH)
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
   audio_buffer_size = 16384;
 #else
   audio_buffer_size = 16 << audio_buffer_size_number;

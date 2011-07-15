@@ -23,7 +23,7 @@
 #define GPSP_CONFIG_FILENAME "gpsp.cfg"
 
 //export some functions to be called from the c++ side  
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
 #ifdef __cplusplus
 extern "C" {
 #endif

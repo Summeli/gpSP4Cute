@@ -51,17 +51,19 @@ ViewController::ViewController()
 
 #endif
     
-    remotekeys = new QRemoteControlKeys();
 	 
     emuView = new gpsp4Qt();
     //emuView->setGeometry(QRect(0, 0, 640, 360));
-    emuView->setRemoteControl( remotekeys );
     emuView->hide();
     
     settingsView = new EmuSettings();
-    settingsView->setRemoteControl( remotekeys );
     settingsView->show();
-    
+
+#ifdef __SYMBIAN32__
+    remotekeys = new QRemoteControlKeys();
+    settingsView->setRemoteControl( remotekeys );
+    emuView->setRemoteControl( remotekeys );
+#endif
     connect(settingsView, SIGNAL(LoadROM( QString,TGPSPSettings)), this, SLOT(loadROM( QString,TGPSPSettings)));
     
     connect(settingsView, SIGNAL(LoadState( int )), this, SLOT(LoadState( int )));
@@ -76,16 +78,16 @@ ViewController::ViewController()
 
 ViewController::~ViewController()
 {
-	delete remotekeys;
-	delete settingsView;
-	delete emuView;
 #if defined(Q_OS_SYMBIAN)
 	CEikonEnv::Static()->RootWin().CancelCaptureKeyUpAndDowns(iMenuKeyHandle);
 	CEikonEnv::Static()->RootWin().CancelCaptureKeyUpAndDowns(iMenuKeyHandle2);
 	CEikonEnv::Static()->RootWin().CancelCaptureKeyUpAndDowns(iNoKeyHandle);
 	CEikonEnv::Static()->RootWin().CancelCaptureKey(iCameraKeyHandle);
 	CEikonEnv::Static()->RootWin().CancelCaptureKey(iNoKeyHandle2);
+        delete remotekeys;
 #endif
+        delete settingsView;
+        delete emuView;
 }
 
 

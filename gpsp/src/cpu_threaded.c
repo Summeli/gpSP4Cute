@@ -225,8 +225,8 @@ typedef struct
 #include "arm_emit.h" //S60
 #else
 
-#include "x86/x86_emit.h"
-
+//#include "x86/x86_emit.h"
+#include "arm_emit_meego.h"
 #endif
 
 
@@ -3531,8 +3531,7 @@ void dump_translation_cache()
   file_close(bios_cache);
 }
 
-
-
+#ifdef __SYMBIAN32__
 int modify_function_pointers_symbian( int offset )
     {
 
@@ -3643,3 +3642,4 @@ int modify_function_pointers_symbian( int offset )
 
     }
 
+#endif

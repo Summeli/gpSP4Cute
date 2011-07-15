@@ -20,17 +20,18 @@
 
 #include "cuteDebug.h"
 #include "viewcontroller.h"
-#include "relocutils.h"
 
 #include <QtGui>
 #include <QApplication>
 
-
+#ifdef __SYMBIAN32__
+#include "relocutils.h"
 extern "C" void init_symbian_stuff();
+#endif
 
 void loadStyleSheet()
 {
-    QFile file(":/style/summelistyle.qss");
+    QFile file(":/style/meegostyle.qss");
     if(!file.open(QFile::ReadOnly))
         {
 		__DEBUG1("Unable to open file");
@@ -42,11 +43,11 @@ void loadStyleSheet()
 
 int main(int argc, char *argv[])
 {
+#ifdef __SYMBIAN32__
 BEGIN_RELOCATED_CODE(0x10000000);
-
-   //init all the basic symbian stuff
-   init_symbian_stuff();
-   initdebug();
+//init all the basic symbian stuff
+init_symbian_stuff();
+#endif
    QApplication a(argc, argv);
  
    loadStyleSheet();
@@ -54,5 +55,7 @@ BEGIN_RELOCATED_CODE(0x10000000);
    ViewController* vc = new ViewController();
 
    return a.exec();
+#ifdef __SYMBIAN32__
 END_RELOCATED_CODE(); // return to the original code section
+#endif
 }

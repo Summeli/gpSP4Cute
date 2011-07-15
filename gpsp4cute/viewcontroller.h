@@ -26,7 +26,10 @@
 
 #include "gpsp4qt.h"
 #include "emusettings.h"
+
+#ifdef __SYMBIAN32__
 #include "QRemoteControlKeys.h"
+#endif
 
 class ViewController : public QObject
 {
@@ -46,7 +49,6 @@ public slots:
 private:
     gpsp4Qt* emuView;
     EmuSettings* settingsView;
-    QRemoteControlKeys* remotekeys;
     
 #ifdef Q_OS_SYMBIAN
     qint32 iMenuKeyHandle;
@@ -54,6 +56,7 @@ private:
     qint32 iNoKeyHandle2;
     qint32 iMenuKeyHandle2;
     qint32 iCameraKeyHandle;
+    QRemoteControlKeys* remotekeys;
 #endif
     
     

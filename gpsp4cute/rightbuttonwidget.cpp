@@ -23,18 +23,34 @@
 
 #include <qmath.h>
 
+#ifdef __SYMBIAN32__
 const int KCenter_x  = 85;
 const int KCenter_y  = 275;
+#else
+const int KCenter_x  = 85;
+const int KCenter_y  = 395;
+#endif
+
+#ifndef KPi
+#define KPi 3.14
+#endif
 
 const int BUTTONS_CENTER_RIGHT = KCenter_x + 10;
 const int BUTTONS_CENTER_LEFT = KCenter_x - 10;
 const int BUTTONS_CENTER_TOP  = KCenter_y - 10;
 const int BUTTONS_CENTER_BOTTOM = KCenter_y + 10;
 
+#ifdef __SYMBIAN32__
 const int BUTTONS_TOP = 200 - 30;
-
-const int SELECT_LEFT = BUTTON_WIDTH - SMALLBUTTON_WIDTH / 2;
 const int R_TOP = MENU_HEIGHT + SMALLBUTTON_HEIGHT;
+const int SELECT_LEFT = BUTTON_WIDTH - SMALLBUTTON_WIDTH / 2;
+const int R_BOTTOM = MENU_HEIGHT;
+#else
+const int BUTTONS_TOP = 320 - 30;
+const int R_TOP = MENU_HEIGHT + SMALLBUTTON_HEIGHT + 100;
+const int SELECT_LEFT = BUTTON_WIDTH - SMALLBUTTON_WIDTH / 2;
+const int R_BOTTOM = R_TOP - 50;
+#endif
 
 rightbuttonwidget::rightbuttonwidget(QObject *parent)
     : QObject(parent), m_buttonSettings(0)
@@ -58,7 +74,7 @@ quint32 rightbuttonwidget::getGpspKeys( int x, int y )
         else
              key = BUTTON_START;
         }
-    else if(  y > MENU_HEIGHT && y <= R_TOP )
+    else if(  y > R_BOTTOM && y <= R_TOP )
         {
         //R was pressed
         key = BUTTON_R;

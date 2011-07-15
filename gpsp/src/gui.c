@@ -58,7 +58,7 @@
 
 #endif
 
-#if defined(GP2X_BUILD) || defined(__SYMBIAN32__)
+#if 1//defined(GP2X_BUILD) || defined(__SYMBIAN32__)
 
 #define COLOR_BG            color16(0, 0, 0)
 
@@ -668,7 +668,7 @@ u32 gamepad_config_line_to_button[] =
 
 #endif
 
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
 
 u32 gamepad_config_line_to_button[] =
  { 0, 2, 1, 3, 8, 9, 10, 11, 6, 7, 4, 5 };
@@ -743,7 +743,7 @@ s32 load_config_file()
 {
   u8 config_path[512];
    
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
    sprintf(config_path, "%s\\%s", main_path, GPSP_CONFIG_FILENAME);
 #else  
   #if (defined(PSP_BUILD) || defined(ARM_ARCH)) && !defined(_WIN32_WCE)
@@ -1380,7 +1380,7 @@ static  menu_option_type analog_config_options[] =
 
 #endif
 
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
 
 static  menu_option_type* gamepad_config_options;
 
@@ -1511,7 +1511,7 @@ u32 menu(u16 *real_original_screen)
   };
 #endif
 
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
   menu_option_type real_gamepad_config_options[13] =
   {
     gamepad_config_option("D-pad up     ", 0),

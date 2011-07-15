@@ -26,7 +26,6 @@
 #include "audiosettings.h"
 #include "gpspSettings.h"
 
-#include "qremotecontrolkeys.h"
 #include "videosettings.h"
 #include "controlsettings.h"
 #include "aboutdialog.h"
@@ -34,6 +33,9 @@
 #include "gpspadaptation.h"
 #include "cuteErrorDialog.h"
 
+#ifdef __SYMBIAN32__
+#include "qremotecontrolkeys.h"
+#endif
 class EmuSettings : public QMainWindow
 {
     Q_OBJECT
@@ -50,9 +52,6 @@ class EmuSettings : public QMainWindow
 public:
     EmuSettings(QWidget *parent = 0);
     ~EmuSettings();
-
-public:
-    void setRemoteControl( QRemoteControlKeys* remote );
     
 public slots:
     void loadROM();
@@ -115,8 +114,14 @@ private:
  
     bool settingsChanged;
     TGPSPSettings gpspsettings;
-    QRemoteControlKeys* remotecontrol;
     cuteErrorDialog* errorDialog;
+
+#ifdef __SYMBIAN32__
+public:
+    void setRemoteControl( QRemoteControlKeys* remote );
+private: //data
+     QRemoteControlKeys* remotecontrol;
+#endif
 };
 
 #endif // EMUSETTINGS_H

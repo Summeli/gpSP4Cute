@@ -1,6 +1,6 @@
-/* gpsp4cute
+/* gpSP4Meego
  *
- * Copyright (C) 2010 Summeli <summeli@summeli.fi>
+ * Copyright (C) 2011 Summeli <summeli@summeli.fi>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -16,27 +16,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
+ 
+#include "meego_adaptation.h"
 
-#ifndef DEBUG_H_
-#define DEBUG_H_
+#include <unistd.h>
+ 
+void CLEAR_INSN_CACHE(const u8 *code, int size)
+{	
+  asm volatile (
+            "push    {r7}\n"
+            "mov     r0, %0\n"
+            "mov     r1, %1\n"
+            "movw    r7, #0x2\n"
+            "movt    r7, #0xf\n"
+            "movs    r2, #0x0\n"
+            "svc     0x0\n"
+            "pop     {r7}\n"
+            :
+            : "r" (code), "r" ( (char*) (code) + size)
+            : "r0", "r1", "r2");
+}
 
-#define _DEBUG
-
-#include <QDebug>
-#ifdef _DEBUG
-#define __DEBUG_IN        qDebug() << __PRETTY_FUNCTION__ << "in";
-#define __DEBUG_OUT       qDebug() << __PRETTY_FUNCTION__ << "out";
-#define __DEBUG1(a)        qDebug() << a;
-#define __DEBUG2(a,b)      qDebug() << a << b;
-#define __DEBUG3(a,b,c)    qDebug() << a << b << c;
-#define __DEBUG4(a,b,c,d)    qDebug() << a << b << c << d;
-#else
-#define __DEBUG_IN
-#define __DEBUG_OUT
-#define __DEBUG1(a)
-#define __DEBUG2(a,b)
-#define __DEBUG3(a,b,c)
-#define __DEBUG4(a,b,c,d) 
-#endif
-
-#endif /* DEBUG_H_ */
+void symb_usleep(int aValue)
+{
+	usleep( aValue);
+}

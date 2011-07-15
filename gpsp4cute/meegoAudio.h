@@ -1,4 +1,4 @@
-/* gpsp4cute
+/* AntSnes
  *
  * Copyright (C) 2010 Summeli <summeli@summeli.fi>
  *
@@ -17,41 +17,42 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#ifndef __MEEGO_AUDIO_H_
+#define __MEEGO_AUDIO_H_
 
-#include "cuteDebug.h"
+#include <QObject>
 
-#ifdef _DEBUG
 
-#include <QtGui>
-#include <QApplication>
+const int KSoundBuffers = 4;
+const int KBlockTime = 1000000 / 5; // hardcoded: 5 updates/sec
+const int KMaxLag = 260000; // max sound lag, lower values increase chanse of underflow
+const int KMaxUnderflows = 50; // max underflows/API errors we are going allow in a row (to prevent lockups)
 
-QTime timeDebug;
-QFile file("F:\\Data\\gpspdebug.txt");
+const int KSampleRate = 44100;
+const int KStereo = 1;
+const int KFramesize = 2940; // sampleRate / 60 * 2
 
-void debugOutput(QtMsgType type, const char *msg)
+
+class CAntAudio : public QObject
 {
-    return;
-    QTextStream out(&file);
-    switch (type) 
-    {
-    case QtDebugMsg:
-        //out << timeDebug.elapsed();
-        //out << " ";
-        //out << msg;
-        //out << "\n";
-        RDebug::Printf("gpSP - %d - %s", timeDebug.elapsed(), msg);
-        break;
-    default:
-        break;
-     }
-}
-#endif
+	Q_OBJECT
+	
+public:
+	~CAntAudio();
+	CAntAudio();
+	
+public:
+        void setVolume( int aVolume );
+        int* NextFrameL();
+        int FreeBufferCount();
+	void Stop();
 
-void initdebug()
-{
-#ifdef _DEBUG
-    file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
-    timeDebug.start();
-    qInstallMsgHandler(debugOutput);
-#endif
-}
+public slots:
+	void FrameMixed();
+	void Reset();
+	
+
+protected:
+
+};
+#endif //__MEEGO_AUDIO_H_

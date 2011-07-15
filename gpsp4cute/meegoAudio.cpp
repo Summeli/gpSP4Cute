@@ -16,44 +16,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#ifndef SYMB_ADAPTATION_H_
-#define SYMB_ADAPTATION_H_
 
-#include "common.h"
+#include "meegoAudio.h"
 
-typedef long long int64;
+#include "debug.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
-/*This interface should be build in the application side
- * the gpsp is just statically linking into these functions
- * for integration
- * */
-u32 updateSymbianInput();
-void symbian_blit( const u16* screen );
+/*******************************************
+ *
+ * CAntAudio
+ *
+ *******************************************/
 
-void gameconfigFilePath( char* path );
-void getmainPath( char* path );
+CAntAudio::CAntAudio()
+{
+}
 
-void dispatchNoBiosErrorNote();
-void dispatchWrongBiosErrorNote();
-void dispatchRomErrorNote();
 
-u16* get_screen_pixels();
+CAntAudio::~CAntAudio()
+{
+}
 
-u16* allocateFramenBuffer( u32 size );
+void CAntAudio::setVolume( int aVolume )
+{
+}
 
-/*
- * This stuff is used from the C++ side to C side
- * */
-int cute_library_main(u8* rom, u8* bios );
+void CAntAudio::Reset()
+{
+}
 
-//audio adaptation
+// returns a pointer to buffer for next frame,
+// to be used when iSoundBuffers are used directly
+int *CAntAudio::NextFrameL()
+{
+}
 
-#ifdef __cplusplus
-};
-#endif
+void CAntAudio::FrameMixed()
+{
+}
 
-#endif /* SYMB_ADAPTATION_H_ */
+void CAntAudio::Stop()
+{
+}
+
+int CAntAudio::FreeBufferCount()
+{
+}

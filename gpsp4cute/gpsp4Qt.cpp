@@ -21,11 +21,15 @@
 #include "gpspadaptation.h"
 
 #include "cuteDebug.h"
-#include "symbian_memory_handler.h"  
 #include "input.h"
 #include "gpspSettings.h"
 #include "buttonpositions.h"
 
+#ifdef __SYMBIAN32__
+#include "symbian_memory_handler.h"  
+#else
+#include "meego_adaptation.h"
+#endif
 uint KAntKeyTable[10]={BUTTON_UP,BUTTON_DOWN,BUTTON_LEFT,BUTTON_RIGHT,BUTTON_A,
 		BUTTON_B,BUTTON_L,BUTTON_R,BUTTON_START,BUTTON_SELECT};
 
@@ -66,8 +70,9 @@ gpsp4Qt::gpsp4Qt(QWidget *parent)
     connect(this, SIGNAL(doLoadROM(QString,TGPSPSettings)), m_adaptation, SLOT(LoadRom(QString,TGPSPSettings)) );
     connect(m_adaptation, SIGNAL(dispatchErrorNote(QString)), this, SLOT(showErrorNote(QString)) );
     
+#ifdef __SYMBIAN32__
     connect(this, SIGNAL(Start()), this, SLOT(listencontrols()) );
-    
+#endif
     g_adaption = this;
     //create graphics for the button overlay
     LoadButtons();
@@ -198,11 +203,6 @@ bool gpsp4Qt::event(QEvent *event)
     return QWidget::event(event);
 }
 
-void gpsp4Qt::setRemoteControl( QRemoteControlKeys* remote )
-{
-    m_remotecontrol = remote;
-}
-
 void gpsp4Qt::keyPressEvent( QKeyEvent * event)
 {
     __DEBUG_IN
@@ -211,7 +211,7 @@ void gpsp4Qt::keyPressEvent( QKeyEvent * event)
     quint32 c = event->nativeScanCode();
 
     __DEBUG2("key pressed, scancode is ", c );
-    for(TInt i=0;i<10;i++)
+    for(int i=0;i<10;i++)
     {
     if(c==m_settings.iScanKeyTable[i])
         {
@@ -227,7 +227,7 @@ void gpsp4Qt::keyReleaseEvent(QKeyEvent* event)
     quint32 c = event->nativeScanCode();
 
     __DEBUG2("key released, scancode is ", c );
-    for(TInt i=0;i<10;i++)
+    for(int i=0;i<10;i++)
         {
         if(c==m_settings.iScanKeyTable[i])
             {
@@ -321,10 +321,6 @@ quint32 gpsp4Qt::getGpspKeys()
     return m_softKeys | m_hardKeys;
 }
 
-void gpsp4Qt::listencontrols()
-{
-    m_remotecontrol->subscribeKeyEvent(this);
-}
 
 void gpsp4Qt::LoadButtons()
 {
@@ -350,3 +346,14 @@ void gpsp4Qt::ApplyTransparency(QPixmap &pm, QString png)
     p.end();
     pm = transparent;
 }
+#ifdef __SYMBIAN32__
+void gpsp4Qt::setRemoteControl( QRemoteControlKeys* remote )
+{
+    m_remotecontrol = remote;
+}
+
+void gpsp4Qt::listencontrols()
+{
+    m_remotecontrol->subscribeKeyEvent(this);
+}
+#endif

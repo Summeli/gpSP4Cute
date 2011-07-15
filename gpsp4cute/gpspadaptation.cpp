@@ -19,13 +19,17 @@
 #include "gpspadaptation.h"
 
 //some symbian headers
+#ifdef __SYMBIAN32__
 #include <e32std.h>
 #include <e32base.h>
+#include "symbian_memory_handler.h"
+#else
+#include "meego_adaptation.h"
+#endif
 
 //adaptation
 #include "MEmulatorAdaptation.h"
 #include "cuteDebug.h"
-#include "symbian_memory_handler.h"
 #include "symb_adaptation.h"
 
 //qt headers
@@ -97,7 +101,7 @@ void gpspadaptation::run()
 
     __DEBUG3("Starting the gpsp, ROM and bios:", m_rom, m_settings.iBios );
     //Start the main in the emulator
-    symbian_library_main( (u8*) m_rom.toStdString().c_str(),
+    cute_library_main( (u8*) m_rom.toStdString().c_str(),
         (u8*) m_settings.iBios.toStdString().c_str() );
 
     __DEBUG1("Main loop returned!");
@@ -353,7 +357,7 @@ void mixAudio( )
         {
         if ( sound_callback( NULL, aframe, KFramesize ) )
             {
-            RDebug::Printf( "callback succeed, mixing" );
+            //RDebug::Printf( "callback succeed, mixing" );
             g_gpspAdapt->audioFrameMixed();
             }
         }

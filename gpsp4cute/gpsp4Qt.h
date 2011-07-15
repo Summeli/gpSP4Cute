@@ -31,12 +31,16 @@
 #include "dpadwidget.h" 
 #include "gpspSettings.h"
 #include "MEmulatorAdaptation.h"
-#include "QRemoteControlKeys.h"
 #include "cuteErrorDialog.h"
-#include "AntAudio.h"
 #include "dpadwidget.h"
 #include "rightbuttonwidget.h"
 
+#ifdef __SYMBIAN32__
+#include "AntAudio.h"
+#include "QRemoteControlKeys.h"
+#else
+#include "meegoAudio.h"
+#endif
 class gpspadaptation;
 
 /* This class is the UI controller in the UI thread side
@@ -51,7 +55,6 @@ public:
     ~gpsp4Qt();
 
 public:
-    void setRemoteControl( QRemoteControlKeys* remote );
     void keyPressEvent( QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent* event);
     bool event(QEvent *event);
@@ -88,10 +91,7 @@ public slots:
     void showAntSnesMenu();
     void updateSettings( TGPSPSettings );
     void showErrorNote( QString message );
-    void errorNoteDismissed();
-    		
-private slots:
-	void listencontrols();
+    void errorNoteDismissed();		
     
 private:
     void LoadButtons();
@@ -100,7 +100,6 @@ private:
 private:
     CAntAudio* m_audio;
     TGPSPSettings m_settings;
-    QRemoteControlKeys* m_remotecontrol;
     DPadWidget* m_dpad;
     gpspadaptation* m_adaptation;
     QString m_currentROM;
@@ -121,6 +120,14 @@ private:
     int m_buttonOpacity;
     int m_stretch;
     int m_screenHeight;
+#ifdef __SYMBIAN32__
+public:
+    void setRemoteControl( QRemoteControlKeys* remote );
+private: //data
+      QRemoteControlKeys* remotecontrol;
+private slots:
+    void listencontrols();
+#endif
 };
 
 #endif // GPSP4QT_H

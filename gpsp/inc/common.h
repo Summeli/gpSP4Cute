@@ -20,7 +20,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#ifdef __SYMBIAN32__
+#if 1//__SYMBIAN32__
 #define ARM_ARCH
 #endif
 #define ror(dest, value, shift)                                               \
@@ -105,8 +105,8 @@
   #include <time.h>
   #include <stdio.h>
 #else
-#ifndef __SYMBIAN32__
-  #include "SDL.h"
+#if 0// __SYMBIAN32__
+#include "SDL.h"
 #endif
 #ifdef ARM_ARCH
   #define function_cc
@@ -242,7 +242,7 @@ typedef u32 fixed16_16;
 #include <string.h>
 #include <stdarg.h>
 #ifndef __SYMBIAN32__
-#include "SDL.h"
+//#include "SDL.h"
 #endif
 #include "cpu.h"
 #include "memory.h"

@@ -25,7 +25,12 @@
 
 #include "gpspSettings.h"
 #include "gpsp4Qt.h"
+
+#ifdef __SYMBIAN32__
 #include "AntAudio.h"
+#else
+#include "meegoAudio.h"
+#endif
 
 /* the gpspadapation is basically the emulation thread
  * it's also passing commands safely from the UI thread

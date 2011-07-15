@@ -20,8 +20,11 @@
 #include "common.h"
 #include "debug.h"
 
+#define ARM_ARCH 1
+
 #include <sys/time.h>
 #ifdef PSP_BUILD
+
 
 //PSP_MODULE_INFO("gpSP", 0x1000, 0, 6);
 //PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER);
@@ -57,7 +60,7 @@ u32 gp2x_fps_debug = 0;
 
 void gp2x_quit(void);
 #endif
-#ifdef __SYMBIAN32__ 
+#if 1//def __SYMBIAN32__ 
 u32 frameskip_value = 2;
 u32 interval_skipped_frames;
 u64 frame_count_initial_timestamp = 0;
@@ -213,8 +216,8 @@ void showFPS( u32 showfps )
 #endif
 
 extern char *cpu_mode_names[];
-#ifdef __SYMBIAN32__
-int symbian_library_main(u8* rom, u8* bios )
+#if 1// __SYMBIAN32__
+int cute_library_main(u8* rom, u8* bios )
 #else
 int main(int argc, char *argv[])
 #endif
@@ -226,7 +229,7 @@ int main(int argc, char *argv[])
   u8 load_filename[512];
   u8 bios_filename[512];
   
-#ifdef __SYMBIAN32__ 
+#if 1//def __SYMBIAN32__ 
   frameskip_value = 2;
   frame_count_initial_timestamp = 0;
   last_frame_interval_timestamp = 0;
@@ -247,7 +250,7 @@ int main(int argc, char *argv[])
  
   init_gamepak_buffer();
 
-#ifdef __SYMBIAN32__  
+#if 1//def __SYMBIAN32__  
   getmainPath(main_path);
   //sprintf(main_path, "%s", "e:\\gba");
   //getcwd(main_path, 512);
@@ -271,7 +274,7 @@ int main(int argc, char *argv[])
  // if(load_bios("e:\\Gba\\gba_bios.bin") == -1)
   if(load_bios(bios) == -1)
   {
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
   DEBUG("NO BIOS FOUND");
   dispatchNoBiosErrorNote();
 #else
@@ -304,7 +307,7 @@ int main(int argc, char *argv[])
   
   if(bios_rom[0] != 0x18)
   {
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
   DEBUG("WRONG BIOS FOUND");
   //user has already been warned about it
  // dispatchNoBiosErrorNote();
@@ -332,7 +335,7 @@ int main(int argc, char *argv[])
 #endif
   }
 
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
   save_game_config_file();
   if(load_gamepak( rom ) == -1)
 	  DEBUG("Game load failed");
@@ -400,7 +403,7 @@ int main(int argc, char *argv[])
 #endif
 
 
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
   get_ticks_us(&frame_count_initial_timestamp);
 #endif
  
@@ -552,7 +555,7 @@ u32 update_gba()
       gbc_update_count++;
       update_gbc_sound(cpu_ticks);
       gbc_sound_update = 0;
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
       //try to render audio
       mixAudio();
 #endif
@@ -656,7 +659,7 @@ u32 update_gba()
 
           update_gbc_sound(cpu_ticks);
 
-#ifdef __SYMBIAN32__
+#if 1 //fdef __SYMBIAN32__
           //try to render audio
           mixAudio();
 #endif
@@ -802,7 +805,7 @@ void synchronize()
 
 #endif
 
-#ifdef __SYMBIAN32__ 
+#if 1//def __SYMBIAN32__ 
 
 u32 real_frame_count = 0;
 u32 virtual_frame_count = 0;

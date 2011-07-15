@@ -39,23 +39,31 @@ EmuSettings::EmuSettings(QWidget *parent)
 	//int audioOn, int samplerte, int stereoOn, int volume, bool enablespeedhack, QWidget *parent 
 	//TODO: read settings
 	audiosettings = new AudioSettings(gpspsettings.iAudioOn, gpspsettings.iVolume, this );
-	audiosettings->setGeometry(QRect(0, 0, 640, 150));
 	audiosettings->hide();
 	
         antvideosettings =new videosettings( gpspsettings.iShowFPS,
                                             gpspsettings.iButtonOpacity, gpspsettings.iStretch, this );
-	antvideosettings->setGeometry(QRect(0, 0, 640, 150));
 	antvideosettings->hide();
 	
 	fileview = new filewidget( gpspsettings.iLastROM, gpspsettings.iBios,
 			this );
-	fileview->setGeometry(QRect(0, 0, 640, 150));
 	fileview->hide();
 		
         keysettings =new controlsettings( gpspsettings.iDpadSettings,  gpspsettings.iButtonSettings, this );
-	keysettings->setGeometry(QRect(0, 0, 640, 150));
 	keysettings->hide();
 	
+#ifdef __SYMBIAN32__
+        audiosettings->setGeometry(QRect(0, 0, 640, 150));
+        antvideosettings->setGeometry(QRect(0, 0, 640, 150));
+        fileview->setGeometry(QRect(0, 0, 640, 150));
+        keysettings->setGeometry(QRect(0, 0, 640, 150));
+#else
+        audiosettings->setGeometry(QRect(0, 0, 854, 200));
+        fileview->setGeometry(QRect(0, 0, 854, 200));
+        keysettings->setGeometry(QRect(0, 0, 854, 200));
+         antvideosettings->setGeometry(QRect(0, 0, 854, 200));
+#endif
+
 	currentWidget = EMainWidget;
 	
 	ui.saveSlotBox->setCurrentIndex(gpspsettings.iLastSlot);
@@ -107,10 +115,6 @@ EmuSettings::~EmuSettings()
 	delete fileview;
 }
 
-void EmuSettings::setRemoteControl( QRemoteControlKeys* remote )
-	{
-	remotecontrol = remote;
-	}
 void EmuSettings::loadROM()
     {    
     __DEBUG_IN
@@ -186,7 +190,9 @@ void EmuSettings::keyConfig()
     {
     keydialog = new keyconfigdialog( this );
     connect(keydialog, SIGNAL(configDone()), this, SLOT(keyconfigDone()));
+#ifdef __SYMBIAN32__
     remotecontrol->subscribeKeyEvent( keydialog );
+#endif
     keydialog->show();
     keydialog->setFocus();
     }
@@ -300,8 +306,10 @@ void EmuSettings::keyconfigDone()
 		__DEBUG2("keyconfigDone: keyID is ", keydialog->getKeyBind(i) );
 		gpspsettings.iScanKeyTable[i] = keydialog->getKeyBind(i);
 		}
-	//take the keyevents away, so it doesn't crash
+        //take the keyevents away, so it doesn't crash
+#ifdef __SYMBIAN32__
 	remotecontrol->subscribeKeyEvent( this );
+#endif
     //Delete the dialog
 	keydialog->hide();
     delete keydialog;
@@ -539,3 +547,10 @@ void EmuSettings::loadSettings()
         gpspsettings.iButtonSettings = settings.value("gpsp_ButtonSettings").toInt();
 	__DEBUG_OUT
 	}
+
+#ifdef __SYMBIAN32__
+void EmuSettings::setRemoteControl( QRemoteControlKeys* remote )
+        {
+        remotecontrol = remote;
+        }
+#endif

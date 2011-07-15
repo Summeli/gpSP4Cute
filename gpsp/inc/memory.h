@@ -174,7 +174,7 @@ extern u8 gamepak_maker[3];
 extern u8 gamepak_filename[512];
 
 //export some functions to be called from the c++ side  
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
 #ifdef __cplusplus
 extern "C" {
 #endif

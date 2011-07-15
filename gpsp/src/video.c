@@ -21,9 +21,12 @@
 #include "font.h"
 
 #ifdef __SYMBIAN32__
-#include <stdio.h>
 #include "debug.h"
 #include "symb_adaptation.h"
+#endif
+#if 1
+
+#include <stdio.h>
 
 u16 interptable_w[240];
 u16 interptable_h[160];
@@ -125,7 +128,7 @@ u16* screen_small;
 u16* large_ptr;
 u16* small_ptr;
 
-#ifndef __SYMBIAN32__
+#if 0//ndef __SYMBIAN32__
 SDL_Surface *screen;
 #define get_screen_pixels()                                                   \
   ((u16 *)screen->pixels)                                                     \
@@ -3389,7 +3392,7 @@ void flip_screen()
 
 void flip_screen()
 {
-#ifndef __SYMBIAN32__
+#if 0//ndef __SYMBIAN32__
 	if((video_scale != 1) && (current_scale != unscaled))
 	  {
 	    s32 x, y;
@@ -3432,11 +3435,11 @@ void flip_screen()
 		memcpy(BaseAddress, get_screen_pixels(), 240*160*2);
 		gp2x_flipscreen();
     #else
-#ifdef __SYMBIAN32__
+#if 1//def __SYMBIAN32__
 	//TODO!
 	symbian_blit(  screen );
 #else
-	  SDL_Flip(screen);
+	  //SDL_Flip(screen);
 #endif
 	#endif
 }
@@ -3552,7 +3555,7 @@ void init_video()
    160 * video_scale, 16, 0xFFFF, 0xFFFF, 0xFFFF, 0);
 
   gp2x_load_mmuhack();
-#elif defined(__SYMBIAN32__)
+#elif 1//defined(__SYMBIAN32__)
   screen = allocateFramenBuffer( 320*240 );
   //TODO: initilize video stuff here
   /*
@@ -3700,7 +3703,7 @@ void video_resolution_large()
 
   gp2x_load_mmuhack();
 #else
-#ifdef __SYMBIAN32__
+#if 1 //def __SYMBIAN32__
   //TODO: set large video resolution here
   
 #else
@@ -3729,7 +3732,7 @@ void video_resolution_small()
   SDL_ShowCursor(0);
 
   gp2x_load_mmuhack();
-#elif defined(__SYMBIAN32__)
+#elif 1//defined(__SYMBIAN32__)
   /*
   SDL_FreeSurface(screen);
 
@@ -3750,7 +3753,7 @@ void video_resolution_small()
 
 void set_gba_resolution(video_scale_type scale)
 {
-#ifndef __SYMBIAN32__
+#if 0//ndef __SYMBIAN32__
   if(screen_scale != scale)
   {
     screen_scale = scale;

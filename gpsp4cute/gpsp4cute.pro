@@ -7,7 +7,6 @@ QT += core \
 
 HEADERS += filewidget.h \
     dpadwidget.h \
-    QRemoteControlKeys.h \
     aboutdialog.h \
     controlsettings.h \
     videosettings.h \
@@ -19,13 +18,11 @@ HEADERS += filewidget.h \
     gpspSettings.h \
     gpsp4Qt.h \
     cuteErrorDialog.h \
-    rightbuttonwidget.h \
-    AntAudio.h
+    rightbuttonwidget.h 
     
 SOURCES += cuteErrorDialog.cpp \
     filewidget.cpp \
     dpadwidget.cpp \
-    QRemoteControlKeys.cpp \
     aboutdialog.cpp \
     controlsettings.cpp \
     videosettings.cpp \
@@ -33,12 +30,10 @@ SOURCES += cuteErrorDialog.cpp \
     keyconfigdialog.cpp \
     viewcontroller.cpp \
     emusettings.cpp \
-    cuteDebug.cpp \
     gpspadaptation.cpp \
     main.cpp \
     gpsp4Qt.cpp \
-    rightbuttonwidget.cpp \
-    AntAudio.cpp
+    rightbuttonwidget.cpp 
     
 FORMS += cuteErrorDialog.ui \
     filewidget.ui \
@@ -49,9 +44,28 @@ FORMS += cuteErrorDialog.ui \
     audiosettings.ui \
     emusettings.ui
 
-RESOURCES += gpspresources.qrc
+INCLUDEPATH += ../gpsp/inc/
 
-symbian:LIBS += -lgpsp4symbian.lib \
+symbian: {
+
+HEADERS += QRemoteControlKeys.h \
+           AntAudio.h
+
+SOURCES += QRemoteControlKeys.cpp \
+           AntAudio.cpp
+           
+FORMS += cuteErrorDialog.ui \
+    filewidget.ui \
+    aboutdialog.ui \
+    controlsettings.ui \
+    videosettings.ui \
+    keyconfigdialog.ui \
+    audiosettings.ui \
+    emusettings.ui
+    
+RESOURCES += gpspresources.qrc   
+ 
+LIBS += -lgpsp4symbian.lib \
     -lscdv \
     -lws32 \
     -lcone \
@@ -66,16 +80,13 @@ symbian:LIBS += -lgpsp4symbian.lib \
     -llibGLESv2 \
     -lmmfcontrollerframework #TODO: remove when audio can be removed..
 
- symbian:TARGET.UID3 \
-    = \
-    0xE0D278F3
-symbian:TARGET.EPOCHEAPSIZE = 0x200000 \
+TARGET.UID3 = 0xE0D278F3
+TARGET.EPOCHEAPSIZE = 0x200000 \
     0x1000000
     
-symbian:TARGET.EPOCSTACKKSIZE = 0x10000
-symbian: TARGET.CAPABILITY = UserEnvironment
-symbian:ICON = gfx/gpsp.svg
-symbian:INCLUDEPATH += ../gpsp/inc/
+TARGET.EPOCSTACKKSIZE = 0x10000
+TARGET.CAPABILITY = UserEnvironment
+ICON = gfx/gpsp.svg
 
 OTHER_FILES += summelistyle.qss
 
@@ -85,5 +96,36 @@ gpspFiles.path = !:\\private\\E0D278F3\\game_config.txt
 DEPLOYMENT += gpspFiles;
 
 
-packageheader = "$${LITERAL_HASH}{\"gpsp\"}, (0xE0D278F3), 0, 5, 0 "
+packageheader = "$${LITERAL_HASH}{\"gpsp\"}, (0xE0D278F3), 0, 7, 0 "
 default_deployment.pkg_prerules = packageheader
+}
+
+unix:!symbian:!maemo5 {
+FORMS += ui_meego/cuteErrorDialog.ui \
+    ui_meego/filewidget.ui \
+    ui_meego/aboutdialog.ui \
+    ui_meego/controlsettings.ui \
+    ui_meego/videosettings.ui \
+    ui_meego/keyconfigdialog.ui \
+    ui_meego/audiosettings.ui \
+    ui_meego/emusettings.ui
+    
+HEADERS += meegoAudio.h 
+SOURCES += meegoAudio.cpp
+
+RESOURCES += meegoresources.qrc
+
+OTHER_FILES += \
+    qtc_packaging/debian_harmattan/rules \
+    qtc_packaging/debian_harmattan/README \
+    qtc_packaging/debian_harmattan/copyright \
+    qtc_packaging/debian_harmattan/control \
+    qtc_packaging/debian_harmattan/compat \
+    qtc_packaging/debian_harmattan/changelog
+
+LIBS += ../gpsp/gpsp4meego.a
+
+include(deployment.pri)
+qtcAddDeployment()
+}
+

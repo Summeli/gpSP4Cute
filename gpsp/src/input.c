@@ -67,7 +67,7 @@ button_repeat_state_type button_repeat_state = BUTTON_NOT_HELD;
 u32 button_repeat = 0;
 gui_action_type cursor_repeat = CURSOR_NONE;
 
-#if defined(__SYMBIAN32__)
+#if 1//defined(__SYMBIAN32__)
 //#include "symbian_input.h"
 #include "debug.h"
 
