@@ -22,6 +22,9 @@
 
 #include <QObject>
 
+#include <pulse/simple.h>
+#include <pulse/error.h>
+#include <pulse/gccmacro.h>
 
 const int KSoundBuffers = 4;
 const int KBlockTime = 1000000 / 5; // hardcoded: 5 updates/sec
@@ -54,5 +57,8 @@ public slots:
 
 protected:
 
+    quint8* m_buf;
+    pa_simple *m_s;
+    int m_audioBufSize;
 };
 #endif //__MEEGO_AUDIO_H_

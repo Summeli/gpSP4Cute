@@ -47,7 +47,6 @@ install: build
 	dh_testroot
 	dh_clean -k 
 	dh_installdirs
-
 	# Add here commands to install the package into debian/gpsp4cute.
 	$(MAKE) INSTALL_ROOT="$(CURDIR)"/debian/gpsp4cute install
 

@@ -40,6 +40,7 @@
 #include "QRemoteControlKeys.h"
 #else
 #include "meegoAudio.h"
+#include "meegoAdaptation.h"
 #endif
 class gpspadaptation;
 
@@ -127,6 +128,9 @@ private: //data
       QRemoteControlKeys* remotecontrol;
 private slots:
     void listencontrols();
+#else
+private: //Data
+    meegoAdaptation* meegoAdapt;
 #endif
 };
 

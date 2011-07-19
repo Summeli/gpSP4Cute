@@ -1,12 +1,12 @@
 <RCC>
     <qresource prefix="/">
-        <file>style/summelistyle.qss</file>
         <file>gfx/dpad.png</file>
         <file>gfx/menu.png</file>
         <file>gfx/select_start_buttons.png</file>
         <file>gfx/tl_button_top.png</file>
         <file>gfx/tr_button_top.png</file>
         <file>gfx/BAButtons.png</file>
+        <file>style/meegostyle.qss</file>
     </qresource>
     <qresource prefix="/graphics">
         <file>gfx/downarrow.png</file>

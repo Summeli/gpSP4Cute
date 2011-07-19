@@ -59,6 +59,12 @@ gpsp4Qt::gpsp4Qt(QWidget *parent)
     
     m_adaptation = new gpspadaptation( this, m_audio );
     
+#ifndef __SYMBIAN32__ //meego
+    meegoAdapt = new meegoAdaptation();
+    connect(this, SIGNAL(Start()), meegoAdapt, SLOT(disableSwipe()) );
+    connect(this, SIGNAL(Stop()), meegoAdapt, SLOT(enableSwipe()) );
+#endif
+
     //connect all adaptation stuff
     connect(this, SIGNAL(Start()), m_adaptation, SLOT(Start()) );
     connect(this, SIGNAL(Stop()), m_adaptation, SLOT(Stop()) );
@@ -129,9 +135,15 @@ void gpsp4Qt::paintEvent(QPaintEvent *)
         int newWidth = width();
         int left = 0;
         if(m_stretch == TGPSPSettings::EMedium ){
+#ifdef __SYMBIAN32__
             // 536 x 360 res
             left = 52;
             newWidth = 533;
+#else
+            // 720 x 480 res
+            left = 66;
+            newWidth = 720;
+#endif
         }
         QRect target(left, SCREEN_TOP, newWidth, height() );
 

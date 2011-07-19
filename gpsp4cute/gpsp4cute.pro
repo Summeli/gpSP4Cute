@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = gpsp
+TARGET = gpsp4cute
 
 QT += core \
     gui \
@@ -110,8 +110,8 @@ FORMS += ui_meego/cuteErrorDialog.ui \
     ui_meego/audiosettings.ui \
     ui_meego/emusettings.ui
     
-HEADERS += meegoAudio.h 
-SOURCES += meegoAudio.cpp
+HEADERS += meegoAudio.h  meegoAdaptation.h
+SOURCES += meegoAudio.cpp meegoAdaptation.cpp
 
 RESOURCES += meegoresources.qrc
 
@@ -124,6 +124,7 @@ OTHER_FILES += \
     qtc_packaging/debian_harmattan/changelog
 
 LIBS += ../gpsp/gpsp4meego.a
+LIBS += -lpulse-simple
 
 include(deployment.pri)
 qtcAddDeployment()

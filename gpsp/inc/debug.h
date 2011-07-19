@@ -40,7 +40,7 @@
 #define DEBUG3(x, v1, v2, v3)
 #define DEBUG4(x, v1, v2, v3, v4)
 #define INITSYMBIANDEBUG
-#endif 
+#endif
 
 #ifdef __cplusplus
 extern "C" {
