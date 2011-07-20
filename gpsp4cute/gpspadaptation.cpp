@@ -268,7 +268,7 @@ u16* allocateFramenBuffer( u32 size )
 __DEBUG_IN
     //TODO: we could actually make a QImage in here, and use that pointer
     //Maybe with Symbian^3 :-)
-    g_screenptr = (u16*) malloc( 240*160*4 );
+    g_screenptr = (u16*) malloc( 240*160*2 );
     return g_screenptr;
     __DEBUG_OUT
     }
