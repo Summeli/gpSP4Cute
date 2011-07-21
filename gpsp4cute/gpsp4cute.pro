@@ -123,6 +123,10 @@ OTHER_FILES += \
     qtc_packaging/debian_harmattan/compat \
     qtc_packaging/debian_harmattan/changelog
 
+configfile.files = sis/game_config.txt
+configfile.path = /opt/gpsp
+INSTALLS += configfile
+
 LIBS += ../gpsp/gpsp4meego.a
 LIBS += -lpulse-simple
 

@@ -222,8 +222,12 @@ void gpspadaptation::audioFrameMixed()
 QString gpspadaptation::gameconfigpath()
 {
     __DEBUG_IN
+ #ifdef __SYMBIAN32__
     QString drive = QApplication::applicationDirPath().left(2);
     drive.append( "\\private\\E0D278F3\\game_config.txt");
+#else
+    QString drive = QString("//opt//gpsp//game_config.txt");
+#endif
     return drive;
 }
 

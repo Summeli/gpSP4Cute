@@ -3431,17 +3431,7 @@ void flip_screen()
 	    }
 	  }
 #endif
-	#ifdef GP2X_BUILD
-		memcpy(BaseAddress, get_screen_pixels(), 240*160*2);
-		gp2x_flipscreen();
-    #else
-#if 1//def __SYMBIAN32__
-	//TODO!
 	symbian_blit(  screen );
-#else
-	  //SDL_Flip(screen);
-#endif
-	#endif
 }
 
 #endif
