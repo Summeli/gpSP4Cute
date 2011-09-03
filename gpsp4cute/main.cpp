@@ -46,9 +46,7 @@ BEGIN_RELOCATED_CODE(0x10000000);
 
    //init all the basic symbian stuff
    init_symbian_stuff();
-   initdebug();
    QApplication a(argc, argv);
- 
    loadStyleSheet();
     
    ViewController* vc = new ViewController();

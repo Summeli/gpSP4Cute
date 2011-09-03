@@ -33,7 +33,6 @@ SOURCES += cuteErrorDialog.cpp \
     keyconfigdialog.cpp \
     viewcontroller.cpp \
     emusettings.cpp \
-    cuteDebug.cpp \
     gpspadaptation.cpp \
     main.cpp \
     gpsp4Qt.cpp \
@@ -76,6 +75,7 @@ symbian:TARGET.EPOCSTACKKSIZE = 0x10000
 symbian: TARGET.CAPABILITY = UserEnvironment
 symbian:ICON = gfx/gpsp.svg
 symbian:INCLUDEPATH += ../gpsp/inc/
+symbian:MACRO = SYMBIAN_ENABLE_SPLIT_HEADERS
 
 OTHER_FILES += summelistyle.qss
 
