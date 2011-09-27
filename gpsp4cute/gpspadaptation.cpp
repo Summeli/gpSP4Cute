@@ -226,7 +226,7 @@ QString gpspadaptation::gameconfigpath()
     QString drive = QApplication::applicationDirPath().left(2);
     drive.append( "\\private\\E0D278F3\\game_config.txt");
 #else
-    QString drive = QString("//opt//gpsp//game_config.txt");
+    QString drive = QString("//opt//gpsp4cute//game_config.txt");
 #endif
     return drive;
 }
