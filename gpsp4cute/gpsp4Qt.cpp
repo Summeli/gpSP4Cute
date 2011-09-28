@@ -37,7 +37,7 @@ MEmulatorAdaptation* g_adaption;
 extern u16* g_screenptr;
 
 gpsp4Qt::gpsp4Qt(QWidget *parent)
-    : QGLWidget(parent), m_buf(NULL), m_softKeys(0), m_hardKeys(0), m_errorDialog(NULL)
+    : QWidget(parent), m_buf(NULL), m_softKeys(0), m_hardKeys(0), m_errorDialog(NULL)
 {
     QWidget::setAttribute(Qt::WA_AcceptTouchEvents);
     QThread::currentThread()->setPriority( QThread::NormalPriority );

@@ -42,7 +42,7 @@ class gpspadaptation;
 /* This class is the UI controller in the UI thread side
  * it's only purpose is to keep things in order in the UI
  * thread side */
-class gpsp4Qt : public QGLWidget, MEmulatorAdaptation
+class gpsp4Qt : public QWidget, MEmulatorAdaptation
 {
     Q_OBJECT
 

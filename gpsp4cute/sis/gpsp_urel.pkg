@@ -2,7 +2,7 @@
 &EN
 
 ; SIS header: name, uid, version
-#{"gpsp"},(0xE0D278F3),0,7,0
+#{"gpsp"},(0xE0D278F3),0,7,1
 
 ; Localised Vendor name
 %{"Summeli"}
@@ -21,10 +21,10 @@
 (0x2001E61C), 4, 7, 0, {"Qt"}
 
 ; Executable and default resource files
-"/QtSDK/Symbian/SDKs/Symbian3Qt473/epoc32/release/armv5/urel/gpsp.exe"    - "!:/sys/bin/gpsp.exe"
-"/QtSDK/Symbian/SDKs/Symbian3Qt473/epoc32/data/z/resource/apps/gpsp.rsc"    - "!:/resource/apps/gpsp.rsc"
-"/QtSDK/Symbian/SDKs/Symbian3Qt473/epoc32/data/z/private/10003a3f/import/apps/gpsp_reg.rsc"    - "!:/private/10003a3f/import/apps/gpsp_reg.rsc"
-"/QtSDK/Symbian/SDKs/Symbian3Qt473/epoc32/data/z/resource/apps/gpsp.mif"    - "!:/resource/apps/gpsp.mif"
+"/QtSDK/Symbian/SDKs/SymbianSR1Qt474/epoc32/release/armv5/urel/gpsp.exe"    - "!:/sys/bin/gpsp.exe"
+"/QtSDK/Symbian/SDKs/SymbianSR1Qt474/epoc32/data/z/resource/apps/gpsp.rsc"    - "!:/resource/apps/gpsp.rsc"
+"/QtSDK/Symbian/SDKs/SymbianSR1Qt474/epoc32/data/z/private/10003a3f/import/apps/gpsp_reg.rsc"    - "!:/private/10003a3f/import/apps/gpsp_reg.rsc"
+"/QtSDK/Symbian/SDKs/SymbianSR1Qt474/epoc32/data/z/resource/apps/gpsp.mif"    - "!:/resource/apps/gpsp.mif"
 
 "game_config.txt"		-"!:/private/E0D278F3/game_config.txt"
 
