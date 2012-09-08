@@ -68,10 +68,10 @@ symbian:LIBS += -lgpsp4symbian.lib \
  symbian:TARGET.UID3 \
     = \
     0xE0D278F3
-symbian:TARGET.EPOCHEAPSIZE = 0x200000 \
-    0x1000000
+symbian:TARGET.EPOCHEAPSIZE = 0x800000 \
+    0x1400000
     
-symbian:TARGET.EPOCSTACKKSIZE = 0x10000
+symbian:TARGET.EPOCSTACKKSIZE = 0x20000
 symbian: TARGET.CAPABILITY = UserEnvironment
 symbian:ICON = gfx/gpsp.svg
 symbian:INCLUDEPATH += ../gpsp/inc/
@@ -85,5 +85,5 @@ gpspFiles.path = !:\\private\\E0D278F3\\game_config.txt
 DEPLOYMENT += gpspFiles;
 
 
-packageheader = "$${LITERAL_HASH}{\"gpsp\"}, (0xE0D278F3), 0, 5, 0 "
+packageheader = "$${LITERAL_HASH}{\"gpsp\"}, (0xE0D278F3), 0, 7, 2 "
 default_deployment.pkg_prerules = packageheader

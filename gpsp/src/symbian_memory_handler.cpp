@@ -36,7 +36,7 @@ extern u8* rom_translation_ptr;
 extern u8* ram_translation_ptr;
 extern u8* bios_translation_ptr;
 
-#define KDistanceFromCodeSection 0x1200000
+#define KDistanceFromCodeSection 0x200000
 
 
 //in Symbian we have to tell to the OS that these memoryblocks contains codes,

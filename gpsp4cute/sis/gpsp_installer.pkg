@@ -7,7 +7,7 @@
 
 
 ; SIS header: name, uid, version
-#{"gpsp installer"},(0xA000D7CE),0,7,0
+#{"gpsp installer"},(0xA000D7CE),0,7,2
 
 ; Default localized vendor name
 %{"Summeli"}
@@ -19,5 +19,5 @@
 
 
 
-"E:/QtSDK/Symbian/projects/gpsp/gpSP4Symbian/gpsp4cute/sis/gpsp_urel.sis" - "!:\private\2002CCCE\import\gpsp.sis"
-@"E:/QtSDK/Symbian/SDKs/Symbian3Qt473//smartinstaller.sis",(0x2002CCCD)
+"E:/QtSDK/projects/gpsp/gpsp4Cute/gpsp4Cute/sis/gpsp_urel.sis" - "!:\private\2002CCCE\import\gpsp.sis"
+@"E:/QtSDK/Symbian/SDKs/SymbianSR1Qt474/smartinstaller.sis",(0x2002CCCD)
