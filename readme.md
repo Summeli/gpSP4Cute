@@ -8,12 +8,12 @@ Building
 ----------
 The gpSP stuff is build separately with custom makefilesystem, and the gpsp4cute is build with the usual Qt flags.
 
-The gpSP lib should be build with [General Makefile system by summeli] (http://www.summeli.com/2247)
+The gpSP lib should be build with [General Makefile system by summeli] (https://www.summeli.com/2247)
 You'll also will get some errors from the checklib when buildin the gpsp. Therefore you should [get rid of the checklib 
-in QtSDK] (http://www.summeli.com/2492)
+in QtSDK] (https://www.summeli.com/2492)
 
 After the gpSP lib is build, you can build the gpsp4cute project which will add the UI to the gpsp project. The gpsp4cute
-is build with standard Qt-stuff. See my blog post how to set up the environement with QtSDK [www.summeli.fi] (http://www.summeli.com/2277)
+is build with standard Qt-stuff. See my blog post how to set up the environement with QtSDK [www.summeli.com] (https://www.summeli.com/2277)
 
 License
 -------
